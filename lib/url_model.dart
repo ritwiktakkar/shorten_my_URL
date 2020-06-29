@@ -1,0 +1,11 @@
+class ShortenedURL {
+  final String shortenedURL;
+
+  ShortenedURL({this.shortenedURL});
+
+  factory ShortenedURL.fromJson(Map<String, dynamic> json) {
+    return ShortenedURL(
+      shortenedURL: json['result_url'],
+    );
+  }
+}
