@@ -19,20 +19,48 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Fetch Data Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      debugShowCheckedModeBanner: false, // hide debug banner from top left
       home: Scaffold(
-          body: Padding(
-              padding: EdgeInsets.fromLTRB(25, 300, 25, 300),
-              child: RaisedButton(
-                  onPressed: () async {
-                    var result = await API.getShortenedURL(
-                        "https://stackoverflow.com/questions/53542904/flutter-calling-futurebuilder-from-a-raised-buttons-onpressed-doesnt-call-the");
-                  },
-                  child: Text(
-                      "press here to shorten url and see in debug console")))),
+        backgroundColor: Colors.black, // make background color black
+        body: Center(
+            child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+              keyboardType: TextInputType.url,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: const BorderRadius.all(
+                      const Radius.circular(40.0),
+                    ),
+                  ),
+                  filled: true,
+                  hintStyle: TextStyle(
+                      color: Colors.grey[600],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300),
+                  hintText: "Enter the URL that you want to shorten here",
+                  fillColor: Colors.white12),
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w300,
+              ),
+            )
+          ],
+        )),
+        //body:
+        // body: Padding(
+        //     padding: EdgeInsets.fromLTRB(25, 300, 25, 300),
+        //     child: RaisedButton(
+        //         onPressed: () async {
+        //           var result = await API.getShortenedURL(
+        //               "https://stackoverflow.com/questions/53542904/flutter-calling-futurebuilder-from-a-raised-buttons-onpressed-doesnt-call-the");
+        //         },
+        //         child: Text(
+        //             "press here to shorten url and see in debug console")))
+      ),
     );
   }
 }
