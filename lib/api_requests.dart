@@ -1,5 +1,4 @@
-import 'package:http/http.dart'
-    as http; // importing HTTP package for network activity
+import 'package:http/http.dart' as http;
 import 'package:shorten_my_URL/url_model.dart';
 import 'dart:convert';
 
