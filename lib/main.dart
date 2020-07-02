@@ -19,7 +19,11 @@ class _MyAppState extends State<MyApp> {
   Future<url_model.ShortenedURL> shortenedURL;
 
   // Create a text controller and use it to retrieve the current value of the TextField.
-  final myController = TextEditingController();
+  final inputController = TextEditingController();
+  final outputController = TextEditingController();
+
+  String longURL;
+  url_model.ShortenedURL shortURL;
 
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
@@ -36,7 +40,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
-    myController.dispose();
+    inputController.dispose();
     super.dispose();
   }
 
@@ -49,44 +53,22 @@ class _MyAppState extends State<MyApp> {
           body: Align(
             alignment: Alignment.center,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Container(
-                      height: 75,
-                      width: 150,
-                      child: FlatButton(
-                        onPressed: () async {
-                          myController.text = await _getFromClipboard();
-                          if (await _getFromClipboard() == '') {
-                            print("Clipboard doesn't contain valid URL.");
-                          }
-                        },
-                        color: Colors.lightBlue[300],
-                        child: Text(
-                          "Paste from clipboard",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 16,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
-                        ),
-                      ),
-                    )
-                  ],
+                SizedBox(height: 1),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Input",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700)),
                 ),
-                SizedBox(height: 30),
+                //SizedBox(height: 30),
                 TextField(
                   autocorrect: false, // URL so no need
-                  controller: myController,
+                  controller: inputController,
                   keyboardType: TextInputType.url,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -107,22 +89,202 @@ class _MyAppState extends State<MyApp> {
                     fontWeight: FontWeight.w300,
                   ),
                 ),
-                SizedBox(height: 30),
+                //SizedBox(height: 30),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      height: 80,
+                      width: 120,
+                      child: FlatButton(
+                        onPressed: () {
+                          inputController.text = '';
+                        },
+                        color: Colors.lightGreen[700],
+                        child: Text(
+                          "Clear Input",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          //side: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 80,
+                      width: 120,
+                      child: FlatButton(
+                        onPressed: () async {
+                          inputController.text = await _getFromClipboard();
+                          if (await _getFromClipboard() == '') {
+                            // print below if paste button returns empty string
+                            print("Clipboard doesn't contain valid URL.");
+                          } else {
+                            longURL = inputController.text;
+                          }
+                        },
+                        color: Colors.cyan[700],
+                        child: Text(
+                          "Paste",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          //side: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 80,
+                      width: 120,
+                      child: FlatButton(
+                        onPressed: () async {
+                          shortURL = await API.getShortenedURL(longURL);
+                          outputController.text = shortURL.shortenedURL;
+                        },
+                        color: Colors.blue[700],
+                        child: Text(
+                          "Shorten URL",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                Divider(
+                  //height: 10,
+                  color: Colors.grey[800],
+                  thickness: 5,
+                ),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Text("Output",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700)),
+                ),
+                TextField(
+                  readOnly: true,
+                  controller: outputController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(40.0),
+                        ),
+                      ),
+                      filled: true,
+                      hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 18,
+                          fontWeight: FontWeight.w300),
+                      hintText: "Your shortened URL will appear here",
+                      fillColor: Colors.white12),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Container(
+                      height: 80,
+                      width: 120,
+                      child: FlatButton(
+                        onPressed: () {
+                          outputController.text = '';
+                        },
+                        color: Colors.lightGreen[700],
+                        child: Text(
+                          "Clear Output",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          //side: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 80,
+                      width: 120,
+                      child: FlatButton(
+                        onPressed: () async {
+                          inputController.text = await _getFromClipboard();
+                          if (await _getFromClipboard() == '') {
+                            // print below if paste button returns empty string
+                            print("Clipboard doesn't contain valid URL.");
+                          } else {
+                            longURL = inputController.text;
+                          }
+                        },
+                        color: Colors.cyan[700],
+                        child: Text(
+                          "Copy",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                          //side: BorderSide(color: Colors.red),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 80,
+                      width: 120,
+                      child: FlatButton(
+                        onPressed: () {},
+                        color: Colors.blue[700],
+                        child: Text(
+                          "Share URL",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
-          )
-
-          //body:
-          // body: Padding(
-          //     padding: EdgeInsets.fromLTRB(25, 300, 25, 300),
-          //     child: RaisedButton(
-          //         onPressed: () async {
-          //           var result = await API.getShortenedURL(
-          //               "https://stackoverflow.com/questions/53542904/flutter-calling-futurebuilder-from-a-raised-buttons-onpressed-doesnt-call-the");
-          //         },
-          //         child: Text(
-          //             "press here to shorten url and see in debug console")))
-          ),
+          )),
     );
   }
 }
