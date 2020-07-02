@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shorten_my_URL/url_model.dart' as url_model;
 import 'package:shorten_my_URL/api_requests.dart' as API;
 import 'package:flutter/services.dart';
+import 'package:string_validator/string_validator.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,7 +25,10 @@ class _MyAppState extends State<MyApp> {
     Map<String, dynamic> result =
         await SystemChannels.platform.invokeMethod('Clipboard.getData');
     if (result != null) {
-      return result['text'].toString();
+      print('Clipboard content: \'${result['text'].toString()}\'');
+      if (isURL(result['text'].toString())) {
+        return result['text'].toString();
+      }
     }
     return '';
   }
