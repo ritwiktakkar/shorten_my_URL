@@ -61,6 +61,9 @@ class _MyAppState extends State<MyApp> {
                       child: FlatButton(
                         onPressed: () async {
                           myController.text = await _getFromClipboard();
+                          if (await _getFromClipboard() == '') {
+                            print("Clipboard doesn't contain valid URL.");
+                          }
                         },
                         color: Colors.lightBlue[300],
                         child: Text(
