@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                           // print below if paste button returns empty string
                           print("Clipboard doesn't contain valid URL.");
                           // show dialog
-                          //Dialogs.showMyDialog(context);
+                          Dialogs.showMyDialog(context);
                         } else {
                           longURL = inputController.text;
                         }
