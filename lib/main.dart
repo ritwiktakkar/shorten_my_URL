@@ -140,13 +140,13 @@ class _HomePageState extends State<HomePage> {
                     child: FlatButton(
                       onPressed: () async {
                         inputController.text = await _getFromClipboard();
-                        if (inputController.text == '') {
+                        if (isURL(inputController.text)) {
+                          longURL = inputController.text;
+                        } else {
                           // print below if paste button returns empty string
                           print("Clipboard doesn't contain valid URL.");
                           // show dialog
                           Dialogs.showNothingToPaste(context);
-                        } else {
-                          longURL = inputController.text;
                         }
                       },
                       color: Colors.cyan[700],
@@ -271,12 +271,13 @@ class _HomePageState extends State<HomePage> {
                     message: "Copy shortened URL to clipboard",
                     child: FlatButton(
                       onPressed: () async {
-                        if (outputController.text == '') {
+                        if (isURL(outputController.text)) {
+                          Clipboard.setData(
+                              new ClipboardData(text: outputController.text));
+                        } else {
                           // show dialog
                           Dialogs.showNothingToCopy(context);
                         }
-                        Clipboard.setData(
-                            new ClipboardData(text: outputController.text));
                       },
                       color: Colors.cyan[700],
                       child: Text(
