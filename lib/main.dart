@@ -59,11 +59,14 @@ class _MyAppState extends State<MyApp> {
                 SizedBox(height: 1),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("Input",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700)),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text("Input",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w700)),
+                  ),
                 ),
                 //SizedBox(height: 30),
                 TextField(
@@ -96,75 +99,84 @@ class _MyAppState extends State<MyApp> {
                     Container(
                       height: 80,
                       width: 120,
-                      child: FlatButton(
-                        onPressed: () {
-                          inputController.text = '';
-                        },
-                        color: Colors.lightGreen[700],
-                        child: Text(
-                          "Clear Input",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Tooltip(
+                        message: "Clear input field",
+                        child: FlatButton(
+                          onPressed: () {
+                            inputController.text = '';
+                          },
+                          color: Colors.lightGreen[700],
+                          child: Text(
+                            "Clear Input",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            //side: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       height: 80,
                       width: 120,
-                      child: FlatButton(
-                        onPressed: () async {
-                          inputController.text = await _getFromClipboard();
-                          if (await _getFromClipboard() == '') {
-                            // print below if paste button returns empty string
-                            print("Clipboard doesn't contain valid URL.");
-                          } else {
-                            longURL = inputController.text;
-                          }
-                        },
-                        color: Colors.cyan[700],
-                        child: Text(
-                          "Paste",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Tooltip(
+                        message: "Paste clipboard content to input field",
+                        child: FlatButton(
+                          onPressed: () async {
+                            inputController.text = await _getFromClipboard();
+                            if (await _getFromClipboard() == '') {
+                              // print below if paste button returns empty string
+                              print("Clipboard doesn't contain valid URL.");
+                            } else {
+                              longURL = inputController.text;
+                            }
+                          },
+                          color: Colors.cyan[700],
+                          child: Text(
+                            "Paste",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            //side: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       height: 80,
                       width: 120,
-                      child: FlatButton(
-                        onPressed: () async {
-                          shortURL = await API.getShortenedURL(longURL);
-                          outputController.text = shortURL.shortenedURL;
-                        },
-                        color: Colors.blue[700],
-                        child: Text(
-                          "Shorten URL",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Tooltip(
+                        message: "Shorten URL in input field",
+                        child: FlatButton(
+                          onPressed: () async {
+                            shortURL = await API.getShortenedURL(longURL);
+                            outputController.text = shortURL.shortenedURL;
+                          },
+                          color: Colors.blue[700],
+                          child: Text(
+                            "Shorten URL",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
                         ),
                       ),
                     ),
@@ -177,11 +189,14 @@ class _MyAppState extends State<MyApp> {
                 ),
                 Align(
                   alignment: Alignment.topLeft,
-                  child: Text("Output",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700)),
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 10),
+                    child: Text("Output",
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w700)),
+                  ),
                 ),
                 TextField(
                   readOnly: true,
@@ -211,71 +226,80 @@ class _MyAppState extends State<MyApp> {
                     Container(
                       height: 80,
                       width: 120,
-                      child: FlatButton(
-                        onPressed: () {
-                          outputController.text = '';
-                        },
-                        color: Colors.lightGreen[700],
-                        child: Text(
-                          "Clear Output",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Tooltip(
+                        message: "Clear output field",
+                        child: FlatButton(
+                          onPressed: () {
+                            outputController.text = '';
+                          },
+                          color: Colors.lightGreen[700],
+                          child: Text(
+                            "Clear Output",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       height: 80,
                       width: 120,
-                      child: FlatButton(
-                        onPressed: () async {
-                          inputController.text = await _getFromClipboard();
-                          if (await _getFromClipboard() == '') {
-                            // print below if paste button returns empty string
-                            print("Clipboard doesn't contain valid URL.");
-                          } else {
-                            longURL = inputController.text;
-                          }
-                        },
-                        color: Colors.cyan[700],
-                        child: Text(
-                          "Copy",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Tooltip(
+                        message: "Copy shortened URL to clipboard",
+                        child: FlatButton(
+                          onPressed: () async {
+                            inputController.text = await _getFromClipboard();
+                            if (await _getFromClipboard() == '') {
+                              // print below if paste button returns empty string
+                              print("Clipboard doesn't contain valid URL.");
+                            } else {
+                              longURL = inputController.text;
+                            }
+                          },
+                          color: Colors.cyan[700],
+                          child: Text(
+                            "Copy",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            //side: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                     ),
                     Container(
                       height: 80,
                       width: 120,
-                      child: FlatButton(
-                        onPressed: () {},
-                        color: Colors.blue[700],
-                        child: Text(
-                          "Share URL",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 24,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Tooltip(
+                        message: "Share the shortened URL",
+                        child: FlatButton(
+                          onPressed: () {},
+                          color: Colors.blue[700],
+                          child: Text(
+                            "Share URL",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 24,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
                         ),
                       ),
                     ),
