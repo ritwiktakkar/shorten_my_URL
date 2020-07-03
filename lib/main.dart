@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
                           // print below if paste button returns empty string
                           print("Clipboard doesn't contain valid URL.");
                           // show dialog
-                          Dialogs.showMyDialog(context);
+                          Dialogs.showNothingToPaste(context);
                         } else {
                           longURL = inputController.text;
                         }
@@ -173,8 +173,12 @@ class _HomePageState extends State<HomePage> {
                     message: "Shorten URL in input field",
                     child: FlatButton(
                       onPressed: () async {
-                        shortURL = await API.getShortenedURL(longURL);
-                        outputController.text = shortURL.shortenedURL;
+                        if (isURL(inputController.text)) {
+                          shortURL = await API.getShortenedURL(longURL);
+                          outputController.text = shortURL.shortenedURL;
+                        } else {
+                          Dialogs.showInvalidInput(context);
+                        }
                       },
                       color: Colors.blue[700],
                       child: Text(
@@ -267,13 +271,12 @@ class _HomePageState extends State<HomePage> {
                     message: "Copy shortened URL to clipboard",
                     child: FlatButton(
                       onPressed: () async {
-                        inputController.text = await _getFromClipboard();
-                        if (await _getFromClipboard() == '') {
-                          // print below if paste button returns empty string
-                          print("Clipboard doesn't contain valid URL.");
-                        } else {
-                          longURL = inputController.text;
+                        if (outputController.text == '') {
+                          // show dialog
+                          Dialogs.showNothingToCopy(context);
                         }
+                        Clipboard.setData(
+                            new ClipboardData(text: outputController.text));
                       },
                       color: Colors.cyan[700],
                       child: Text(
@@ -298,7 +301,13 @@ class _HomePageState extends State<HomePage> {
                   child: Tooltip(
                     message: "Share the shortened URL",
                     child: FlatButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (isURL(outputController.text)) {
+                          // TODO: bring up share dialog
+                        } else {
+                          Dialogs.showNothingToShare(context);
+                        }
+                      },
                       color: Colors.blue[700],
                       child: Text(
                         "Share URL",
