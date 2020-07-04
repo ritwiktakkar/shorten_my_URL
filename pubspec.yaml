@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   http: ^0.12.1 # latest version as of 6/29/2020
   string_validator: ^0.1.4
+  share: 0.6.2+3
 
 
 
