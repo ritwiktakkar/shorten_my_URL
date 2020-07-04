@@ -91,7 +91,7 @@ class Dialogs {
         return AlertDialog(
           title: Text('Error: Invalid Entry'),
           content: Text(
-              "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry is correct and try again."),
+              "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry contains a valid URL and try again."),
           actions: <Widget>[
             FlatButton(
               child: Text(
