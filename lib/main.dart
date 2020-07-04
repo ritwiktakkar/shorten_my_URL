@@ -4,6 +4,7 @@ import 'package:shorten_my_URL/api_requests.dart' as API;
 import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
 import 'package:shorten_my_URL/dialogs.dart';
+import 'package:share/share.dart';
 
 void main() {
   runApp(MyApp());
@@ -305,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                     child: FlatButton(
                       onPressed: () async {
                         if (isURL(outputController.text)) {
-                          // TODO: bring up share dialog
+                          Share.share(outputController.text);
                         } else {
                           Dialogs.showNothingToShare(context);
                         }
