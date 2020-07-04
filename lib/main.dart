@@ -174,6 +174,7 @@ class _HomePageState extends State<HomePage> {
                     child: FlatButton(
                       onPressed: () async {
                         if (isURL(inputController.text)) {
+                          longURL = inputController.text;
                           shortURL = await API.getShortenedURL(longURL);
                           outputController.text = shortURL.shortenedURL;
                         } else {
