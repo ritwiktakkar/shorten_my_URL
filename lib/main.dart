@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 10),
-                child: Text("Input",
+                child: Text("Input URL",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -209,7 +209,7 @@ class _HomePageState extends State<HomePage> {
               alignment: Alignment.topLeft,
               child: Padding(
                 padding: EdgeInsets.only(left: 10),
-                child: Text("Output",
+                child: Text("Output URL",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
