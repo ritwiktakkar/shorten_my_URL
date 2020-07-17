@@ -60,6 +60,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       backgroundColor: Colors.black, // make background color black
       body: Align(
         alignment: Alignment.center,
@@ -113,8 +114,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 80,
-                    width: 120,
                     child: Tooltip(
                       message: "Clear input field",
                       child: FlatButton(
@@ -123,10 +124,10 @@ class _HomePageState extends State<HomePage> {
                         },
                         color: Colors.lightGreen[700],
                         child: Text(
-                          "Clear Input",
+                          "Clear\nInput",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white70,
                             fontWeight: FontWeight.w600,
                           ),
@@ -139,8 +140,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 80,
-                    width: 120,
                     child: Tooltip(
                       message: "Paste clipboard content to input field",
                       child: FlatButton(
@@ -160,7 +161,7 @@ class _HomePageState extends State<HomePage> {
                           "Paste",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white70,
                             fontWeight: FontWeight.w600,
                           ),
@@ -173,8 +174,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 80,
-                    width: 120,
                     child: Tooltip(
                       message: "Shorten URL in input field",
                       child: FlatButton(
@@ -189,10 +190,10 @@ class _HomePageState extends State<HomePage> {
                         },
                         color: Colors.blue[700],
                         child: Text(
-                          "Shorten URL",
+                          "Shorten\nURL",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white70,
                             fontWeight: FontWeight.w600,
                           ),
@@ -208,7 +209,7 @@ class _HomePageState extends State<HomePage> {
               Divider(
                 //height: 10,
                 color: Colors.grey[800],
-                thickness: 5,
+                thickness: 2,
               ),
               Align(
                 alignment: Alignment.topLeft,
@@ -247,8 +248,8 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 80,
-                    width: 120,
                     child: Tooltip(
                       message: "Clear output field",
                       child: FlatButton(
@@ -257,10 +258,10 @@ class _HomePageState extends State<HomePage> {
                         },
                         color: Colors.lightGreen[700],
                         child: Text(
-                          "Clear Output",
+                          "Clear\nOutput",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white70,
                             fontWeight: FontWeight.w600,
                           ),
@@ -272,8 +273,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 80,
-                    width: 120,
                     child: Tooltip(
                       message: "Copy shortened URL to clipboard",
                       child: FlatButton(
@@ -291,7 +292,7 @@ class _HomePageState extends State<HomePage> {
                           "Copy",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white70,
                             fontWeight: FontWeight.w600,
                           ),
@@ -304,8 +305,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Container(
+                    width: MediaQuery.of(context).size.width * 0.3,
                     height: 80,
-                    width: 120,
                     child: Tooltip(
                       message: "Share the shortened URL",
                       child: FlatButton(
@@ -318,10 +319,10 @@ class _HomePageState extends State<HomePage> {
                         },
                         color: Colors.blue[700],
                         child: Text(
-                          "Share URL",
+                          "Share\nURL",
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 20,
                             color: Colors.white70,
                             fontWeight: FontWeight.w600,
                           ),
