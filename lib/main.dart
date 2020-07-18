@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
 import 'package:shorten_my_URL/dialogs.dart';
 import 'package:share/share.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 void main() {
   runApp(MyApp());
@@ -132,14 +133,34 @@ class _HomePageState extends State<HomePage> {
                           inputController.text = '';
                         },
                         color: Colors.lightGreen[700],
-                        child: Text(
-                          "Clear\nInput",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              "Clear",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            AutoSizeText(
+                              "Input",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
@@ -166,9 +187,12 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                         color: Colors.cyan[700],
-                        child: Text(
+                        child: AutoSizeText(
                           "Paste",
                           textAlign: TextAlign.center,
+                          maxLines: 1,
+                          // minFontSize: 10,
+                          // maxFontSize: 20,
                           style: TextStyle(
                             fontSize: 20,
                             color: Colors.white70,
@@ -201,14 +225,34 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                         color: Colors.blue[700],
-                        child: Text(
-                          "Shorten\nURL",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              "Shorten",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            AutoSizeText(
+                              "URL",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
@@ -275,14 +319,34 @@ class _HomePageState extends State<HomePage> {
                           outputController.text = '';
                         },
                         color: Colors.lightGreen[700],
-                        child: Text(
-                          "Clear\nOutput",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              "Clear",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            AutoSizeText(
+                              "Output",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
@@ -306,8 +370,11 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                         color: Colors.cyan[700],
-                        child: Text(
+                        child: AutoSizeText(
                           "Copy",
+                          // minFontSize: 10,
+                          // maxFontSize: 20,
+                          maxLines: 1,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             fontSize: 20,
@@ -336,14 +403,34 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                         color: Colors.blue[700],
-                        child: Text(
-                          "Share\nURL",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
-                          ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            AutoSizeText(
+                              "Share",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            AutoSizeText(
+                              "URL",
+                              textAlign: TextAlign.center,
+                              // minFontSize: 10,
+                              // maxFontSize: 20,
+                              maxLines: 1,
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white70,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
                         ),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25.0),
