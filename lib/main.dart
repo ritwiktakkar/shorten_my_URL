@@ -15,9 +15,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    //         statusBarBrightness: Brightness.dark) // Or Brightness.dark
-    //     );
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        statusBarBrightness: Brightness.dark,
+      ),
+    );
     return new MaterialApp(
       debugShowCheckedModeBanner: false, // hide debug banner from top left
       home: new HomePage(),
@@ -110,7 +112,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.grey[600],
                           fontSize: 16,
                           fontWeight: FontWeight.w300),
-                      hintText: "Enter the URL that you want to shorten here",
+                      hintText: "Enter the URL to shorten here",
                       fillColor: Colors.white12),
                   style: TextStyle(
                     color: Colors.white,
@@ -297,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.grey[600],
                           fontSize: 16,
                           fontWeight: FontWeight.w300),
-                      hintText: "Your shortened URL will appear here",
+                      hintText: "The shortened URL will appear here",
                       fillColor: Colors.white12),
                   style: TextStyle(
                     color: Colors.white,
