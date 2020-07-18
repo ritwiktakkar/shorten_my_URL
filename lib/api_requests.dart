@@ -18,6 +18,7 @@ Future<ShortenedURL> getShortenedURL(String longURL) async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to shorten URL');
+    debugPrint('Failed to shorten URL');
+    return null;
   }
 }
