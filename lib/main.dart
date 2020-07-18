@@ -189,6 +189,9 @@ class _HomePageState extends State<HomePage> {
                           if (isURL(inputController.text)) {
                             longURL = inputController.text;
                             shortURL = await API.getShortenedURL(longURL);
+                            if (shortURL == null) {
+                              Dialogs.showError(context);
+                            }
                             outputController.text = shortURL.shortenedURL;
                           } else {
                             Dialogs.showInvalidInput(context);
