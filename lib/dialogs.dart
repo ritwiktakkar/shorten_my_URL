@@ -10,12 +10,14 @@ class Dialogs {
         return AlertDialog(
           title: Text('Error: No URL To Paste'),
           content: Text(
-              "This app can only paste valid URLs stored in the clipboard. Please make sure your clipboard only contains a valid URL before pressing the 'Paste' button. Don't worry, this app neither stores your clipboard content on its server nor does anything with it except for shortening the URL."),
+            "This app can only paste valid URLs stored in the clipboard. Please make sure your clipboard only contains a valid URL before pressing the 'Paste' button. Don't worry, this app neither stores your clipboard content on its server nor does anything with it except for shortening the URL.",
+            style: TextStyle(fontSize: 16),
+          ),
           actions: <Widget>[
             FlatButton(
               child: Text(
                 'Got it, thanks!',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -34,14 +36,50 @@ class Dialogs {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error: No URL To Copy'),
+          title: Text(
+            'Error: No URL To Copy',
+            style: TextStyle(fontSize: 18),
+          ),
           content: Text(
-              "Your output field contains no shortened URL to copy to the clipboard. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field."),
+            "Your output field contains no shortened URL to copy to the clipboard. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
+            style: TextStyle(fontSize: 16),
+          ),
           actions: <Widget>[
             FlatButton(
               child: Text(
                 'Got it, thanks!',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  // this dialog pops up when the user presses the 'shorten URL' button and the api returns an error
+  static Future<void> showError(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Error: Couldn\'t Shorten URL',
+            style: TextStyle(fontSize: 18),
+          ),
+          content: Text(
+            "Your input URL failed to shorten. This could be due to an invalid URL. Please ensure that your input URL is valid and try again.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Got it, thanks!',
+                style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -62,15 +100,17 @@ class Dialogs {
         return AlertDialog(
           title: Text(
             'Error: No URL To Share',
+            style: TextStyle(fontSize: 18),
           ),
           content: Text(
             "Your output field contains no shortened URL to share. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
+            style: TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
             FlatButton(
               child: Text(
                 'Got it, thanks!',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
@@ -89,14 +129,19 @@ class Dialogs {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error: Invalid Entry'),
+          title: Text(
+            'Error: Invalid Entry',
+            style: TextStyle(fontSize: 18),
+          ),
           content: Text(
-              "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry contains a valid URL and try again."),
+            "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry contains a valid URL and try again.",
+            style: TextStyle(fontSize: 16),
+          ),
           actions: <Widget>[
             FlatButton(
               child: Text(
                 'Got it, thanks!',
-                style: TextStyle(fontSize: 20),
+                style: TextStyle(fontSize: 18),
               ),
               onPressed: () {
                 Navigator.of(context).pop();
