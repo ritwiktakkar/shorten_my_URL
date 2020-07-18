@@ -27,6 +27,7 @@ dependencies:
   string_validator: ^0.1.4
   share: 0.6.2+3
   auto_size_text: ^2.1.0
+  splashscreen: ^1.2.0
 
 
 
