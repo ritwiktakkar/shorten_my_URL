@@ -15,9 +15,9 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-            statusBarBrightness: Brightness.dark) // Or Brightness.dark
-        );
+    // SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    //         statusBarBrightness: Brightness.dark) // Or Brightness.dark
+    //     );
     return new MaterialApp(
       debugShowCheckedModeBanner: false, // hide debug banner from top left
       home: new HomePage(),
