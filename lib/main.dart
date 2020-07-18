@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
     Map<String, dynamic> result =
         await SystemChannels.platform.invokeMethod('Clipboard.getData');
     if (result != null) {
-      print('Clipboard content: \'${result['text'].toString()}\'');
+      debugPrint('Clipboard content: \'${result['text'].toString()}\'');
       if (isURL(result['text'].toString())) {
         return result['text'].toString();
       }
@@ -83,30 +83,36 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               //SizedBox(height: 30),
-              TextField(
-                autocorrect: false, // URL so no need
-                onTap: () {
-                  FocusScope.of(context).unfocus();
-                },
-                controller: inputController,
-                keyboardType: TextInputType.url,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(40.0),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 5,
+                  right: 5,
+                ),
+                child: TextField(
+                  autocorrect: false, // URL so no need
+                  onTap: () {
+                    FocusScope.of(context).unfocus();
+                  },
+                  controller: inputController,
+                  keyboardType: TextInputType.url,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(40.0),
+                        ),
                       ),
-                    ),
-                    filled: true,
-                    hintStyle: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300),
-                    hintText: "Enter the URL that you want to shorten here",
-                    fillColor: Colors.white12),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
+                      filled: true,
+                      hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300),
+                      hintText: "Enter the URL that you want to shorten here",
+                      fillColor: Colors.white12),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
               //SizedBox(height: 30),
@@ -151,7 +157,7 @@ class _HomePageState extends State<HomePage> {
                             longURL = inputController.text;
                           } else {
                             // print below if paste button returns empty string
-                            print("Clipboard doesn't contain valid URL.");
+                            debugPrint("Clipboard doesn't contain valid URL.");
                             // show dialog
                             Dialogs.showNothingToPaste(context);
                           }
@@ -222,26 +228,32 @@ class _HomePageState extends State<HomePage> {
                           fontWeight: FontWeight.w700)),
                 ),
               ),
-              TextField(
-                readOnly: true,
-                controller: outputController,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(40.0),
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 5.0,
+                  right: 5,
+                ),
+                child: TextField(
+                  readOnly: true,
+                  controller: outputController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(40.0),
+                        ),
                       ),
-                    ),
-                    filled: true,
-                    hintStyle: TextStyle(
-                        color: Colors.grey[600],
-                        fontSize: 16,
-                        fontWeight: FontWeight.w300),
-                    hintText: "Your shortened URL will appear here",
-                    fillColor: Colors.white12),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w300,
+                      filled: true,
+                      hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300),
+                      hintText: "Your shortened URL will appear here",
+                      fillColor: Colors.white12),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.w300,
+                  ),
                 ),
               ),
               Row(
