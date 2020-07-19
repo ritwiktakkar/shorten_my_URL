@@ -220,4 +220,48 @@ class Dialogs {
       },
     );
   }
+
+  // this dialog pops up when the user presses the 'shorten url' button and there is no internet
+  static Future<void> showNoInternetConnection(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0))),
+          title: Row(
+            children: <Widget>[
+              Icon(
+                Icons.error,
+                color: Colors.red,
+              ),
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 0.02,
+              ),
+              Text(
+                'No Internet Connection',
+                style: TextStyle(fontSize: 18),
+              ),
+            ],
+          ),
+          content: Text(
+            "Your device doesn't seem to have an internet connection. Please check your connection settings and try again.",
+            style: TextStyle(fontSize: 16),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text(
+                'Got it, thanks!',
+                style: TextStyle(fontSize: 18),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 }
