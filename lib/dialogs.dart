@@ -90,7 +90,7 @@ class Dialogs {
   }
 
   // this dialog pops up when the user presses the 'shorten URL' button and the api returns an error
-  static Future<void> showError(BuildContext context) async {
+  static Future<void> showShorteningURLError(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!

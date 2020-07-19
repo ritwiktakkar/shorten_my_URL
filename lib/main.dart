@@ -243,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                               longURL = inputController.text;
                               shortURL = await API.getShortenedURL(longURL);
                               if (shortURL == null) {
-                                Dialogs.showError(context);
+                                Dialogs.showShorteningURLError(context);
                               }
                               outputController.text = shortURL.shortenedURL;
                             }
@@ -409,6 +409,7 @@ class _HomePageState extends State<HomePage> {
                           if (isURL(outputController.text)) {
                             Clipboard.setData(
                                 new ClipboardData(text: outputController.text));
+                            // TODO: add message for user to see that content has been copied successfully
                           } else {
                             // show dialog
                             Dialogs.showNothingToCopy(context);
