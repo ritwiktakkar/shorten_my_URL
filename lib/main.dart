@@ -89,14 +89,10 @@ class _HomePageState extends State<HomePage> {
                               color: Colors.white,
                               fontSize: 30,
                               fontWeight: FontWeight.w700)),
-                      // SizedBox(
-                      //   width: 10,
-                      // ),
                       Tooltip(
                         message:
                             'Type or paste a link from your clipboard in the input URL field below. Hold any of the buttons to see instructions.',
                         showDuration: Duration(seconds: 10),
-                        //preferBelow: false,
                         textStyle: TextStyle(color: Colors.white),
                         child: Icon(
                           Icons.help,
@@ -291,12 +287,30 @@ class _HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 10),
-                  child: Text("Output URL",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700)),
+                  padding: EdgeInsets.only(
+                    left: 10,
+                    right: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("Output URL",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 30,
+                              fontWeight: FontWeight.w700)),
+                      Tooltip(
+                        message:
+                            'If your input URL is successfully shortened, your short URL will appear in the output URL field below. Hold any of the buttons to see instructions.',
+                        showDuration: Duration(seconds: 10),
+                        textStyle: TextStyle(color: Colors.white),
+                        child: Icon(
+                          Icons.help,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Padding(
