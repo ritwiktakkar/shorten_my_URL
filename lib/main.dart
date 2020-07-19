@@ -1,3 +1,4 @@
+import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:shorten_my_URL/url_model.dart' as url_model;
 import 'package:shorten_my_URL/api_requests.dart' as API;
@@ -231,12 +232,21 @@ class _HomePageState extends State<HomePage> {
                       child: FlatButton(
                         onPressed: () async {
                           if (isURL(inputController.text)) {
-                            longURL = inputController.text;
-                            shortURL = await API.getShortenedURL(longURL);
-                            if (shortURL == null) {
-                              Dialogs.showError(context);
+                            // check if device has internet connection
+                            var result =
+                                await Connectivity().checkConnectivity();
+                            if (result == ConnectivityResult.none) {
+                              // Show no internet connection error dialog
+                              Dialogs.showNoInternetConnection(context);
+                            } else {
+                              // device has network connectivity (android passes this even if only connected to hotel WiFi)
+                              longURL = inputController.text;
+                              shortURL = await API.getShortenedURL(longURL);
+                              if (shortURL == null) {
+                                Dialogs.showError(context);
+                              }
+                              outputController.text = shortURL.shortenedURL;
                             }
-                            outputController.text = shortURL.shortenedURL;
                           } else {
                             Dialogs.showInvalidInput(context);
                           }
