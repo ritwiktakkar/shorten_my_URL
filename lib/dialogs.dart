@@ -114,7 +114,7 @@ class Dialogs {
             ],
           ),
           content: Text(
-            "Your input URL failed to shorten. This could be due to an invalid URL. Please ensure that your input URL is valid and try again.",
+            "Your input URL failed to shorten. This could be due to an invalid URL. Please ensure that your input URL is valid and try again. To make sure the format is proper, copy the URL from a browser and paste it in the input field.",
             style: TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
