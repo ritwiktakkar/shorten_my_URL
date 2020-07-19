@@ -240,6 +240,7 @@ class _HomePageState extends State<HomePage> {
                               Dialogs.showNoInternetConnection(context);
                             } else {
                               // device has network connectivity (android passes this even if only connected to hotel WiFi)
+                              // TODO: add some way for user to know that their request is being executed and they need to wait
                               longURL = inputController.text;
                               shortURL = await API.getShortenedURL(longURL);
                               if (shortURL == null) {
