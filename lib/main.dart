@@ -197,6 +197,7 @@ class _HomePageState extends State<HomePage> {
                           inputController.text = await _getFromClipboard();
                           if (isURL(inputController.text)) {
                             longURL = inputController.text;
+                            // TODO: add message for user to see that ocntent has been pasted successfully
                           } else {
                             // print below if paste button returns empty string
                             debugPrint("Clipboard doesn't contain valid URL.");
