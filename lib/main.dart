@@ -209,6 +209,9 @@ class _HomePageState extends State<HomePage> {
                                     Icon(
                                       Icons.check,
                                     ),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     AutoSizeText(
                                       'Pasted URL from clipboard',
                                       textAlign: TextAlign.center,
@@ -451,6 +454,9 @@ class _HomePageState extends State<HomePage> {
                                       children: <Widget>[
                                         Icon(
                                           Icons.check,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
                                         ),
                                         AutoSizeText(
                                           'Copied short URL to clipboard',
