@@ -92,7 +92,7 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.w700)),
                       Tooltip(
                         message:
-                            'Type or paste a link from your clipboard in the input URL field below. Hold any of the buttons to see instructions.',
+                            'Type or paste a link from your clipboard in the input URL field below.',
                         showDuration: Duration(seconds: 10),
                         textStyle: TextStyle(color: Colors.white),
                         child: Icon(
@@ -109,9 +109,10 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(
                   left: 5,
                   right: 5,
-                  top: 15,
+                  top: 20,
                 ),
                 child: TextField(
+                  // TODO: add padding to text inside
                   autocorrect: false, // URL so no need
                   onTap: () {
                     FocusScope.of(context).unfocus();
@@ -223,6 +224,7 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               );
+                              Scaffold.of(context).hideCurrentSnackBar();
                               Scaffold.of(context).showSnackBar(snackBar);
                             } else {
                               // print below if paste button returns empty string
@@ -258,62 +260,88 @@ class _HomePageState extends State<HomePage> {
                     height: 80,
                     child: Tooltip(
                       message: "Shorten URL in input field",
-                      child: FlatButton(
-                        onPressed: () async {
-                          if (isURL(inputController.text)) {
-                            // check if device has internet connection
-                            var result =
-                                await Connectivity().checkConnectivity();
-                            if (result == ConnectivityResult.none) {
-                              // Show no internet connection error dialog
-                              Dialogs.showNoInternetConnection(context);
-                            } else {
-                              // device has network connectivity (android passes this even if only connected to hotel WiFi)
-                              // TODO: add some way for user to know that their request is being executed and they need to wait
-                              longURL = inputController.text;
-                              shortURL = await API.getShortenedURL(longURL);
-                              if (shortURL == null) {
-                                Dialogs.showShorteningURLError(context);
+                      child: Builder(
+                        builder: (context) => FlatButton(
+                          onPressed: () async {
+                            if (isURL(inputController.text)) {
+                              // check if device has internet connection
+                              var result =
+                                  await Connectivity().checkConnectivity();
+                              if (result == ConnectivityResult.none) {
+                                // Show no internet connection error dialog
+                                Dialogs.showNoInternetConnection(context);
+                              } else {
+                                // device has network connectivity (android passes this even if only connected to hotel WiFi)
+                                // TODO: add some way for user to know that their request is being executed and they need to wait
+                                longURL = inputController.text;
+                                shortURL = await API.getShortenedURL(longURL);
+                                if (shortURL == null) {
+                                  Dialogs.showShorteningURLError(context);
+                                }
+                                HapticFeedback.lightImpact();
+                                final snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.orange[300],
+                                  content: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.check,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      AutoSizeText(
+                                        'URL successfully shortened',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                        maxLines: 1,
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                Scaffold.of(context).hideCurrentSnackBar();
+                                Scaffold.of(context).showSnackBar(snackBar);
+                                outputController.text = shortURL.shortenedURL;
                               }
-                              HapticFeedback.lightImpact();
-                              outputController.text = shortURL.shortenedURL;
+                            } else {
+                              Dialogs.showInvalidInput(context);
                             }
-                          } else {
-                            Dialogs.showInvalidInput(context);
-                          }
-                        },
-                        color: Colors.blue[700],
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            AutoSizeText(
-                              "Shorten",
-                              textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white70,
-                                fontWeight: FontWeight.w600,
+                          },
+                          color: Colors.blue[700],
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              AutoSizeText(
+                                "Shorten",
+                                textAlign: TextAlign.center,
+                                // minFontSize: 10,
+                                // maxFontSize: 20,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                            AutoSizeText(
-                              "URL",
-                              textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
-                              maxLines: 1,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white70,
-                                fontWeight: FontWeight.w600,
+                              AutoSizeText(
+                                "URL",
+                                textAlign: TextAlign.center,
+                                // minFontSize: 10,
+                                // maxFontSize: 20,
+                                maxLines: 1,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white70,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
+                            ],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
                         ),
                       ),
                     ),
@@ -343,7 +371,7 @@ class _HomePageState extends State<HomePage> {
                       Tooltip(
                         waitDuration: Duration(milliseconds: 10),
                         message:
-                            'If your input URL is successfully shortened, your short URL will appear in the output URL field below. Hold any of the buttons to see instructions.',
+                            'If your input URL is successfully shortened, your short URL will appear in the output URL field below.',
                         showDuration: Duration(seconds: 10),
                         textStyle: TextStyle(color: Colors.white),
                         child: Icon(
@@ -359,9 +387,10 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(
                   left: 5.0,
                   right: 5,
-                  top: 15,
+                  top: 20,
                 ),
                 child: TextField(
+                  // TODO: add padding to text inside
                   readOnly: true,
                   controller: outputController,
                   decoration: InputDecoration(
@@ -469,6 +498,7 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   );
+                                  Scaffold.of(context).hideCurrentSnackBar();
                                   Scaffold.of(context).showSnackBar(snackBar);
                                 },
                               );
