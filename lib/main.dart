@@ -148,6 +148,7 @@ class _HomePageState extends State<HomePage> {
                       message: "Clear input field",
                       child: FlatButton(
                         onPressed: () {
+                          HapticFeedback.mediumImpact();
                           inputController.text = '';
                         },
                         color: Colors.lightGreen[700],
@@ -198,6 +199,7 @@ class _HomePageState extends State<HomePage> {
                             inputController.text = await _getFromClipboard();
                             if (isURL(inputController.text)) {
                               longURL = inputController.text;
+                              HapticFeedback.mediumImpact();
                               final snackBar = SnackBar(
                                 behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.orange[300],
@@ -269,6 +271,7 @@ class _HomePageState extends State<HomePage> {
                               if (shortURL == null) {
                                 Dialogs.showShorteningURLError(context);
                               }
+                              HapticFeedback.lightImpact();
                               outputController.text = shortURL.shortenedURL;
                             }
                           } else {
@@ -385,6 +388,7 @@ class _HomePageState extends State<HomePage> {
                       message: "Clear output field",
                       child: FlatButton(
                         onPressed: () {
+                          HapticFeedback.mediumImpact();
                           outputController.text = '';
                         },
                         color: Colors.lightGreen[700],
@@ -436,6 +440,7 @@ class _HomePageState extends State<HomePage> {
                                       text: outputController.text))
                                   .then(
                                 (result) {
+                                  HapticFeedback.mediumImpact();
                                   final snackBar = SnackBar(
                                     behavior: SnackBarBehavior.floating,
                                     backgroundColor: Colors.orange[300],
