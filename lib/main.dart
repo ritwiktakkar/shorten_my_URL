@@ -109,6 +109,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(
                   left: 5,
                   right: 5,
+                  top: 15,
                 ),
                 child: TextField(
                   autocorrect: false, // URL so no need
@@ -337,6 +338,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 30,
                               fontWeight: FontWeight.w700)),
                       Tooltip(
+                        waitDuration: Duration(milliseconds: 10),
                         message:
                             'If your input URL is successfully shortened, your short URL will appear in the output URL field below. Hold any of the buttons to see instructions.',
                         showDuration: Duration(seconds: 10),
@@ -354,6 +356,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(
                   left: 5.0,
                   right: 5,
+                  top: 15,
                 ),
                 child: TextField(
                   readOnly: true,
