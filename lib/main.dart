@@ -72,7 +72,7 @@ class _HomePageState extends State<HomePage> {
       body: Align(
         alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 50.0),
+          padding: const EdgeInsets.only(bottom: 70.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -192,35 +192,57 @@ class _HomePageState extends State<HomePage> {
                     height: 80,
                     child: Tooltip(
                       message: "Paste clipboard content to input field",
-                      child: FlatButton(
-                        onPressed: () async {
-                          inputController.text = await _getFromClipboard();
-                          if (isURL(inputController.text)) {
-                            longURL = inputController.text;
-                            // TODO: add message for user to see that ocntent has been pasted successfully
-                          } else {
-                            // print below if paste button returns empty string
-                            debugPrint("Clipboard doesn't contain valid URL.");
-                            // show dialog
-                            Dialogs.showNothingToPaste(context);
-                          }
-                        },
-                        color: Colors.cyan[700],
-                        child: AutoSizeText(
-                          "Paste",
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          // minFontSize: 10,
-                          // maxFontSize: 20,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Builder(
+                        builder: (context) => FlatButton(
+                          onPressed: () async {
+                            inputController.text = await _getFromClipboard();
+                            if (isURL(inputController.text)) {
+                              longURL = inputController.text;
+                              final snackBar = SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor: Colors.orange[300],
+                                content: Row(
+                                  children: <Widget>[
+                                    Icon(
+                                      Icons.check,
+                                    ),
+                                    AutoSizeText(
+                                      'Pasted URL from clipboard',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                      maxLines: 1,
+                                    ),
+                                  ],
+                                ),
+                              );
+                              Scaffold.of(context).showSnackBar(snackBar);
+                            } else {
+                              // print below if paste button returns empty string
+                              debugPrint(
+                                  "Clipboard doesn't contain valid URL.");
+                              // show dialog
+                              Dialogs.showNothingToPaste(context);
+                            }
+                          },
+                          color: Colors.cyan[700],
+                          child: AutoSizeText(
+                            "Paste",
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            // minFontSize: 10,
+                            // maxFontSize: 20,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            //side: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                     ),
@@ -406,33 +428,58 @@ class _HomePageState extends State<HomePage> {
                     height: 80,
                     child: Tooltip(
                       message: "Copy shortened URL to clipboard",
-                      child: FlatButton(
-                        onPressed: () async {
-                          if (isURL(outputController.text)) {
-                            Clipboard.setData(
-                                new ClipboardData(text: outputController.text));
-                            // TODO: add message for user to see that content has been copied successfully
-                          } else {
-                            // show dialog
-                            Dialogs.showNothingToCopy(context);
-                          }
-                        },
-                        color: Colors.cyan[700],
-                        child: AutoSizeText(
-                          "Copy",
-                          // minFontSize: 10,
-                          // maxFontSize: 20,
-                          maxLines: 1,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w600,
+                      child: Builder(
+                        builder: (context) => FlatButton(
+                          onPressed: () async {
+                            if (isURL(outputController.text)) {
+                              Clipboard.setData(new ClipboardData(
+                                      text: outputController.text))
+                                  .then(
+                                (result) {
+                                  final snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.orange[300],
+                                    content: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check,
+                                        ),
+                                        AutoSizeText(
+                                          'Copied short URL to clipboard',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                },
+                              );
+                            } else {
+                              // show dialog
+                              Dialogs.showNothingToCopy(context);
+                            }
+                          },
+                          color: Colors.cyan[700],
+                          child: AutoSizeText(
+                            "Copy",
+                            // minFontSize: 10,
+                            // maxFontSize: 20,
+                            maxLines: 1,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white70,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                            //side: BorderSide(color: Colors.red),
+                          ),
                         ),
                       ),
                     ),
