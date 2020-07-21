@@ -112,7 +112,6 @@ class _HomePageState extends State<HomePage> {
                   top: 20,
                 ),
                 child: TextField(
-                  // TODO: add padding to text inside
                   autocorrect: false, // URL so no need
                   onTap: () {
                     FocusScope.of(context).unfocus();
@@ -120,18 +119,20 @@ class _HomePageState extends State<HomePage> {
                   controller: inputController,
                   keyboardType: TextInputType.url,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(40.0),
-                        ),
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(40.0),
                       ),
-                      filled: true,
-                      hintStyle: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300),
-                      hintText: "Enter the URL to shorten here",
-                      fillColor: Colors.white12),
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(25, 8, 0, 8),
+                    filled: true,
+                    hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300),
+                    hintText: "Enter the URL to shorten here",
+                    fillColor: Colors.white12,
+                  ),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -393,22 +394,23 @@ class _HomePageState extends State<HomePage> {
                   top: 20,
                 ),
                 child: TextField(
-                  // TODO: add padding to text inside
                   readOnly: true,
                   controller: outputController,
                   decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(40.0),
-                        ),
+                    border: OutlineInputBorder(
+                      borderRadius: const BorderRadius.all(
+                        const Radius.circular(40.0),
                       ),
-                      filled: true,
-                      hintStyle: TextStyle(
-                          color: Colors.grey[600],
-                          fontSize: 16,
-                          fontWeight: FontWeight.w300),
-                      hintText: "The shortened URL will appear here",
-                      fillColor: Colors.white12),
+                    ),
+                    contentPadding: EdgeInsets.fromLTRB(25, 8, 0, 8),
+                    filled: true,
+                    hintStyle: TextStyle(
+                        color: Colors.grey[600],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w300),
+                    hintText: "The shortened URL will appear here",
+                    fillColor: Colors.white12,
+                  ),
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
