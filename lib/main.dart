@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
     );
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return new MaterialApp(
       debugShowCheckedModeBanner: false, // hide debug banner from top left
       home: new HomePage(),
