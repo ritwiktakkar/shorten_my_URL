@@ -275,35 +275,38 @@ class _HomePageState extends State<HomePage> {
                                 // TODO: add some way for user to know that their request is being executed and they need to wait
                                 longURL = inputController.text;
                                 shortURL = await API.getShortenedURL(longURL);
-                                if (shortURL == null) {
+                                if (shortURL == null ||
+                                    shortURL.shortenedURL == '') {
                                   Dialogs.showShorteningURLError(context);
-                                }
-                                HapticFeedback.lightImpact();
-                                final snackBar = SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.orange[300],
-                                  content: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.check,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      AutoSizeText(
-                                        'URL successfully shortened',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 15,
+                                } else if (shortURL != null ||
+                                    shortURL.shortenedURL != '') {
+                                  HapticFeedback.lightImpact();
+                                  final snackBar = SnackBar(
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.orange[300],
+                                    content: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check,
                                         ),
-                                        maxLines: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                Scaffold.of(context).hideCurrentSnackBar();
-                                Scaffold.of(context).showSnackBar(snackBar);
-                                outputController.text = shortURL.shortenedURL;
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        AutoSizeText(
+                                          'URL successfully shortened',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                          ),
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  Scaffold.of(context).hideCurrentSnackBar();
+                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  outputController.text = shortURL.shortenedURL;
+                                }
                               }
                             } else {
                               Dialogs.showInvalidInput(context);
