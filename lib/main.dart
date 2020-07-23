@@ -236,6 +236,7 @@ class _HomePageState extends State<HomePage> {
                                   "Clipboard doesn't contain valid URL.");
                               // show dialog
                               Dialogs.showNothingToPaste(context);
+                              outputController.text = '';
                             }
                           },
                           color: Colors.cyan[700],
@@ -314,6 +315,7 @@ class _HomePageState extends State<HomePage> {
                               }
                             } else {
                               Dialogs.showInvalidInput(context);
+                              outputController.text = '';
                             }
                           },
                           color: Colors.blue[700],
