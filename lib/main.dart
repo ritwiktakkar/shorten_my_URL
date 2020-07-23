@@ -110,8 +110,8 @@ class _HomePageState extends State<HomePage> {
               //SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 5,
-                  right: 5,
+                  left: 10,
+                  right: 10,
                   top: 20,
                 ),
                 child: TextField(
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
                         const Radius.circular(40.0),
                       ),
                     ),
-                    contentPadding: EdgeInsets.fromLTRB(25, 8, 0, 8),
+                    contentPadding: EdgeInsets.fromLTRB(25, 8, 25, 8),
                     filled: true,
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
@@ -392,8 +392,8 @@ class _HomePageState extends State<HomePage> {
               ),
               Padding(
                 padding: const EdgeInsets.only(
-                  left: 5.0,
-                  right: 5,
+                  left: 10,
+                  right: 10,
                   top: 20,
                 ),
                 child: TextField(
@@ -405,7 +405,7 @@ class _HomePageState extends State<HomePage> {
                         const Radius.circular(40.0),
                       ),
                     ),
-                    contentPadding: EdgeInsets.fromLTRB(25, 8, 0, 8),
+                    contentPadding: EdgeInsets.fromLTRB(25, 8, 25, 8),
                     filled: true,
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
