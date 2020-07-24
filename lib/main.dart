@@ -268,6 +268,7 @@ class _HomePageState extends State<HomePage> {
                       child: Builder(
                         builder: (context) => FlatButton(
                           onPressed: () async {
+                            FocusScope.of(context).unfocus();
                             if (isURL(inputController.text)) {
                               // check if device has internet connection
                               var result =
