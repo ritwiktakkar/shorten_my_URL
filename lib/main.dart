@@ -26,6 +26,8 @@ class MyApp extends StatelessWidget {
     ]);
     return new MaterialApp(
       debugShowCheckedModeBanner: false, // hide debug banner from top left
+      theme:
+          ThemeData(fontFamily: DefaultTextStyle.of(context).style.fontFamily),
       home: new HomePage(),
     );
   }
