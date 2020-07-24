@@ -53,7 +53,7 @@ class Dialogs {
   static Future<void> showNothingToCopy(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      //barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black,
@@ -106,7 +106,7 @@ class Dialogs {
   static Future<void> showShorteningURLError(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      //barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black,
@@ -158,7 +158,7 @@ class Dialogs {
   static Future<void> showNothingToShare(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      //barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black,
@@ -208,7 +208,7 @@ class Dialogs {
   static Future<void> showInvalidInput(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      //barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black,
@@ -254,7 +254,7 @@ class Dialogs {
   static Future<void> showNoInternetConnection(BuildContext context) async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: false, // user must tap button!
+      //barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
           backgroundColor: Colors.black,
