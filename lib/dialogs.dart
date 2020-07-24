@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io' show Platform;
-import 'package:flutter/cupertino.dart';
 
 class Dialogs {
   // this dialog pops up when the user presses the 'paste' button and there's no URL to paste in the clipboard
