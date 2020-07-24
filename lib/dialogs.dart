@@ -226,13 +226,20 @@ class Dialogs {
               ),
               Text(
                 'Invalid Entry',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
             ],
           ),
           content: Text(
             "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry contains a valid URL and try again.",
-            style: TextStyle(fontSize: 16),
+            style: TextStyle(
+              fontSize: 16,
+              color: Colors.white,
+              height: 1.5,
+            ),
           ),
           actions: <Widget>[
             FlatButton(
