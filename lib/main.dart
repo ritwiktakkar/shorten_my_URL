@@ -154,6 +154,7 @@ class _HomePageState extends State<HomePage> {
                       message: "Clear input field",
                       child: FlatButton(
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           HapticFeedback.mediumImpact();
                           inputController.text = '';
                         },
@@ -202,6 +203,7 @@ class _HomePageState extends State<HomePage> {
                       child: Builder(
                         builder: (context) => FlatButton(
                           onPressed: () async {
+                            FocusScope.of(context).unfocus();
                             inputController.text = await _getFromClipboard();
                             if (isURL(inputController.text)) {
                               longURL = inputController.text;
@@ -434,6 +436,7 @@ class _HomePageState extends State<HomePage> {
                       message: "Clear output field",
                       child: FlatButton(
                         onPressed: () {
+                          FocusScope.of(context).unfocus();
                           HapticFeedback.mediumImpact();
                           outputController.text = '';
                         },
