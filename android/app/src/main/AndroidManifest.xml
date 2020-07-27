@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.shorten_my_URL">
+    package="com.nocturnaldevlab.shorten_my_URL">
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
