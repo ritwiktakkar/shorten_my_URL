@@ -217,6 +217,7 @@ class _HomePageState extends State<HomePage> {
                                   children: <Widget>[
                                     Icon(
                                       Icons.check,
+                                      color: Colors.black54,
                                     ),
                                     SizedBox(
                                       width: 10,
@@ -225,8 +226,7 @@ class _HomePageState extends State<HomePage> {
                                       'Pasted URL from clipboard',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
-                                        fontSize: 15,
-                                      ),
+                                          fontSize: 16, color: Colors.black54),
                                       maxLines: 1,
                                     ),
                                   ],
@@ -299,6 +299,7 @@ class _HomePageState extends State<HomePage> {
                                       children: <Widget>[
                                         Icon(
                                           Icons.check,
+                                          color: Colors.black54,
                                         ),
                                         SizedBox(
                                           width: 10,
@@ -307,8 +308,8 @@ class _HomePageState extends State<HomePage> {
                                           'URL successfully shortened',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 15,
-                                          ),
+                                              fontSize: 16,
+                                              color: Colors.black54),
                                           maxLines: 1,
                                         ),
                                       ],
@@ -502,6 +503,7 @@ class _HomePageState extends State<HomePage> {
                                       children: <Widget>[
                                         Icon(
                                           Icons.check,
+                                          color: Colors.black54,
                                         ),
                                         SizedBox(
                                           width: 10,
@@ -510,8 +512,8 @@ class _HomePageState extends State<HomePage> {
                                           'Copied short URL to clipboard',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
-                                            fontSize: 15,
-                                          ),
+                                              fontSize: 16,
+                                              color: Colors.black54),
                                           maxLines: 1,
                                         ),
                                       ],
