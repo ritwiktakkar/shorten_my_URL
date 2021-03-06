@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // hide debug banner from top left
       theme:
           ThemeData(fontFamily: DefaultTextStyle.of(context).style.fontFamily),
-      home: new Scaffold(body: new HomePage()),
+      home: new HomePage(),
     );
   }
 }
