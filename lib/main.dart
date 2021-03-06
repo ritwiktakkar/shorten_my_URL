@@ -129,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                         const Radius.circular(40.0),
                       ),
                     ),
-                    contentPadding: EdgeInsets.fromLTRB(25, 8, 25, 8),
+                    contentPadding: EdgeInsets.fromLTRB(25, 8, 0, 8),
                     filled: true,
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
@@ -411,7 +411,7 @@ class _HomePageState extends State<HomePage> {
                         const Radius.circular(40.0),
                       ),
                     ),
-                    contentPadding: EdgeInsets.fromLTRB(25, 8, 25, 8),
+                    contentPadding: EdgeInsets.fromLTRB(25, 8, 0, 8),
                     filled: true,
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
