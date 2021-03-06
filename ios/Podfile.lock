@@ -2,10 +2,6 @@ PODS:
   - connectivity (0.0.1):
     - Flutter
     - Reachability
-  - connectivity_for_web (0.1.0):
-    - Flutter
-  - connectivity_macos (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
   - Reachability (3.2)
   - share (0.5.2):
@@ -13,8 +9,6 @@ PODS:
 
 DEPENDENCIES:
   - connectivity (from `.symlinks/plugins/connectivity/ios`)
-  - connectivity_for_web (from `.symlinks/plugins/connectivity_for_web/ios`)
-  - connectivity_macos (from `.symlinks/plugins/connectivity_macos/ios`)
   - Flutter (from `Flutter`)
   - share (from `.symlinks/plugins/share/ios`)
 
@@ -25,10 +19,6 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   connectivity:
     :path: ".symlinks/plugins/connectivity/ios"
-  connectivity_for_web:
-    :path: ".symlinks/plugins/connectivity_for_web/ios"
-  connectivity_macos:
-    :path: ".symlinks/plugins/connectivity_macos/ios"
   Flutter:
     :path: Flutter
   share:
@@ -36,12 +26,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   connectivity: c4130b2985d4ef6fd26f9702e886bd5260681467
-  connectivity_for_web: 2b8584556930d4bd490d82b836bcf45067ce345b
-  connectivity_macos: e2e9731b6b22dda39eb1b128f6969d574460e191
-  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
   Reachability: 33e18b67625424e47b6cde6d202dce689ad7af96
   share: 7d22fe8baedfe93aefd864bf0b73f29711fbb0a3
 
-PODFILE CHECKSUM: c34e2287a9ccaa606aeceab922830efb9a6ff69a
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
 
-COCOAPODS: 1.9.3
+COCOAPODS: 1.10.1
