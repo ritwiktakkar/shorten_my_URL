@@ -26,6 +26,8 @@ dependencies:
   http: ^0.12.1 # latest version as of 6/29/2020
   string_validator: ^0.1.4
   share: 0.6.2+3
+  auto_size_text: ^2.1.0
+  connectivity: '0.4.9'
 
 
 
@@ -36,12 +38,8 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_launcher_icons: "^0.7.3"
 
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/launch_icons/dark_grey.png"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

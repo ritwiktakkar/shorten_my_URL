@@ -8,6 +8,10 @@
 .buildlog/
 .history
 .svn/
+android/key.properties
+*.aab
+*.pb
+*.apk*
 
 # IntelliJ related
 *.iml
