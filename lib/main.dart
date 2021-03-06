@@ -154,13 +154,18 @@ class _HomePageState extends State<HomePage> {
                     height: 80,
                     child: Tooltip(
                       message: "Clear input field",
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           FocusScope.of(context).unfocus();
                           HapticFeedback.mediumImpact();
                           inputController.text = '';
                         },
-                        color: Colors.lightGreen[700],
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.lightGreen[700],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -190,10 +195,10 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                          //side: BorderSide(color: Colors.red),
-                        ),
+                        // shape: RoundedRectangleBorder(
+                        //   borderRadius: BorderRadius.circular(25.0),
+                        //   //side: BorderSide(color: Colors.red),
+                        // ),
                       ),
                     ),
                   ),
@@ -203,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                     child: Tooltip(
                       message: "Paste clipboard content to input field",
                       child: Builder(
-                        builder: (context) => FlatButton(
+                        builder: (context) => TextButton(
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
                             inputController.text = await _getFromClipboard();
@@ -245,7 +250,13 @@ class _HomePageState extends State<HomePage> {
                               outputController.text = '';
                             }
                           },
-                          color: Colors.cyan[700],
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.cyan[700],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                              //side: BorderSide(color: Colors.red),
+                            ),
+                          ),
                           child: AutoSizeText(
                             "Paste",
                             textAlign: TextAlign.center,
@@ -258,10 +269,6 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            //side: BorderSide(color: Colors.red),
-                          ),
                         ),
                       ),
                     ),
@@ -272,7 +279,7 @@ class _HomePageState extends State<HomePage> {
                     child: Tooltip(
                       message: "Shorten URL in input field",
                       child: Builder(
-                        builder: (context) => FlatButton(
+                        builder: (context) => TextButton(
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
                             if (isURL(inputController.text)) {
@@ -327,7 +334,12 @@ class _HomePageState extends State<HomePage> {
                               outputController.text = '';
                             }
                           },
-                          color: Colors.blue[700],
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.blue[700],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                          ),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
@@ -356,9 +368,6 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ],
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
                           ),
                         ),
                       ),
@@ -440,13 +449,18 @@ class _HomePageState extends State<HomePage> {
                     height: 80,
                     child: Tooltip(
                       message: "Clear output field",
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () {
                           FocusScope.of(context).unfocus();
                           HapticFeedback.mediumImpact();
                           outputController.text = '';
                         },
-                        color: Colors.lightGreen[700],
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.lightGreen[700],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -476,9 +490,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        ),
                       ),
                     ),
                   ),
@@ -488,7 +499,7 @@ class _HomePageState extends State<HomePage> {
                     child: Tooltip(
                       message: "Copy shortened URL to clipboard",
                       child: Builder(
-                        builder: (context) => FlatButton(
+                        builder: (context) => TextButton(
                           onPressed: () async {
                             if (isURL(outputController.text)) {
                               Clipboard.setData(new ClipboardData(
@@ -530,7 +541,12 @@ class _HomePageState extends State<HomePage> {
                               Dialogs.showNothingToCopy(context);
                             }
                           },
-                          color: Colors.cyan[700],
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.cyan[700],
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25.0),
+                            ),
+                          ),
                           child: AutoSizeText(
                             "Copy",
                             // minFontSize: 10,
@@ -543,10 +559,6 @@ class _HomePageState extends State<HomePage> {
                               fontWeight: FontWeight.w600,
                             ),
                           ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            //side: BorderSide(color: Colors.red),
-                          ),
                         ),
                       ),
                     ),
@@ -556,7 +568,7 @@ class _HomePageState extends State<HomePage> {
                     height: 80,
                     child: Tooltip(
                       message: "Share the shortened URL",
-                      child: FlatButton(
+                      child: TextButton(
                         onPressed: () async {
                           if (isURL(outputController.text)) {
                             Share.share(outputController.text);
@@ -564,7 +576,12 @@ class _HomePageState extends State<HomePage> {
                             Dialogs.showNothingToShare(context);
                           }
                         },
-                        color: Colors.blue[700],
+                        style: TextButton.styleFrom(
+                          backgroundColor: Colors.blue[700],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(25.0),
+                          ),
+                        ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
@@ -593,9 +610,6 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ],
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
                         ),
                       ),
                     ),
