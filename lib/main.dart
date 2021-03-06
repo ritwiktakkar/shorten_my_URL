@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false, // hide debug banner from top left
       theme:
           ThemeData(fontFamily: DefaultTextStyle.of(context).style.fontFamily),
-      home: new HomePage(),
+      home: new Scaffold(body: new HomePage()),
     );
   }
 }
@@ -77,7 +77,7 @@ class _HomePageState extends State<HomePage> {
       body: Align(
         alignment: Alignment.center,
         child: Padding(
-          padding: const EdgeInsets.only(bottom: 70.0),
+          padding: const EdgeInsets.only(bottom: 100.0, top: 40),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -114,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(
                   left: 10,
                   right: 10,
-                  top: 20,
+                  top: 10,
                 ),
                 child: TextField(
                   autocorrect: false, // URL so no need
@@ -232,8 +232,10 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 ),
                               );
-                              Scaffold.of(context).hideCurrentSnackBar();
-                              Scaffold.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .hideCurrentSnackBar();
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                             } else {
                               // print below if paste button returns empty string
                               debugPrint(
@@ -312,8 +314,10 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   );
-                                  Scaffold.of(context).hideCurrentSnackBar();
-                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
                                   outputController.text = shortURL.shortenedURL;
                                 }
                               }
@@ -400,7 +404,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(
                   left: 10,
                   right: 10,
-                  top: 20,
+                  top: 10,
                 ),
                 child: TextField(
                   readOnly: true,
@@ -513,8 +517,10 @@ class _HomePageState extends State<HomePage> {
                                       ],
                                     ),
                                   );
-                                  Scaffold.of(context).hideCurrentSnackBar();
-                                  Scaffold.of(context).showSnackBar(snackBar);
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
                                 },
                               );
                             } else {
