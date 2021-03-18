@@ -86,7 +86,10 @@ class _HomePageState extends State<HomePage> {
               Align(
                 alignment: Alignment.topLeft,
                 child: Padding(
-                  padding: EdgeInsets.only(left: 10, right: 10),
+                  padding: EdgeInsets.only(
+                    left: 20,
+                    right: 20,
+                  ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
@@ -147,7 +150,7 @@ class _HomePageState extends State<HomePage> {
               ),
               //SizedBox(height: 30),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width * 0.3,
@@ -384,8 +387,8 @@ class _HomePageState extends State<HomePage> {
                 alignment: Alignment.topLeft,
                 child: Padding(
                   padding: EdgeInsets.only(
-                    left: 10,
-                    right: 10,
+                    left: 20,
+                    right: 20,
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -442,7 +445,7 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
                   Container(
                     width: MediaQuery.of(context).size.width * 0.3,
