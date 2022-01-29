@@ -1,10 +1,10 @@
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
-import 'package:shorten_my_URL/url_model.dart' as url_model;
-import 'package:shorten_my_URL/api_requests.dart' as API;
+import 'package:shorten_my_url/url_model.dart' as url_model;
+import 'package:shorten_my_url/api_requests.dart' as API;
 import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
-import 'package:shorten_my_URL/dialogs.dart';
+import 'package:shorten_my_url/dialogs.dart';
 import 'package:share/share.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 
@@ -112,7 +112,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              //SizedBox(height: 30),
               Padding(
                 padding: const EdgeInsets.only(
                   left: 10,
@@ -148,7 +147,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              //SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
@@ -175,8 +173,6 @@ class _HomePageState extends State<HomePage> {
                             AutoSizeText(
                               "Clear",
                               textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
@@ -187,8 +183,6 @@ class _HomePageState extends State<HomePage> {
                             AutoSizeText(
                               "Input",
                               textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
@@ -198,10 +192,6 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ],
                         ),
-                        // shape: RoundedRectangleBorder(
-                        //   borderRadius: BorderRadius.circular(25.0),
-                        //   //side: BorderSide(color: Colors.red),
-                        // ),
                       ),
                     ),
                   ),
@@ -219,6 +209,10 @@ class _HomePageState extends State<HomePage> {
                               longURL = inputController.text;
                               HapticFeedback.mediumImpact();
                               final snackBar = SnackBar(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(25), // <-- Radius
+                                ),
                                 behavior: SnackBarBehavior.floating,
                                 backgroundColor: Colors.orange[300],
                                 content: Row(
@@ -257,15 +251,12 @@ class _HomePageState extends State<HomePage> {
                             backgroundColor: Colors.cyan[700],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
-                              //side: BorderSide(color: Colors.red),
                             ),
                           ),
                           child: AutoSizeText(
                             "Paste",
                             textAlign: TextAlign.center,
                             maxLines: 1,
-                            // minFontSize: 10,
-                            // maxFontSize: 20,
                             style: TextStyle(
                               fontSize: 20,
                               color: Colors.white70,
@@ -304,6 +295,10 @@ class _HomePageState extends State<HomePage> {
                                   HapticFeedback.lightImpact();
                                   final snackBar = SnackBar(
                                     behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          25), // <-- Radius
+                                    ),
                                     backgroundColor: Colors.orange[300],
                                     content: Row(
                                       children: <Widget>[
@@ -349,8 +344,6 @@ class _HomePageState extends State<HomePage> {
                               AutoSizeText(
                                 "Shorten",
                                 textAlign: TextAlign.center,
-                                // minFontSize: 10,
-                                // maxFontSize: 20,
                                 maxLines: 1,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -361,8 +354,6 @@ class _HomePageState extends State<HomePage> {
                               AutoSizeText(
                                 "URL",
                                 textAlign: TextAlign.center,
-                                // minFontSize: 10,
-                                // maxFontSize: 20,
                                 maxLines: 1,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -379,7 +370,6 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Divider(
-                //height: 10,
                 color: Colors.grey[800],
                 thickness: 2,
               ),
@@ -470,8 +460,6 @@ class _HomePageState extends State<HomePage> {
                             AutoSizeText(
                               "Clear",
                               textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
@@ -482,8 +470,6 @@ class _HomePageState extends State<HomePage> {
                             AutoSizeText(
                               "Output",
                               textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
@@ -512,6 +498,10 @@ class _HomePageState extends State<HomePage> {
                                   HapticFeedback.mediumImpact();
                                   final snackBar = SnackBar(
                                     behavior: SnackBarBehavior.floating,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          25), // <-- Radius
+                                    ),
                                     backgroundColor: Colors.orange[300],
                                     content: Row(
                                       children: <Widget>[
@@ -552,8 +542,6 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: AutoSizeText(
                             "Copy",
-                            // minFontSize: 10,
-                            // maxFontSize: 20,
                             maxLines: 1,
                             textAlign: TextAlign.center,
                             style: TextStyle(
@@ -591,8 +579,6 @@ class _HomePageState extends State<HomePage> {
                             AutoSizeText(
                               "Share",
                               textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
@@ -603,8 +589,6 @@ class _HomePageState extends State<HomePage> {
                             AutoSizeText(
                               "URL",
                               textAlign: TextAlign.center,
-                              // minFontSize: 10,
-                              // maxFontSize: 20,
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,

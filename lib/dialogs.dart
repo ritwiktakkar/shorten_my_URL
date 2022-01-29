@@ -32,7 +32,7 @@ class Dialogs {
             style: TextStyle(fontSize: 16, color: Colors.white, height: 1.5),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 'Got it, thanks!',
                 style: TextStyle(fontSize: 18),
@@ -85,7 +85,7 @@ class Dialogs {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 'Got it, thanks!',
                 style: TextStyle(fontSize: 18),
@@ -137,7 +137,7 @@ class Dialogs {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 'Got it, thanks!',
                 style: TextStyle(fontSize: 18),
@@ -187,7 +187,7 @@ class Dialogs {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 'Got it, thanks!',
                 style: TextStyle(fontSize: 18),
@@ -240,7 +240,7 @@ class Dialogs {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 'Got it, thanks!',
                 style: TextStyle(fontSize: 18),
@@ -286,7 +286,7 @@ class Dialogs {
             style: TextStyle(fontSize: 16),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               child: Text(
                 'Got it, thanks!',
                 style: TextStyle(fontSize: 18),
