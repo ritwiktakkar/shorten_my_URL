@@ -74,42 +74,24 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.black, // make background color black
-      body: Align(
-        alignment: Alignment.center,
-        child: Padding(
-          padding: const EdgeInsets.only(bottom: 100.0, top: 40),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            crossAxisAlignment: CrossAxisAlignment.center,
+      body: Column(
+        // column contains ALL widgets
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Column(
+            // first half widgets columns
+            // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
-              SizedBox(height: 1),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text("Input URL",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700)),
-                      Tooltip(
-                        message:
-                            'Type or paste a link from your clipboard in the input URL field below.',
-                        showDuration: Duration(seconds: 10),
-                        textStyle: TextStyle(color: Colors.white),
-                        child: Icon(
-                          Icons.help,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+              Text("Input URL",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700)),
+              Text(
+                "Enter a URL to shorten",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
                 ),
               ),
               Padding(
@@ -117,6 +99,7 @@ class _HomePageState extends State<HomePage> {
                   left: 10,
                   right: 10,
                   top: 10,
+                  bottom: 10,
                 ),
                 child: TextField(
                   autocorrect: false, // URL so no need
@@ -135,7 +118,7 @@ class _HomePageState extends State<HomePage> {
                     filled: true,
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w300),
                     hintText: "Enter the URL to shorten here",
                     fillColor: Colors.white12,
@@ -176,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -186,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -259,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                             maxLines: 1,
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white70,
+                              color: Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -347,7 +330,7 @@ class _HomePageState extends State<HomePage> {
                                 maxLines: 1,
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Colors.white70,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -357,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                                 maxLines: 1,
                                 style: TextStyle(
                                   fontSize: 20,
-                                  color: Colors.white70,
+                                  color: Colors.white,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -369,38 +352,27 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-              Divider(
-                color: Colors.grey[800],
-                thickness: 2,
-              ),
-              Align(
-                alignment: Alignment.topLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(
-                    left: 20,
-                    right: 20,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text("Output URL",
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 30,
-                              fontWeight: FontWeight.w700)),
-                      Tooltip(
-                        waitDuration: Duration(milliseconds: 10),
-                        message:
-                            'If your input URL is successfully shortened, your short URL will appear in the output URL field below.',
-                        showDuration: Duration(seconds: 10),
-                        textStyle: TextStyle(color: Colors.white),
-                        child: Icon(
-                          Icons.help,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+            ],
+          ),
+          Divider(
+            // divider between first and second half of widgets
+            color: Colors.grey[800],
+            thickness: 2,
+          ),
+          Column(
+            // column for second half of widgets
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              Text("Output URL",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700)),
+              Text(
+                "Your short URL will appear below",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
                 ),
               ),
               Padding(
@@ -408,6 +380,7 @@ class _HomePageState extends State<HomePage> {
                   left: 10,
                   right: 10,
                   top: 10,
+                  bottom: 10,
                 ),
                 child: TextField(
                   readOnly: true,
@@ -422,7 +395,7 @@ class _HomePageState extends State<HomePage> {
                     filled: true,
                     hintStyle: TextStyle(
                         color: Colors.grey[600],
-                        fontSize: 16,
+                        fontSize: 14,
                         fontWeight: FontWeight.w300),
                     hintText: "The shortened URL will appear here",
                     fillColor: Colors.white12,
@@ -463,7 +436,7 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -473,7 +446,7 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -546,7 +519,7 @@ class _HomePageState extends State<HomePage> {
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 20,
-                              color: Colors.white70,
+                              color: Colors.white,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -582,7 +555,7 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -592,7 +565,7 @@ class _HomePageState extends State<HomePage> {
                               maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
-                                color: Colors.white70,
+                                color: Colors.white,
                                 fontWeight: FontWeight.w600,
                               ),
                             ),
@@ -605,7 +578,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
