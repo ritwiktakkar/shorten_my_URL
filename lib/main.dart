@@ -1,4 +1,5 @@
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shorten_my_url/url_model.dart' as url_model;
 import 'package:shorten_my_url/api_requests.dart' as API;
@@ -696,6 +697,33 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  right: 4.0,
+                  left: 30,
+                ),
+                child: Text(
+                  "Using the cleanuri.com API",
+                  // style: corporate,
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: CupertinoColors.inactiveGray,
+                  ),
+                ),
+              ),
+              Tooltip(
+                  message:
+                      'The shortened URLs are received from the free cleanuri.com API. This app is not responsible for the content or accuracy of the shortened links.',
+                  child: Icon(
+                    CupertinoIcons.info,
+                    color: CupertinoColors.inactiveGray,
+                    size: 16,
+                  ))
             ],
           ),
         ],
