@@ -428,11 +428,32 @@ class _HomePageState extends State<HomePage> {
             // column for second half of widgets
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Output URL",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Output URL  ",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700)),
+                  Text(
+                    "Using the cleanuri.com API ",
+                    // style: corporate,
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: CupertinoColors.inactiveGray,
+                    ),
+                  ),
+                  Tooltip(
+                      message:
+                          'The shortened URLs are received from the free cleanuri.com API. This app is not responsible for the content or accuracy of the shortened links.',
+                      child: Icon(
+                        CupertinoIcons.info,
+                        color: CupertinoColors.inactiveGray,
+                        size: 16,
+                      )),
+                ],
+              ),
               SizedBox(
                 height:
                     (MediaQuery.of(context).orientation == Orientation.portrait)
@@ -697,33 +718,6 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  right: 4.0,
-                  left: 30,
-                ),
-                child: Text(
-                  "Using the cleanuri.com API",
-                  // style: corporate,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: CupertinoColors.inactiveGray,
-                  ),
-                ),
-              ),
-              Tooltip(
-                  message:
-                      'The shortened URLs are received from the free cleanuri.com API. This app is not responsible for the content or accuracy of the shortened links.',
-                  child: Icon(
-                    CupertinoIcons.info,
-                    color: CupertinoColors.inactiveGray,
-                    size: 16,
-                  ))
             ],
           ),
         ],
