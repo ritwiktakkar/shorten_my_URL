@@ -92,19 +92,28 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Column(
               // first half widgets columns
-              // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text("Input URL",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.w700)),
+                SizedBox(
+                  height: (MediaQuery.of(context).orientation ==
+                          Orientation.portrait)
+                      ? 8
+                      : 0,
+                ),
                 Text(
                   "Enter a URL to shorten",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Padding(
                   padding: const EdgeInsets.all(10),
@@ -136,6 +145,9 @@ class _HomePageState extends State<HomePage> {
                       fontWeight: FontWeight.w300,
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -413,19 +425,28 @@ class _HomePageState extends State<HomePage> {
           ),
           Column(
             // column for second half of widgets
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text("Output URL",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.w700)),
+              SizedBox(
+                height:
+                    (MediaQuery.of(context).orientation == Orientation.portrait)
+                        ? 8
+                        : 0,
+              ),
               Text(
                 "Your short URL will appear below",
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 15,
                 ),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(
@@ -460,6 +481,9 @@ class _HomePageState extends State<HomePage> {
                     fontWeight: FontWeight.w500,
                   ),
                 ),
+              ),
+              SizedBox(
+                height: 10,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
