@@ -446,11 +446,11 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Tooltip(
                       message:
-                          'The shortened URLs are received from the free cleanuri.com API. This app is not responsible for the content or accuracy of the shortened links.',
+                          'The shortened URLs are received from the free cleanuri.com API. This app is not responsible for the content or accuracy of the shortened URLs.',
                       child: Icon(
                         CupertinoIcons.info,
                         color: CupertinoColors.inactiveGray,
-                        size: 16,
+                        size: 14,
                       )),
                 ],
               ),
@@ -470,13 +470,8 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 10,
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  60,
-                  10,
-                  60,
-                  10,
-                ),
+              Container(
+                width: screenWidth * 0.7,
                 child: TextField(
                   textAlign: TextAlign.center,
                   readOnly: true,
@@ -718,6 +713,9 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ],
               ),
+              SizedBox(
+                height: screenHeight * 0.02,
+              )
             ],
           ),
         ],
