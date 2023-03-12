@@ -12,6 +12,7 @@ android/key.properties
 *.aab
 *.pb
 *.apk*
+.vscode/
 
 # IntelliJ related
 *.iml
