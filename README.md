@@ -1,16 +1,18 @@
-# shorten_my_URL
+<h1 align="center">
+  ShortenMyURL
+  <br>
+  <a href="https://apps.apple.com/us/app/shortenmyurl/id1525888533"><img alt="icon" width="128" height="128" src="readme_icon.svg"></a>
+</h1>
+<div align="center">
+  An elegant URL shortener
+</div>
 
-A new Flutter project.
+# Description
 
-## Getting Started
+Shortening URLs helps to manage them for both large-scale projects and everyday tasks. Shorter URLs save valuable space in your spreadsheets by fitting in smaller cells. They also look better than their full-length versions. Use ShortenMyURL to shorten URLs in no time on your iPhone and iPad.
 
-This project is a starting point for a Flutter application.
+Credits:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Preview images were created using 'Previewed' at previewed.app
+- Link icon made by Becris from www.flaticon.com
+- Scissor icon made by Freepik from www.flaticon.com
