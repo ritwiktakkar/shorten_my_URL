@@ -1,7 +1,7 @@
 <h1 align="center">
   ShortenMyURL
   <br>
-  <a href="https://apps.apple.com/us/app/shortenmyurl/id1525888533"><img alt="icon" width="128" height="128" src="readme_icon.svg"></a>
+  <a href="https://apps.apple.com/us/app/shortenmyurl/id1525888533"><img alt="icon" width="128" height="128" src="readme_icon.png"></a>
 </h1>
 <div align="center">
   An elegant URL shortener
