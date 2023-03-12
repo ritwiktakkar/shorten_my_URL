@@ -14,7 +14,7 @@ Shortening URLs helps to manage them for both large-scale projects and everyday 
 # Screenshots
 
 <div align="center">
-    <img alt="Screenshot" width="300" height="649" src="https://is5-ssl.mzstatic.com/image/thumb/PurpleSource122/v4/76/08/4a/76084abf-2aed-c7bd-806f-d6144d95f858/ab69cdd7-9c9d-44bc-8d3a-23fc6f109be5_1.3-6.5-p.001.jpeg/300x0w.webp"> <img alt="icon" width="643" height="297" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/f9/75/f7/f975f753-f7f6-319d-417b-1fa28f3ef83a/3eb744c5-0563-41e6-be4e-24e60e71ec35_1.001.jpeg/643x0w.webp"> <img alt="icon" width="643" height="482" src="https://is2-ssl.mzstatic.com/image/thumb/PurpleSource112/v4/29/96/8d/29968d02-03f1-6988-118f-56b2946d023b/7f916da7-7d61-40ec-a85d-b38b7c582321_1.3-ipad.001.jpeg/643x0w.webp">
+    <img alt="Screenshot" width="300" height="649" src="screenshots/iphone_portrait.webp"> <img alt="icon" width="643" height="297" src="screenshots/iphone_landscape.webp"> <img alt="icon" width="643" height="482" src="screenshots/ipad_landscape.webp">
     
     
 </div>
