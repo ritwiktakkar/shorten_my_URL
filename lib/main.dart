@@ -34,30 +34,28 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<url_model.ShortenedURL> shortenedURL;
+  late Future<url_model.ShortenedURL> shortenedURL;
 
   // Create a text controller and use it to retrieve the current value of the TextField.
   final inputController = TextEditingController();
   final outputController = TextEditingController();
 
-  String longURL;
-  url_model.ShortenedURL shortURL;
+  late String longURL;
+  late url_model.ShortenedURL shortURL;
 
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
         await SystemChannels.platform.invokeMethod('Clipboard.getData');
-    if (result != null) {
-      debugPrint('Clipboard content: \'${result['text'].toString()}\'');
-      if (isURL(result['text'].toString())) {
-        return result['text'].toString();
-      }
+    debugPrint('Clipboard content: \'${result['text'].toString()}\'');
+    if (isURL(result['text'].toString())) {
+      return result['text'].toString();
     }
     return '';
   }
@@ -320,10 +318,11 @@ class _HomePageState extends State<HomePage> {
                                 } else {
                                   // device has network connectivity (android passes this even if only connected to hotel WiFi)
                                   longURL = inputController.text;
-                                  shortURL = await API.getShortenedURL(longURL);
-                                  if (shortURL == null ||
-                                      shortURL.shortenedURL == '') {
+                                  shortURL =
+                                      (await API.getShortenedURL(longURL))!;
+                                  if (shortURL.shortenedURL == '') {
                                     Dialogs.showShorteningURLError(context);
+                                    // ignore: unnecessary_null_comparison
                                   } else if (shortURL != null ||
                                       shortURL.shortenedURL != '') {
                                     HapticFeedback.lightImpact();

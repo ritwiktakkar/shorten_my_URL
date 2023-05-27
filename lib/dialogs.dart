@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Dialogs {
@@ -8,7 +8,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'No URL To Paste',
           ),
@@ -36,7 +36,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'No URL To Copy',
           ),
@@ -64,7 +64,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'Couldn\'t Shorten URL',
           ),
@@ -92,7 +92,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'Invalid Entry',
           ),
@@ -120,7 +120,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'Invalid Entry',
           ),
@@ -148,7 +148,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'No Internet Connection',
           ),

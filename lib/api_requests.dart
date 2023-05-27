@@ -5,7 +5,7 @@ import 'dart:convert';
 
 var postURL = 'https://cleanuri.com/api/v1/shorten';
 
-Future<ShortenedURL> getShortenedURL(String longURL) async {
+Future<ShortenedURL?> getShortenedURL(String longURL) async {
   final response = await http.post(Uri.parse(postURL), body: {
     'url': longURL,
   });

@@ -1,4 +1,4 @@
-package com.ricky-apps.shorten_my_URL
+package com.example.shorten_my_url
 
 import io.flutter.embedding.android.FlutterActivity
 
