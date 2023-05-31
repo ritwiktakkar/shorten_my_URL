@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Dialogs {
@@ -8,7 +8,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'No URL To Paste',
           ),
@@ -36,7 +36,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'No URL To Copy',
           ),
@@ -64,12 +64,12 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'Couldn\'t Shorten URL',
           ),
           content: Text(
-            "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry contains a valid URL and try again.",
+            "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
           ),
           actions: <Widget>[
             TextButton(
@@ -92,9 +92,9 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
-            'Invalid Entry',
+            'No URL To Share',
           ),
           content: Text(
             "Your output field contains no shortened URL to share. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
@@ -120,7 +120,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'Invalid Entry',
           ),
@@ -148,7 +148,7 @@ class Dialogs {
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
-        return CupertinoAlertDialog(
+        return AlertDialog(
           title: Text(
             'No Internet Connection',
           ),

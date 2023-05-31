@@ -1,5 +1,5 @@
 import 'package:connectivity/connectivity.dart';
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shorten_my_url/url_model.dart' as url_model;
 import 'package:shorten_my_url/api_requests.dart' as API;
@@ -34,30 +34,28 @@ class MyApp extends StatelessWidget {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  Future<url_model.ShortenedURL> shortenedURL;
+  late Future<url_model.ShortenedURL> shortenedURL;
 
   // Create a text controller and use it to retrieve the current value of the TextField.
   final inputController = TextEditingController();
   final outputController = TextEditingController();
 
-  String longURL;
-  url_model.ShortenedURL shortURL;
+  late String longURL;
+  late url_model.ShortenedURL shortURL;
 
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
         await SystemChannels.platform.invokeMethod('Clipboard.getData');
-    if (result != null) {
-      debugPrint('Clipboard content: \'${result['text'].toString()}\'');
-      if (isURL(result['text'].toString())) {
-        return result['text'].toString();
-      }
+    debugPrint('Clipboard content: \'${result['text'].toString()}\'');
+    if (isURL(result['text'].toString())) {
+      return result['text'].toString();
     }
     return '';
   }
@@ -95,7 +93,7 @@ class _HomePageState extends State<HomePage> {
               // first half widgets columns
               // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                Text("Input URL",
+                Text("Long URL",
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -320,10 +318,11 @@ class _HomePageState extends State<HomePage> {
                                 } else {
                                   // device has network connectivity (android passes this even if only connected to hotel WiFi)
                                   longURL = inputController.text;
-                                  shortURL = await API.getShortenedURL(longURL);
-                                  if (shortURL == null ||
-                                      shortURL.shortenedURL == '') {
+                                  shortURL =
+                                      (await API.getShortenedURL(longURL))!;
+                                  if (shortURL.shortenedURL == '') {
                                     Dialogs.showShorteningURLError(context);
+                                    // ignore: unnecessary_null_comparison
                                   } else if (shortURL != null ||
                                       shortURL.shortenedURL != '') {
                                     HapticFeedback.lightImpact();
@@ -389,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                                         ),
                                       ),
                                       AutoSizeText(
-                                        "URL",
+                                        "My URL",
                                         textAlign: TextAlign.center,
                                         maxLines: 1,
                                         style: TextStyle(
@@ -401,7 +400,7 @@ class _HomePageState extends State<HomePage> {
                                     ],
                                   )
                                 : ((AutoSizeText(
-                                    "Shorten URL",
+                                    "ShortenMyURL",
                                     textAlign: TextAlign.center,
                                     maxLines: 1,
                                     style: TextStyle(
@@ -428,44 +427,36 @@ class _HomePageState extends State<HomePage> {
             // column for second half of widgets
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Output URL  ",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700)),
-                  Text(
-                    "Using the cleanuri.com API ",
-                    // style: corporate,
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: CupertinoColors.inactiveGray,
-                    ),
-                  ),
-                  Tooltip(
-                      message:
-                          'The shortened URLs are received from the free cleanuri.com API. This app is not responsible for the content or accuracy of the shortened URLs.',
-                      child: Icon(
-                        CupertinoIcons.info,
-                        color: CupertinoColors.inactiveGray,
-                        size: 14,
-                      )),
-                ],
-              ),
+              Text("Shortened URL",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 30,
+                      fontWeight: FontWeight.w700)),
               SizedBox(
                 height:
                     (MediaQuery.of(context).orientation == Orientation.portrait)
                         ? 8
                         : 0,
               ),
-              Text(
-                "Your short URL will appear below",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Your short URL will appear below",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                    ),
+                  ),
+                  Tooltip(
+                      message:
+                          'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the policies set forth at cleanuri.com.',
+                      child: Icon(
+                        Icons.info_outline,
+                        color: Colors.grey,
+                        size: 14,
+                      )),
+                ],
               ),
               SizedBox(
                 height: 10,
