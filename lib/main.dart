@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
         statusBarBrightness: Brightness.dark,
       ),
     );
-    // SystemChrome.setPreferredOrientations([
-    //   DeviceOrientation.portraitUp,
-    // ]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
     return new MaterialApp(
       debugShowCheckedModeBanner: false, // hide debug banner from top left
       theme: ThemeData.dark(),
@@ -46,6 +46,8 @@ class _HomePageState extends State<HomePage> {
   // Create a text controller and use it to retrieve the current value of the TextField.
   final inputController = TextEditingController();
   final outputController = TextEditingController();
+  // text controller for disclaimer about shortened url veracity
+  final disclaimerController = TextEditingController();
 
   late String longURL;
   late url_model.ShortenedURL shortURL;
@@ -64,6 +66,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     // Clean up the controller when the widget is disposed.
     inputController.dispose();
+    outputController.dispose();
     super.dispose();
   }
 
@@ -271,6 +274,7 @@ class _HomePageState extends State<HomePage> {
                                 // show dialog
                                 Dialogs.showNothingToPaste(context);
                                 outputController.text = '';
+                                disclaimerController.text = '';
                               }
                             },
                             style: TextButton.styleFrom(
@@ -359,11 +363,14 @@ class _HomePageState extends State<HomePage> {
                                         .showSnackBar(snackBar);
                                     outputController.text =
                                         shortURL.shortenedURL;
+                                    disclaimerController.text =
+                                        "Refresh the page if the shortened URL is an ad";
                                   }
                                 }
                               } else {
                                 Dialogs.showInvalidInput(context);
                                 outputController.text = '';
+                                disclaimerController.text = '';
                               }
                             },
                             style: TextButton.styleFrom(
@@ -427,7 +434,7 @@ class _HomePageState extends State<HomePage> {
             // column for second half of widgets
             // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              Text("Shortened URL",
+              Text("Short URL",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
@@ -442,7 +449,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Your short URL will appear below",
+                    "The short URL will appear below ",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -450,7 +457,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                   Tooltip(
                       message:
-                          'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the policies set forth at cleanuri.com.',
+                          'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement and the policies set forth at cleanuri.com.',
                       child: Icon(
                         Icons.info_outline,
                         color: Colors.grey,
@@ -463,31 +470,50 @@ class _HomePageState extends State<HomePage> {
               ),
               Container(
                 width: screenWidth * 0.7,
-                child: TextField(
-                  textAlign: TextAlign.center,
-                  readOnly: true,
-                  controller: outputController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: const BorderRadius.all(
-                        const Radius.circular(40.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      textAlign: TextAlign.center,
+                      readOnly: true,
+                      controller: outputController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(40.0),
+                          ),
+                        ),
+                        contentPadding: EdgeInsets.only(top: 10, bottom: 10),
+                        filled: true,
+                        hintStyle: TextStyle(
+                          color: Colors.grey[600],
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                        ),
+                        hintText: "The shortened URL will appear here",
+                        fillColor: Colors.white12,
+                      ),
+                      style: TextStyle(
+                        color: Colors.greenAccent,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
-                    contentPadding: EdgeInsets.only(top: 10, bottom: 10),
-                    filled: true,
-                    hintStyle: TextStyle(
-                      color: Colors.grey[600],
-                      fontSize: 14,
-                      fontWeight: FontWeight.w300,
+                    SizedBox(
+                      height: 5,
                     ),
-                    hintText: "The shortened URL will appear here",
-                    fillColor: Colors.white12,
-                  ),
-                  style: TextStyle(
-                    color: Colors.greenAccent,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
+                    TextField(
+                        scrollController: ScrollController(),
+                        controller: disclaimerController,
+                        readOnly: true,
+                        decoration: new InputDecoration.collapsed(
+                          hintText: null,
+                        ),
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.blueGrey[300],
+                          fontSize: 12,
+                        ))
+                  ],
                 ),
               ),
               SizedBox(
@@ -512,6 +538,7 @@ class _HomePageState extends State<HomePage> {
                           FocusScope.of(context).unfocus();
                           HapticFeedback.mediumImpact();
                           outputController.text = '';
+                          disclaimerController.text = '';
                         },
                         style: TextButton.styleFrom(
                           backgroundColor: Colors.lightGreen[700],
