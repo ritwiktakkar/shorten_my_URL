@@ -1,5 +1,5 @@
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class Dialogs {
   // this dialog pops up when the user presses the 'paste' button and there's no URL to paste in the clipboard
@@ -166,6 +166,47 @@ class Dialogs {
             ),
           ],
         );
+      },
+    );
+  }
+
+  // this dialog is shown when the user presses the "Clear All" button to confirm that both the input and output URL fields will be cleared
+  static Future<void> showClearAll(
+      BuildContext context,
+      TextEditingController inputController,
+      TextEditingController outputController,
+      TextEditingController disclaimerController) {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        HapticFeedback.mediumImpact();
+        inputController.clear();
+        outputController.clear();
+        disclaimerController.clear();
+        Navigator.of(context).pop();
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Clear all?"),
+      content: Text("Continuing will clear both the input and output fields."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
       },
     );
   }
