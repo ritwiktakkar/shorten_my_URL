@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -196,7 +197,82 @@ class Dialogs {
     // set up the AlertDialog
     AlertDialog alert = AlertDialog(
       title: Text("Clear all?"),
-      content: Text("Continuing will clear both the input and output fields."),
+      content: (outputController.text.isNotEmpty)
+          ? Text("Continuing will clear both the input and output fields.")
+          : Text("Continuing will clear the input field."),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+
+  // this dialog is shown when there is a valid URL in the clipboard to paste to confirm that doing so will rid the current URL(s) shown on screen.
+  static Future<void> showPaste(
+      BuildContext context,
+      TextEditingController inputController,
+      TextEditingController outputController,
+      TextEditingController disclaimerController,
+      String clipboardData) async {
+    // set up the buttons
+    Widget cancelButton = TextButton(
+      child: Text("Cancel"),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+    Widget continueButton = TextButton(
+      child: Text("Continue"),
+      onPressed: () {
+        HapticFeedback.mediumImpact();
+        inputController.clear();
+        outputController.clear();
+        disclaimerController.clear();
+        final snackBar = SnackBar(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25), // <-- Radius
+          ),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: Colors.orange[300],
+          content: Row(
+            children: <Widget>[
+              Icon(
+                Icons.check,
+                color: Colors.black54,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              AutoSizeText(
+                'Pasted URL from clipboard',
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, color: Colors.black54),
+                maxLines: 1,
+              ),
+            ],
+          ),
+        );
+        inputController.text = clipboardData;
+        Navigator.of(context).pop();
+        ScaffoldMessenger.of(context).hideCurrentSnackBar();
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+    );
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text("Paste URL?"),
+      content: (outputController.text.isNotEmpty)
+          ? Text(
+              "Continuing will clear the output field and replace the contents of the input field with the URL stored in the clipboard.")
+          : Text(
+              "Continuing will replace the contents of the input field with the URL stored in the clipboard."),
       actions: [
         cancelButton,
         continueButton,

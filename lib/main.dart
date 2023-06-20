@@ -167,9 +167,13 @@ class _HomePageState extends State<HomePage> {
                         child: TextButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            // inputController.text = '';
-                            Dialogs.showClearAll(context, inputController,
-                                outputController, disclaimerController);
+                            if (outputController.text.isNotEmpty ||
+                                inputController.text.isNotEmpty) {
+                              Dialogs.showClearAll(context, inputController,
+                                  outputController, disclaimerController);
+                              debugPrint(
+                                  "current input and output controller: ${inputController.text} ${outputController.text}");
+                            }
                           },
                           style: TextButton.styleFrom(
                             backgroundColor: Colors.blueGrey[400],
@@ -232,41 +236,50 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => TextButton(
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
-                              inputController.text = await _getFromClipboard();
-                              if (isURL(inputController.text)) {
-                                longURL = inputController.text;
-                                HapticFeedback.mediumImpact();
-                                final snackBar = SnackBar(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(25), // <-- Radius
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.orange[300],
-                                  content: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.check,
-                                        color: Colors.black54,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      AutoSizeText(
-                                        'Pasted URL from clipboard',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black54),
-                                        maxLines: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              String clipboardData = await _getFromClipboard();
+                              if (isURL(clipboardData)) {
+                                if (inputController.text.isNotEmpty) {
+                                  Dialogs.showPaste(
+                                      context,
+                                      inputController,
+                                      outputController,
+                                      disclaimerController,
+                                      clipboardData);
+                                } else {
+                                  inputController.text = clipboardData;
+                                  HapticFeedback.mediumImpact();
+                                  final snackBar = SnackBar(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          25), // <-- Radius
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.orange[300],
+                                    content: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.black54,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        AutoSizeText(
+                                          'Pasted URL from clipboard',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black54),
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
                               } else {
                                 // print below if paste button returns empty string
                                 debugPrint(
