@@ -1,5 +1,4 @@
 import 'package:connectivity/connectivity.dart';
-// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shorten_my_url/url_model.dart' as url_model;
 import 'package:shorten_my_url/api_requests.dart' as API;
@@ -164,15 +163,20 @@ class _HomePageState extends State<HomePage> {
                           ? buttonHeightP
                           : (buttonHeightLS),
                       child: Tooltip(
-                        message: "Clear input field",
+                        message: "Clear input and output field",
                         child: TextButton(
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            HapticFeedback.mediumImpact();
-                            inputController.text = '';
+                            if (outputController.text.isNotEmpty ||
+                                inputController.text.isNotEmpty) {
+                              Dialogs.showClearAll(context, inputController,
+                                  outputController, disclaimerController);
+                              debugPrint(
+                                  "current input and output controller: ${inputController.text} ${outputController.text}");
+                            }
                           },
                           style: TextButton.styleFrom(
-                            backgroundColor: Colors.lightGreen[700],
+                            backgroundColor: Colors.blueGrey[400],
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(25.0),
                             ),
@@ -193,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ),
                                     AutoSizeText(
-                                      "Input",
+                                      "All",
                                       textAlign: TextAlign.center,
                                       maxLines: 1,
                                       style: TextStyle(
@@ -205,7 +209,7 @@ class _HomePageState extends State<HomePage> {
                                   ],
                                 )
                               : (AutoSizeText(
-                                  "Clear Input",
+                                  "Clear All",
                                   textAlign: TextAlign.center,
                                   maxLines: 1,
                                   style: TextStyle(
@@ -232,49 +236,58 @@ class _HomePageState extends State<HomePage> {
                           builder: (context) => TextButton(
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
-                              inputController.text = await _getFromClipboard();
-                              if (isURL(inputController.text)) {
-                                longURL = inputController.text;
-                                HapticFeedback.mediumImpact();
-                                final snackBar = SnackBar(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.circular(25), // <-- Radius
-                                  ),
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Colors.orange[300],
-                                  content: Row(
-                                    children: <Widget>[
-                                      Icon(
-                                        Icons.check,
-                                        color: Colors.black54,
-                                      ),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      AutoSizeText(
-                                        'Pasted URL from clipboard',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.black54),
-                                        maxLines: 1,
-                                      ),
-                                    ],
-                                  ),
-                                );
-                                ScaffoldMessenger.of(context)
-                                    .hideCurrentSnackBar();
-                                ScaffoldMessenger.of(context)
-                                    .showSnackBar(snackBar);
+                              String clipboardData = await _getFromClipboard();
+                              if (isURL(clipboardData)) {
+                                if (inputController.text.isNotEmpty) {
+                                  Dialogs.showPaste(
+                                      context,
+                                      inputController,
+                                      outputController,
+                                      disclaimerController,
+                                      clipboardData);
+                                } else {
+                                  inputController.text = clipboardData;
+                                  HapticFeedback.mediumImpact();
+                                  final snackBar = SnackBar(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          25), // <-- Radius
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    backgroundColor: Colors.orange[300],
+                                    content: Row(
+                                      children: <Widget>[
+                                        Icon(
+                                          Icons.check,
+                                          color: Colors.black54,
+                                        ),
+                                        SizedBox(
+                                          width: 10,
+                                        ),
+                                        AutoSizeText(
+                                          'Pasted URL from clipboard',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.black54),
+                                          maxLines: 1,
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                  ScaffoldMessenger.of(context)
+                                      .hideCurrentSnackBar();
+                                  ScaffoldMessenger.of(context)
+                                      .showSnackBar(snackBar);
+                                }
                               } else {
                                 // print below if paste button returns empty string
                                 debugPrint(
                                     "Clipboard doesn't contain valid URL.");
                                 // show dialog
                                 Dialogs.showNothingToPaste(context);
-                                outputController.text = '';
-                                disclaimerController.text = '';
+                                outputController.clear();
+                                disclaimerController.clear();
                               }
                             },
                             style: TextButton.styleFrom(
@@ -324,11 +337,11 @@ class _HomePageState extends State<HomePage> {
                                   longURL = inputController.text;
                                   shortURL =
                                       (await API.getShortenedURL(longURL))!;
-                                  if (shortURL.shortenedURL == '') {
+                                  if (shortURL.shortenedURL.isEmpty) {
                                     Dialogs.showShorteningURLError(context);
                                     // ignore: unnecessary_null_comparison
                                   } else if (shortURL != null ||
-                                      shortURL.shortenedURL != '') {
+                                      shortURL.shortenedURL.isNotEmpty) {
                                     HapticFeedback.lightImpact();
                                     final snackBar = SnackBar(
                                       behavior: SnackBarBehavior.floating,
@@ -369,12 +382,12 @@ class _HomePageState extends State<HomePage> {
                                 }
                               } else {
                                 Dialogs.showInvalidInput(context);
-                                outputController.text = '';
-                                disclaimerController.text = '';
+                                outputController.clear();
+                                disclaimerController.clear();
                               }
                             },
                             style: TextButton.styleFrom(
-                              backgroundColor: Colors.blue[700],
+                              backgroundColor: Colors.cyan[900],
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
@@ -532,70 +545,6 @@ class _HomePageState extends State<HomePage> {
                         ? buttonHeightP
                         : (buttonHeightLS),
                     child: Tooltip(
-                      message: "Clear output field",
-                      child: TextButton(
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          HapticFeedback.mediumImpact();
-                          outputController.text = '';
-                          disclaimerController.text = '';
-                        },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.lightGreen[700],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                        ),
-                        child: (MediaQuery.of(context).orientation ==
-                                Orientation.portrait)
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  AutoSizeText(
-                                    "Clear",
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  AutoSizeText(
-                                    "Output",
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : ((AutoSizeText(
-                                "Clear Output",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ))),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? buttonWidthP
-                        : (buttonWidthLS),
-                    height: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? buttonHeightP
-                        : (buttonHeightLS),
-                    child: Tooltip(
                       message: "Copy shortened URL to clipboard",
                       child: Builder(
                         builder: (context) => TextButton(
@@ -684,7 +633,7 @@ class _HomePageState extends State<HomePage> {
                           }
                         },
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue[700],
+                          backgroundColor: Colors.cyan[900],
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(25.0),
                           ),
