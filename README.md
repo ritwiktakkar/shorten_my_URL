@@ -9,10 +9,10 @@ Shortening URLs helps to manage them for both large-scale projects and everyday 
 
 <div align="center">
     <a href="https://apps.apple.com/us/app/shortenmyurl/id1525888533">
-    <img alt="appstorebutton" src="ListingMaterials\app_store_256x256.png?raw=true">
+    <img alt="appstorebutton" src="GitHubListingMaterials\app_store_256x256.png?raw=true">
     </a>
     <a href="https://play.google.com/store/apps/details?id=com.nocturnaldevlab.shorten_my_URL">
-    <img alt="playstorebutton" src="ListingMaterials\play_store_256x256.png?raw=true">
+    <img alt="playstorebutton" src="GitHubListingMaterials\play_store_256x256.png?raw=true">
     </a>
 </div>
 
