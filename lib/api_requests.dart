@@ -19,18 +19,25 @@ Future<ShortenedURL?> getShortenedURL(String longURL) async {
     'url': longURL,
   });
 
+  // set initial values for analytics
+  String longURLAnalytics = longURL;
+  String shortURLAnalytics = '';
+  UrlForm urlForm = UrlForm(longURLAnalytics, shortURLAnalytics);
+  DeviceForm deviceForm = await deviceDetails();
+  AnalyticsForm analyticsForm = AnalyticsForm(urlForm, deviceForm);
+
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
     debugPrint(response.body.toString());
-
+    // update shortURL for analytics
     ShortenedURL shortenedURL =
         ShortenedURL.fromJson(convert.json.decode(response.body));
-
-    DeviceForm deviceForm = await deviceDetails();
-    UrlForm urlForm = UrlForm(longURL, shortenedURL.shortenedURL);
-    AnalyticsForm analyticsForm = AnalyticsForm(urlForm, deviceForm);
-    debugPrint(analyticsForm.toJson().toString());
+    // update urlForm and analyticsForm with successful shortURL
+    urlForm = UrlForm(longURLAnalytics, shortenedURL.shortenedURL);
+    analyticsForm = AnalyticsForm(urlForm, deviceForm);
+    debugPrint(
+        "analyticsForm (got shortURL): ${analyticsForm.toJson().toString()}");
     submitAnalytics(analyticsForm, (String response) {
       debugPrint(response);
     });
@@ -38,7 +45,11 @@ Future<ShortenedURL?> getShortenedURL(String longURL) async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    debugPrint('Failed to shorten URL');
+    debugPrint(
+        "analyticsForm (failed shortURL): ${analyticsForm.toJson().toString()}");
+    submitAnalytics(analyticsForm, (String response) {
+      debugPrint(response);
+    });
     return null;
   }
 }
