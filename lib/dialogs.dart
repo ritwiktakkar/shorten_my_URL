@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -14,7 +13,7 @@ class Dialogs {
             'No URL To Paste',
           ),
           content: Text(
-            "This app can only paste valid URLs stored in the clipboard. Please make sure your clipboard only contains a valid URL before pressing the 'Paste' button.",
+            "This app can only paste valid URLs stored in the clipboard. Please ensure your clipboard only contains a valid URL before pressing the 'Paste' button.",
           ),
           actions: <Widget>[
             TextButton(
@@ -126,7 +125,7 @@ class Dialogs {
             'Invalid Entry',
           ),
           content: Text(
-            "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please make sure your entry contains a valid URL and try again.",
+            "The input field does not seem to contain a valid URL (e.g., this URL might not exist or it may already be a shortened URL). Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
           ),
           actions: <Widget>[
             TextButton(
@@ -175,6 +174,7 @@ class Dialogs {
   static Future<void> showClearAll(
       BuildContext context,
       TextEditingController inputController,
+      TextEditingController currentLongURLController,
       TextEditingController outputController,
       TextEditingController disclaimerController) {
     // set up the buttons
@@ -189,6 +189,7 @@ class Dialogs {
       onPressed: () {
         HapticFeedback.mediumImpact();
         inputController.clear();
+        currentLongURLController.clear();
         outputController.clear();
         disclaimerController.clear();
         Navigator.of(context).pop();
@@ -218,6 +219,7 @@ class Dialogs {
   static Future<void> showPaste(
       BuildContext context,
       TextEditingController inputController,
+      TextEditingController currentLongURLController,
       TextEditingController outputController,
       TextEditingController disclaimerController,
       String clipboardData) async {
@@ -233,6 +235,7 @@ class Dialogs {
       onPressed: () {
         HapticFeedback.mediumImpact();
         inputController.clear();
+        currentLongURLController.clear();
         outputController.clear();
         disclaimerController.clear();
         final snackBar = SnackBar(
@@ -250,11 +253,10 @@ class Dialogs {
               SizedBox(
                 width: 10,
               ),
-              AutoSizeText(
+              Text(
                 'Pasted URL from clipboard',
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, color: Colors.black54),
-                maxLines: 1,
               ),
             ],
           ),
