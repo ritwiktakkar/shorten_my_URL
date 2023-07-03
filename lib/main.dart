@@ -6,7 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
 import 'package:shorten_my_url/dialogs.dart';
 import 'package:share/share.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 void main() {
   runApp(MyApp());
@@ -44,6 +43,7 @@ class _HomePageState extends State<HomePage> {
 
   // Create a text controller and use it to retrieve the current value of the TextField.
   final inputController = TextEditingController();
+  final currentLongURLController = TextEditingController();
   final outputController = TextEditingController();
   // text controller for disclaimer about shortened url veracity
   final disclaimerController = TextEditingController();
@@ -74,8 +74,7 @@ class _HomePageState extends State<HomePage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final buttonHeightP = screenHeight * 0.1;
-    final buttonWidthP = screenWidth * 0.25;
+    final buttonHeightP = screenHeight * 0.08;
     final buttonHeightLS = screenHeight * 0.1;
     final buttonWidthLS = screenWidth * 0.15;
 
@@ -93,7 +92,6 @@ class _HomePageState extends State<HomePage> {
             ),
             child: Column(
               // first half widgets columns
-              // mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
                 Text("Long URL",
                     style: TextStyle(
@@ -107,7 +105,7 @@ class _HomePageState extends State<HomePage> {
                       : 0,
                 ),
                 Text(
-                  "Enter a URL to shorten",
+                  "Enter a URL to shorten below",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -152,79 +150,35 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: <Widget>[
-                    Container(
-                      width: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? buttonWidthP
-                          : (buttonWidthLS),
-                      height: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? buttonHeightP
-                          : (buttonHeightLS),
-                      child: Tooltip(
-                        message: "Clear input and output field",
-                        child: TextButton(
-                          onPressed: () {
-                            FocusScope.of(context).unfocus();
-                            if (outputController.text.isNotEmpty ||
-                                inputController.text.isNotEmpty) {
-                              Dialogs.showClearAll(context, inputController,
-                                  outputController, disclaimerController);
-                              debugPrint(
-                                  "current input and output controller: ${inputController.text} ${outputController.text}");
-                            }
-                          },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.blueGrey[400],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                          ),
-                          child: (MediaQuery.of(context).orientation ==
-                                  Orientation.portrait)
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: <Widget>[
-                                    AutoSizeText(
-                                      "Clear",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    AutoSizeText(
-                                      "All",
-                                      textAlign: TextAlign.center,
-                                      maxLines: 1,
-                                      style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              : (AutoSizeText(
-                                  "Clear All",
-                                  textAlign: TextAlign.center,
-                                  maxLines: 1,
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                )),
+                  children: [
+                    Tooltip(
+                      message: "Clear all fields",
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          size: 35,
+                          color: Colors.grey[200],
                         ),
+                        onPressed: () {
+                          FocusScope.of(context).unfocus();
+                          if (outputController.text.isNotEmpty ||
+                              inputController.text.isNotEmpty) {
+                            Dialogs.showClearAll(
+                                context,
+                                inputController,
+                                currentLongURLController,
+                                outputController,
+                                disclaimerController);
+                            debugPrint(
+                                "current input and output controller: ${inputController.text} ${outputController.text}");
+                          }
+                        },
                       ),
                     ),
                     Container(
                       width: (MediaQuery.of(context).orientation ==
                               Orientation.portrait)
-                          ? buttonWidthP
+                          ? 100
                           : (buttonWidthLS),
                       height: (MediaQuery.of(context).orientation ==
                               Orientation.portrait)
@@ -242,6 +196,7 @@ class _HomePageState extends State<HomePage> {
                                   Dialogs.showPaste(
                                       context,
                                       inputController,
+                                      currentLongURLController,
                                       outputController,
                                       disclaimerController,
                                       clipboardData);
@@ -264,13 +219,12 @@ class _HomePageState extends State<HomePage> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        AutoSizeText(
+                                        Text(
                                           'Pasted URL from clipboard',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.black54),
-                                          maxLines: 1,
                                         ),
                                       ],
                                     ),
@@ -286,6 +240,7 @@ class _HomePageState extends State<HomePage> {
                                     "Clipboard doesn't contain valid URL.");
                                 // show dialog
                                 Dialogs.showNothingToPaste(context);
+                                currentLongURLController.clear();
                                 outputController.clear();
                                 disclaimerController.clear();
                               }
@@ -296,10 +251,9 @@ class _HomePageState extends State<HomePage> {
                                 borderRadius: BorderRadius.circular(25.0),
                               ),
                             ),
-                            child: AutoSizeText(
+                            child: Text(
                               "Paste",
                               textAlign: TextAlign.center,
-                              maxLines: 1,
                               style: TextStyle(
                                 fontSize: 20,
                                 color: Colors.white,
@@ -313,7 +267,7 @@ class _HomePageState extends State<HomePage> {
                     Container(
                       width: (MediaQuery.of(context).orientation ==
                               Orientation.portrait)
-                          ? buttonWidthP
+                          ? 170
                           : (buttonWidthLS),
                       height: (MediaQuery.of(context).orientation ==
                               Orientation.portrait)
@@ -326,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
                               if (isURL(inputController.text)) {
-                                // check if device has internet connection
+                                // CHECK 1: check if device has internet connection
                                 var result =
                                     await Connectivity().checkConnectivity();
                                 if (result == ConnectivityResult.none) {
@@ -335,53 +289,60 @@ class _HomePageState extends State<HomePage> {
                                 } else {
                                   // device has network connectivity (android passes this even if only connected to hotel WiFi)
                                   longURL = inputController.text;
-                                  shortURL =
-                                      (await API.getShortenedURL(longURL))!;
-                                  if (shortURL.shortenedURL.isEmpty) {
-                                    Dialogs.showShorteningURLError(context);
-                                    // ignore: unnecessary_null_comparison
-                                  } else if (shortURL != null ||
-                                      shortURL.shortenedURL.isNotEmpty) {
-                                    HapticFeedback.lightImpact();
-                                    final snackBar = SnackBar(
-                                      behavior: SnackBarBehavior.floating,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            25), // <-- Radius
-                                      ),
-                                      backgroundColor: Colors.orange[300],
-                                      content: Row(
-                                        children: <Widget>[
-                                          Icon(
-                                            Icons.check,
-                                            color: Colors.black54,
-                                          ),
-                                          SizedBox(
-                                            width: 10,
-                                          ),
-                                          AutoSizeText(
-                                            'URL successfully shortened',
-                                            textAlign: TextAlign.center,
-                                            style: TextStyle(
-                                                fontSize: 16,
-                                                color: Colors.black54),
-                                            maxLines: 1,
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                    ScaffoldMessenger.of(context)
-                                        .hideCurrentSnackBar();
-                                    ScaffoldMessenger.of(context)
-                                        .showSnackBar(snackBar);
-                                    outputController.text =
-                                        shortURL.shortenedURL;
-                                    disclaimerController.text =
-                                        "Refresh the page if the shortened URL is an ad";
+                                  // CHECK 2: check if longURL is already a shortened URL
+                                  if (longURL.contains("cleanuri.com/")) {
+                                    Dialogs.showInvalidInput(context);
+                                  } else {
+                                    shortURL =
+                                        (await API.getShortenedURL(longURL))!;
+                                    // CHECK 3: check if API returned null
+                                    if (shortURL.shortenedURL.isEmpty) {
+                                      Dialogs.showShorteningURLError(context);
+                                    } else if (shortURL
+                                        .shortenedURL.isNotEmpty) {
+                                      HapticFeedback.lightImpact();
+                                      final snackBar = SnackBar(
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(
+                                              25), // <-- Radius
+                                        ),
+                                        backgroundColor: Colors.orange[300],
+                                        content: Row(
+                                          children: <Widget>[
+                                            Icon(
+                                              Icons.check,
+                                              color: Colors.black54,
+                                            ),
+                                            SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              'URL successfully shortened',
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black54),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                      ScaffoldMessenger.of(context)
+                                          .hideCurrentSnackBar();
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(snackBar);
+                                      currentLongURLController.text =
+                                          "Long URL: $longURL";
+                                      outputController.text =
+                                          shortURL.shortenedURL;
+                                      disclaimerController.text =
+                                          "Refresh the page if the shortened URL shows an ad";
+                                    }
                                   }
                                 }
                               } else {
                                 Dialogs.showInvalidInput(context);
+                                currentLongURLController.clear();
                                 outputController.clear();
                                 disclaimerController.clear();
                               }
@@ -397,20 +358,9 @@ class _HomePageState extends State<HomePage> {
                                 ? Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      AutoSizeText(
-                                        "Shorten",
+                                      Text(
+                                        "ShortenMyURL",
                                         textAlign: TextAlign.center,
-                                        maxLines: 1,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                      AutoSizeText(
-                                        "My URL",
-                                        textAlign: TextAlign.center,
-                                        maxLines: 1,
                                         style: TextStyle(
                                           fontSize: 20,
                                           color: Colors.white,
@@ -419,10 +369,9 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ],
                                   )
-                                : ((AutoSizeText(
+                                : ((Text(
                                     "ShortenMyURL",
                                     textAlign: TextAlign.center,
-                                    maxLines: 1,
                                     style: TextStyle(
                                       fontSize: 20,
                                       color: Colors.white,
@@ -445,7 +394,6 @@ class _HomePageState extends State<HomePage> {
           ),
           Column(
             // column for second half of widgets
-            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Text("Short URL",
                   style: TextStyle(
@@ -462,7 +410,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "The short URL will appear below ",
+                    "The short and long URLs will appear below ",
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 15,
@@ -479,10 +427,27 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               SizedBox(
+                height: 5,
+              ),
+              TextField(
+                // scrollController: ScrollController(),
+                controller: currentLongURLController,
+                readOnly: true,
+                decoration: new InputDecoration.collapsed(
+                  hintText:
+                      "The long URL will appear here after shortening it above",
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.blueGrey[200],
+                  fontSize: 12,
+                ),
+              ),
+              SizedBox(
                 height: 10,
               ),
               Container(
-                width: screenWidth * 0.7,
+                width: screenWidth * 0.75,
                 child: Column(
                   children: [
                     TextField(
@@ -515,17 +480,19 @@ class _HomePageState extends State<HomePage> {
                       height: 5,
                     ),
                     TextField(
-                        scrollController: ScrollController(),
-                        controller: disclaimerController,
-                        readOnly: true,
-                        decoration: new InputDecoration.collapsed(
-                          hintText: null,
-                        ),
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.blueGrey[300],
-                          fontSize: 12,
-                        ))
+                      // scrollController: ScrollController(),
+                      controller: disclaimerController,
+                      readOnly: true,
+                      decoration: new InputDecoration.collapsed(
+                        hintText: null,
+                      ),
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.blueGrey[400],
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    )
                   ],
                 ),
               ),
@@ -538,14 +505,14 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     width: (MediaQuery.of(context).orientation ==
                             Orientation.portrait)
-                        ? buttonWidthP
+                        ? 100
                         : (buttonWidthLS),
                     height: (MediaQuery.of(context).orientation ==
                             Orientation.portrait)
                         ? buttonHeightP
                         : (buttonHeightLS),
                     child: Tooltip(
-                      message: "Copy shortened URL to clipboard",
+                      message: "Copy the shortened URL to clipboard",
                       child: Builder(
                         builder: (context) => TextButton(
                           onPressed: () async {
@@ -571,13 +538,12 @@ class _HomePageState extends State<HomePage> {
                                         SizedBox(
                                           width: 10,
                                         ),
-                                        AutoSizeText(
+                                        Text(
                                           'Copied short URL to clipboard',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 16,
                                               color: Colors.black54),
-                                          maxLines: 1,
                                         ),
                                       ],
                                     ),
@@ -599,9 +565,8 @@ class _HomePageState extends State<HomePage> {
                               borderRadius: BorderRadius.circular(25.0),
                             ),
                           ),
-                          child: AutoSizeText(
+                          child: Text(
                             "Copy",
-                            maxLines: 1,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               fontSize: 20,
@@ -616,7 +581,7 @@ class _HomePageState extends State<HomePage> {
                   Container(
                     width: (MediaQuery.of(context).orientation ==
                             Orientation.portrait)
-                        ? buttonWidthP
+                        ? 130
                         : (buttonWidthLS),
                     height: (MediaQuery.of(context).orientation ==
                             Orientation.portrait)
@@ -638,43 +603,15 @@ class _HomePageState extends State<HomePage> {
                             borderRadius: BorderRadius.circular(25.0),
                           ),
                         ),
-                        child: (MediaQuery.of(context).orientation ==
-                                Orientation.portrait)
-                            ? Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  AutoSizeText(
-                                    "Share",
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                  AutoSizeText(
-                                    "URL",
-                                    textAlign: TextAlign.center,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
-                                ],
-                              )
-                            : ((AutoSizeText(
-                                "Share URL",
-                                textAlign: TextAlign.center,
-                                maxLines: 1,
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ))),
+                        child: Text(
+                          "Share URL",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                       ),
                     ),
                   ),
