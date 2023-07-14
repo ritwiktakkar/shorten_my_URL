@@ -3,6 +3,7 @@ import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shorten_my_url/Analytics/analytics_form.dart';
 import 'package:shorten_my_url/Analytics/device_form.dart';
 import 'package:shorten_my_url/Analytics/url_form.dart';
@@ -80,9 +81,13 @@ Future<DeviceForm> deviceDetails() async {
   String deviceName = '';
   String deviceVersion = '';
   String identifier = '';
+  String appVersion = '';
 
   final DeviceInfoPlugin deviceInfoPlugin = new DeviceInfoPlugin();
+  PackageInfo packageInfo = await PackageInfo.fromPlatform();
+
   try {
+    appVersion = packageInfo.version;
     if (Platform.isAndroid) {
       var build = await deviceInfoPlugin.androidInfo;
 
@@ -103,6 +108,7 @@ Future<DeviceForm> deviceDetails() async {
   }
   debugPrint('Device Name: $deviceName\n'
       'Device Version: $deviceVersion\n'
-      'Device Identifier: $identifier');
-  return DeviceForm(deviceName, deviceVersion, identifier);
+      'Device Identifier: $identifier\n'
+      'App Version: $appVersion');
+  return DeviceForm(deviceName, deviceVersion, identifier, appVersion);
 }

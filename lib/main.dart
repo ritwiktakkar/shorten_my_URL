@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:shorten_my_url/url_model.dart' as url_model;
@@ -6,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
 import 'package:shorten_my_url/dialogs.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -48,7 +51,7 @@ class _HomePageState extends State<HomePage> {
   // text controller for disclaimer about shortened url veracity
   final disclaimerController = TextEditingController();
 
-  late String longURL;
+  late String longURL = "";
   late url_model.ShortenedURL shortURL;
 
   Future<String> _getFromClipboard() async {
@@ -74,9 +77,9 @@ class _HomePageState extends State<HomePage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final buttonHeightP = screenHeight * 0.08;
-    final buttonHeightLS = screenHeight * 0.1;
-    final buttonWidthLS = screenWidth * 0.15;
+    // final buttonHeightP = screenHeight * 0.08;
+    // final buttonHeightLS = screenHeight * 0.1;
+    // final buttonWidthLS = screenWidth * 0.15;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -98,24 +101,28 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.w700)),
-                SizedBox(
-                  height: (MediaQuery.of(context).orientation ==
-                          Orientation.portrait)
-                      ? 8
-                      : 0,
-                ),
-                Text(
-                  "Enter a URL to shorten below",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Enter the URL to shorten below ",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Tooltip(
+                        message:
+                            'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement and the policies set forth at cleanuri.com.',
+                        child: Icon(
+                          Icons.info_outline,
+                          color: Colors.grey,
+                          size: 14,
+                        )),
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: TextField(
                     autocorrect: false, // URL so no need
                     onTap: () {
@@ -139,60 +146,56 @@ class _HomePageState extends State<HomePage> {
                       fillColor: Colors.white12,
                     ),
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
+                      color: Colors.lightGreen[100],
+                      fontSize: 15,
                     ),
                   ),
-                ),
-                SizedBox(
-                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Tooltip(
-                      message: "Clear all fields",
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          size: 35,
-                          color: Colors.grey[200],
+                    Visibility(
+                      visible: (inputController.text.isNotEmpty ||
+                          outputController.text.isNotEmpty),
+                      child: Tooltip(
+                        message: "Clear all fields",
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            size: 35,
+                            color: Colors.grey[100],
+                          ),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              inputController.clear();
+                              currentLongURLController.clear();
+                              outputController.clear();
+                              disclaimerController.clear();
+                              longURL = "";
+                            });
+                          },
                         ),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          if (outputController.text.isNotEmpty ||
-                              inputController.text.isNotEmpty) {
-                            Dialogs.showClearAll(
-                                context,
-                                inputController,
-                                currentLongURLController,
-                                outputController,
-                                disclaimerController);
-                            debugPrint(
-                                "current input and output controller: ${inputController.text} ${outputController.text}");
-                          }
-                        },
                       ),
                     ),
-                    Container(
-                      width: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? 100
-                          : (buttonWidthLS),
-                      height: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? buttonHeightP
-                          : (buttonHeightLS),
-                      child: Tooltip(
-                        message: "Paste clipboard content to input field",
-                        child: Builder(
-                          builder: (context) => TextButton(
-                            onPressed: () async {
-                              FocusScope.of(context).unfocus();
-                              String clipboardData = await _getFromClipboard();
-                              if (isURL(clipboardData)) {
-                                if (inputController.text.isNotEmpty) {
+                    Tooltip(
+                      message: "Paste clipboard content to input field",
+                      child: Builder(
+                        builder: (context) => IconButton(
+                          icon: Icon(
+                            Icons.paste_outlined,
+                            size: 35,
+                            color: Colors.grey[200],
+                          ),
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
+                            String clipboardData = await _getFromClipboard();
+                            if (isURL(clipboardData)) {
+                              if (inputController.text.isNotEmpty) {
+                                if (clipboardData == inputController.text) {
+                                  Dialogs.showDuplicateClipboard(
+                                      context, inputController, clipboardData);
+                                } else {
                                   Dialogs.showPaste(
                                       context,
                                       inputController,
@@ -200,83 +203,70 @@ class _HomePageState extends State<HomePage> {
                                       outputController,
                                       disclaimerController,
                                       clipboardData);
-                                } else {
-                                  inputController.text = clipboardData;
-                                  HapticFeedback.mediumImpact();
-                                  final snackBar = SnackBar(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          25), // <-- Radius
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    backgroundColor: Colors.orange[300],
-                                    content: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.check,
-                                          color: Colors.black54,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Pasted URL from clipboard',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black54),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
                                 }
                               } else {
-                                // print below if paste button returns empty string
-                                debugPrint(
-                                    "Clipboard doesn't contain valid URL.");
-                                // show dialog
-                                Dialogs.showNothingToPaste(context);
+                                setState(() {
+                                  inputController.text = clipboardData;
+                                });
+                                HapticFeedback.mediumImpact();
+                                final snackBar = SnackBar(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(25), // <-- Radius
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.orange[300],
+                                  content: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black54,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        'Pasted URL from clipboard',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black54),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            } else {
+                              // print below if paste button returns empty string
+                              debugPrint(
+                                  "Clipboard doesn't contain valid URL.");
+                              // show dialog
+                              Dialogs.showNothingToPaste(context);
+                              setState(() {
                                 currentLongURLController.clear();
                                 outputController.clear();
                                 disclaimerController.clear();
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.cyan[700],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
-                            child: Text(
-                              "Paste",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
+                              });
+                            }
+                          },
                         ),
                       ),
                     ),
-                    Container(
-                      width: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? 170
-                          : (buttonWidthLS),
-                      height: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? buttonHeightP
-                          : (buttonHeightLS),
-                      child: Tooltip(
-                        message: "Shorten URL in input field",
+                    Tooltip(
+                      message: "Shorten URL in input field",
+                      child: Visibility(
+                        visible: (inputController.text.isNotEmpty),
                         child: Builder(
-                          builder: (context) => TextButton(
+                          builder: (context) => IconButton(
+                            icon: Icon(
+                              Icons.cut_outlined,
+                              size: 35,
+                              color: Colors.blue[500],
+                            ),
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
                               if (isURL(inputController.text)) {
@@ -288,14 +278,21 @@ class _HomePageState extends State<HomePage> {
                                   Dialogs.showNoInternetConnection(context);
                                 } else {
                                   // device has network connectivity (android passes this even if only connected to hotel WiFi)
-                                  longURL = inputController.text;
-                                  // CHECK 2: check if longURL is already a shortened URL
-                                  if (longURL.contains("cleanuri.com/")) {
+                                  if (inputController.text
+                                      .contains("cleanuri.com/")) {
+                                    // CHECK 2: check if longURL is already a shortened URL
                                     Dialogs.showInvalidInput(context);
+                                  } else if (longURL == inputController.text) {
+                                    // CHECK 3: check if longURL is the same as the previous longURL
+                                    Dialogs.showRepeatLongURL(
+                                        context,
+                                        inputController,
+                                        currentLongURLController);
                                   } else {
+                                    longURL = inputController.text;
                                     shortURL =
                                         (await API.getShortenedURL(longURL))!;
-                                    // CHECK 3: check if API returned null
+                                    // CHECK 4: check if API returned null
                                     if (shortURL.shortenedURL.isEmpty) {
                                       Dialogs.showShorteningURLError(context);
                                     } else if (shortURL
@@ -331,53 +328,26 @@ class _HomePageState extends State<HomePage> {
                                           .hideCurrentSnackBar();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(snackBar);
-                                      currentLongURLController.text =
-                                          "Long URL: $longURL";
-                                      outputController.text =
-                                          shortURL.shortenedURL;
-                                      disclaimerController.text =
-                                          "Refresh the page if the shortened URL shows an ad";
+                                      setState(() {
+                                        currentLongURLController.text =
+                                            "Long URL: $longURL";
+                                        outputController.text =
+                                            shortURL.shortenedURL;
+                                        disclaimerController.text =
+                                            "If this URL redirects to an ad, open it in a new browser window";
+                                      });
                                     }
                                   }
                                 }
                               } else {
                                 Dialogs.showInvalidInput(context);
-                                currentLongURLController.clear();
-                                outputController.clear();
-                                disclaimerController.clear();
+                                setState(() {
+                                  currentLongURLController.clear();
+                                  outputController.clear();
+                                  disclaimerController.clear();
+                                });
                               }
                             },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.cyan[900],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
-                            child: (MediaQuery.of(context).orientation ==
-                                    Orientation.portrait)
-                                ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        "ShortenMyURL",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : ((Text(
-                                    "ShortenMyURL",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ))),
                           ),
                         ),
                       ),
@@ -400,42 +370,19 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.w700)),
-              SizedBox(
-                height:
-                    (MediaQuery.of(context).orientation == Orientation.portrait)
-                        ? 8
-                        : 0,
+              Text(
+                "The long and short URLs will appear below ",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "The short and long URLs will appear below ",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Tooltip(
-                      message:
-                          'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement and the policies set forth at cleanuri.com.',
-                      child: Icon(
-                        Icons.info_outline,
-                        color: Colors.grey,
-                        size: 14,
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 6),
               TextField(
-                // scrollController: ScrollController(),
                 controller: currentLongURLController,
                 readOnly: true,
                 decoration: new InputDecoration.collapsed(
-                  hintText:
-                      "The long URL will appear here after shortening it above",
+                  hintText: "",
                 ),
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -443,9 +390,7 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 12,
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 6),
               Container(
                 width: screenWidth * 0.75,
                 child: Column(
@@ -476,45 +421,58 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    TextField(
-                      // scrollController: ScrollController(),
-                      controller: disclaimerController,
-                      readOnly: true,
-                      decoration: new InputDecoration.collapsed(
-                        hintText: null,
-                      ),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    )
                   ],
                 ),
               ),
               SizedBox(
-                height: 10,
+                height: 5,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? 100
-                        : (buttonWidthLS),
-                    height: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? buttonHeightP
-                        : (buttonHeightLS),
-                    child: Tooltip(
+              TextField(
+                controller: disclaimerController,
+                readOnly: true,
+                decoration: new InputDecoration.collapsed(
+                  hintText: null,
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.blueGrey[400],
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              Visibility(
+                visible: outputController.text.isNotEmpty,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Tooltip(
+                      message: "Open the shortened URL in a browser",
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.open_in_browser_outlined,
+                          size: 35,
+                          color: Colors.grey[200],
+                        ),
+                        onPressed: () {
+                          // open shortened URL in browser
+                          // API.openURL(outputController.text);
+                          debugPrint(
+                              "Opening URL in browser: ${shortURL.shortenedURL}");
+                          launchUrl(
+                            Uri.parse(shortURL.shortenedURL),
+                          );
+                        },
+                      ),
+                    ),
+                    Tooltip(
                       message: "Copy the shortened URL to clipboard",
                       child: Builder(
-                        builder: (context) => TextButton(
+                        builder: (context) => IconButton(
+                          icon: Icon(
+                            Icons.copy_outlined,
+                            size: 35,
+                            color: Colors.grey[200],
+                          ),
                           onPressed: () async {
                             if (isURL(outputController.text)) {
                               Clipboard.setData(new ClipboardData(
@@ -559,63 +517,26 @@ class _HomePageState extends State<HomePage> {
                               Dialogs.showNothingToCopy(context);
                             }
                           },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.cyan[700],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                          ),
-                          child: Text(
-                            "Copy",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? 130
-                        : (buttonWidthLS),
-                    height: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? buttonHeightP
-                        : (buttonHeightLS),
-                    child: Tooltip(
+                    Tooltip(
                       message: "Share the shortened URL",
-                      child: TextButton(
-                        onPressed: () async {
-                          if (isURL(outputController.text)) {
-                            Share.share(outputController.text);
-                          } else {
-                            Dialogs.showNothingToShare(context);
-                          }
+                      child: IconButton(
+                        icon: Icon(
+                          Platform.isIOS
+                              ? Icons.ios_share_outlined
+                              : Icons.share_outlined,
+                          size: 35,
+                          color: Colors.grey[200],
+                        ),
+                        onPressed: () {
+                          Share.share(outputController.text);
                         },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.cyan[900],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                        ),
-                        child: Text(
-                          "Share URL",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 height: screenHeight * 0.02,
