@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:shorten_my_url/url_model.dart' as url_model;
@@ -105,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                       : 0,
                 ),
                 Text(
-                  "Enter a URL to shorten below",
+                  "Enter the URL to shorten below",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
@@ -151,132 +153,114 @@ class _HomePageState extends State<HomePage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Tooltip(
-                      message: "Clear all fields",
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          size: 35,
-                          color: Colors.grey[200],
-                        ),
-                        onPressed: () {
-                          FocusScope.of(context).unfocus();
-                          if (outputController.text.isNotEmpty ||
-                              inputController.text.isNotEmpty) {
-                            Dialogs.showClearAll(
-                                context,
-                                inputController,
-                                currentLongURLController,
-                                outputController,
-                                disclaimerController);
-                            debugPrint(
-                                "current input and output controller: ${inputController.text} ${outputController.text}");
-                          }
-                        },
-                      ),
-                    ),
-                    Container(
-                      width: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? 100
-                          : (buttonWidthLS),
-                      height: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? buttonHeightP
-                          : (buttonHeightLS),
+                    Visibility(
+                      visible: (inputController.text.isNotEmpty ||
+                          outputController.text.isNotEmpty),
                       child: Tooltip(
-                        message: "Paste clipboard content to input field",
-                        child: Builder(
-                          builder: (context) => TextButton(
-                            onPressed: () async {
-                              FocusScope.of(context).unfocus();
-                              String clipboardData = await _getFromClipboard();
-                              if (isURL(clipboardData)) {
-                                if (inputController.text.isNotEmpty) {
-                                  Dialogs.showPaste(
-                                      context,
-                                      inputController,
-                                      currentLongURLController,
-                                      outputController,
-                                      disclaimerController,
-                                      clipboardData);
-                                } else {
-                                  inputController.text = clipboardData;
-                                  HapticFeedback.mediumImpact();
-                                  final snackBar = SnackBar(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          25), // <-- Radius
-                                    ),
-                                    behavior: SnackBarBehavior.floating,
-                                    backgroundColor: Colors.orange[300],
-                                    content: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.check,
-                                          color: Colors.black54,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Pasted URL from clipboard',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black54),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                }
-                              } else {
-                                // print below if paste button returns empty string
-                                debugPrint(
-                                    "Clipboard doesn't contain valid URL.");
-                                // show dialog
-                                Dialogs.showNothingToPaste(context);
-                                currentLongURLController.clear();
-                                outputController.clear();
-                                disclaimerController.clear();
-                              }
-                            },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.cyan[700],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
-                            child: Text(
-                              "Paste",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
+                        message: "Clear all fields",
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.delete,
+                            size: 35,
+                            color: Colors.grey[100],
                           ),
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            if (outputController.text.isNotEmpty ||
+                                inputController.text.isNotEmpty) {
+                              Dialogs.showClearAll(
+                                  context,
+                                  inputController,
+                                  currentLongURLController,
+                                  outputController,
+                                  disclaimerController);
+                              debugPrint(
+                                  "current input and output controller: ${inputController.text} ${outputController.text}");
+                            }
+                          },
                         ),
                       ),
                     ),
-                    Container(
-                      width: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? 170
-                          : (buttonWidthLS),
-                      height: (MediaQuery.of(context).orientation ==
-                              Orientation.portrait)
-                          ? buttonHeightP
-                          : (buttonHeightLS),
-                      child: Tooltip(
-                        message: "Shorten URL in input field",
+                    Tooltip(
+                      message: "Paste clipboard content to input field",
+                      child: Builder(
+                        builder: (context) => IconButton(
+                          icon: Icon(
+                            Icons.paste_outlined,
+                            size: 35,
+                            color: Colors.grey[200],
+                          ),
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
+                            String clipboardData = await _getFromClipboard();
+                            if (isURL(clipboardData)) {
+                              if (inputController.text.isNotEmpty) {
+                                Dialogs.showPaste(
+                                    context,
+                                    inputController,
+                                    currentLongURLController,
+                                    outputController,
+                                    disclaimerController,
+                                    clipboardData);
+                              } else {
+                                inputController.text = clipboardData;
+                                HapticFeedback.mediumImpact();
+                                final snackBar = SnackBar(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(25), // <-- Radius
+                                  ),
+                                  behavior: SnackBarBehavior.floating,
+                                  backgroundColor: Colors.orange[300],
+                                  content: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black54,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        'Pasted URL from clipboard',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black54),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              }
+                            } else {
+                              // print below if paste button returns empty string
+                              debugPrint(
+                                  "Clipboard doesn't contain valid URL.");
+                              // show dialog
+                              Dialogs.showNothingToPaste(context);
+                              currentLongURLController.clear();
+                              outputController.clear();
+                              disclaimerController.clear();
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    Tooltip(
+                      message: "Shorten URL in input field",
+                      child: Visibility(
+                        visible: (inputController.text.isNotEmpty),
                         child: Builder(
-                          builder: (context) => TextButton(
+                          builder: (context) => IconButton(
+                            icon: Icon(
+                              Icons.cut_outlined,
+                              size: 35,
+                              color: Colors.blue[500],
+                            ),
                             onPressed: () async {
                               FocusScope.of(context).unfocus();
                               if (isURL(inputController.text)) {
@@ -288,14 +272,21 @@ class _HomePageState extends State<HomePage> {
                                   Dialogs.showNoInternetConnection(context);
                                 } else {
                                   // device has network connectivity (android passes this even if only connected to hotel WiFi)
-                                  longURL = inputController.text;
-                                  // CHECK 2: check if longURL is already a shortened URL
-                                  if (longURL.contains("cleanuri.com/")) {
+                                  if (inputController.text
+                                      .contains("cleanuri.com/")) {
+                                    // CHECK 2: check if longURL is already a shortened URL
                                     Dialogs.showInvalidInput(context);
+                                  } else if (longURL == inputController.text) {
+                                    // CHECK 3: check if longURL is the same as the previous longURL
+                                    Dialogs.showRepeatLongURL(
+                                        context,
+                                        inputController,
+                                        currentLongURLController);
                                   } else {
+                                    longURL = inputController.text;
                                     shortURL =
                                         (await API.getShortenedURL(longURL))!;
-                                    // CHECK 3: check if API returned null
+                                    // CHECK 4: check if API returned null
                                     if (shortURL.shortenedURL.isEmpty) {
                                       Dialogs.showShorteningURLError(context);
                                     } else if (shortURL
@@ -347,37 +338,6 @@ class _HomePageState extends State<HomePage> {
                                 disclaimerController.clear();
                               }
                             },
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.cyan[900],
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(25.0),
-                              ),
-                            ),
-                            child: (MediaQuery.of(context).orientation ==
-                                    Orientation.portrait)
-                                ? Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: <Widget>[
-                                      Text(
-                                        "ShortenMyURL",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                : ((Text(
-                                    "ShortenMyURL",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ))),
                           ),
                         ),
                       ),
@@ -499,22 +459,20 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: 10,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Container(
-                    width: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? 100
-                        : (buttonWidthLS),
-                    height: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? buttonHeightP
-                        : (buttonHeightLS),
-                    child: Tooltip(
+              Visibility(
+                visible: outputController.text.isNotEmpty,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: <Widget>[
+                    Tooltip(
                       message: "Copy the shortened URL to clipboard",
                       child: Builder(
-                        builder: (context) => TextButton(
+                        builder: (context) => IconButton(
+                          icon: Icon(
+                            Icons.copy_outlined,
+                            size: 35,
+                            color: Colors.grey[200],
+                          ),
                           onPressed: () async {
                             if (isURL(outputController.text)) {
                               Clipboard.setData(new ClipboardData(
@@ -559,37 +517,19 @@ class _HomePageState extends State<HomePage> {
                               Dialogs.showNothingToCopy(context);
                             }
                           },
-                          style: TextButton.styleFrom(
-                            backgroundColor: Colors.cyan[700],
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(25.0),
-                            ),
-                          ),
-                          child: Text(
-                            "Copy",
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Container(
-                    width: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? 130
-                        : (buttonWidthLS),
-                    height: (MediaQuery.of(context).orientation ==
-                            Orientation.portrait)
-                        ? buttonHeightP
-                        : (buttonHeightLS),
-                    child: Tooltip(
+                    Tooltip(
                       message: "Share the shortened URL",
-                      child: TextButton(
+                      child: IconButton(
+                        icon: Icon(
+                          Platform.isIOS
+                              ? Icons.ios_share_outlined
+                              : Icons.share_outlined,
+                          size: 35,
+                          color: Colors.grey[200],
+                        ),
                         onPressed: () async {
                           if (isURL(outputController.text)) {
                             Share.share(outputController.text);
@@ -597,25 +537,10 @@ class _HomePageState extends State<HomePage> {
                             Dialogs.showNothingToShare(context);
                           }
                         },
-                        style: TextButton.styleFrom(
-                          backgroundColor: Colors.cyan[900],
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                          ),
-                        ),
-                        child: Text(
-                          "Share URL",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
               SizedBox(
                 height: screenHeight * 0.02,
