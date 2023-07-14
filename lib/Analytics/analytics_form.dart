@@ -12,6 +12,7 @@ class AnalyticsForm {
         'shortURL': urlForm.shortURL,
         'deviceName': deviceForm.deviceName,
         'deviceVersion': deviceForm.deviceVersion,
+        'appVersion': deviceForm.appVersion,
         'identifier': deviceForm.identifier
       };
 }

@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:string_validator/string_validator.dart';
 import 'package:shorten_my_url/dialogs.dart';
 import 'package:share/share.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(MyApp());
@@ -50,7 +51,7 @@ class _HomePageState extends State<HomePage> {
   // text controller for disclaimer about shortened url veracity
   final disclaimerController = TextEditingController();
 
-  late String longURL;
+  late String longURL = "";
   late url_model.ShortenedURL shortURL;
 
   Future<String> _getFromClipboard() async {
@@ -61,6 +62,12 @@ class _HomePageState extends State<HomePage> {
       return result['text'].toString();
     }
     return '';
+  }
+
+  Future<void> _launchUrl(url) async {
+    if (!await launchUrl(url)) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   @override
@@ -147,9 +154,6 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -166,17 +170,13 @@ class _HomePageState extends State<HomePage> {
                           ),
                           onPressed: () {
                             FocusScope.of(context).unfocus();
-                            if (outputController.text.isNotEmpty ||
-                                inputController.text.isNotEmpty) {
-                              Dialogs.showClearAll(
-                                  context,
-                                  inputController,
-                                  currentLongURLController,
-                                  outputController,
-                                  disclaimerController);
-                              debugPrint(
-                                  "current input and output controller: ${inputController.text} ${outputController.text}");
-                            }
+                            setState(() {
+                              inputController.clear();
+                              currentLongURLController.clear();
+                              outputController.clear();
+                              disclaimerController.clear();
+                              longURL = "";
+                            });
                           },
                         ),
                       ),
@@ -195,15 +195,22 @@ class _HomePageState extends State<HomePage> {
                             String clipboardData = await _getFromClipboard();
                             if (isURL(clipboardData)) {
                               if (inputController.text.isNotEmpty) {
-                                Dialogs.showPaste(
-                                    context,
-                                    inputController,
-                                    currentLongURLController,
-                                    outputController,
-                                    disclaimerController,
-                                    clipboardData);
+                                if (clipboardData == inputController.text) {
+                                  Dialogs.showDuplicateClipboard(
+                                      context, inputController, clipboardData);
+                                } else {
+                                  Dialogs.showPaste(
+                                      context,
+                                      inputController,
+                                      currentLongURLController,
+                                      outputController,
+                                      disclaimerController,
+                                      clipboardData);
+                                }
                               } else {
-                                inputController.text = clipboardData;
+                                setState(() {
+                                  inputController.text = clipboardData;
+                                });
                                 HapticFeedback.mediumImpact();
                                 final snackBar = SnackBar(
                                   shape: RoundedRectangleBorder(
@@ -242,9 +249,11 @@ class _HomePageState extends State<HomePage> {
                                   "Clipboard doesn't contain valid URL.");
                               // show dialog
                               Dialogs.showNothingToPaste(context);
-                              currentLongURLController.clear();
-                              outputController.clear();
-                              disclaimerController.clear();
+                              setState(() {
+                                currentLongURLController.clear();
+                                outputController.clear();
+                                disclaimerController.clear();
+                              });
                             }
                           },
                         ),
@@ -322,20 +331,24 @@ class _HomePageState extends State<HomePage> {
                                           .hideCurrentSnackBar();
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(snackBar);
-                                      currentLongURLController.text =
-                                          "Long URL: $longURL";
-                                      outputController.text =
-                                          shortURL.shortenedURL;
-                                      disclaimerController.text =
-                                          "Refresh the page if the shortened URL shows an ad";
+                                      setState(() {
+                                        currentLongURLController.text =
+                                            "Long URL: $longURL";
+                                        outputController.text =
+                                            shortURL.shortenedURL;
+                                        disclaimerController.text =
+                                            "Refresh the page if the shortened URL shows an ad";
+                                      });
                                     }
                                   }
                                 }
                               } else {
                                 Dialogs.showInvalidInput(context);
-                                currentLongURLController.clear();
-                                outputController.clear();
-                                disclaimerController.clear();
+                                setState(() {
+                                  currentLongURLController.clear();
+                                  outputController.clear();
+                                  disclaimerController.clear();
+                                });
                               }
                             },
                           ),
@@ -456,14 +469,30 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
               Visibility(
                 visible: outputController.text.isNotEmpty,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: <Widget>[
+                    Tooltip(
+                      message: "Open the shortened URL in a browser",
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.open_in_browser_outlined,
+                          size: 35,
+                          color: Colors.grey[200],
+                        ),
+                        onPressed: () {
+                          // open shortened URL in browser
+                          // API.openURL(outputController.text);
+                          debugPrint(
+                              "Opening URL in browser: ${shortURL.shortenedURL}");
+                          launchUrl(
+                            Uri.parse(shortURL.shortenedURL),
+                          );
+                        },
+                      ),
+                    ),
                     Tooltip(
                       message: "Copy the shortened URL to clipboard",
                       child: Builder(
@@ -530,12 +559,8 @@ class _HomePageState extends State<HomePage> {
                           size: 35,
                           color: Colors.grey[200],
                         ),
-                        onPressed: () async {
-                          if (isURL(outputController.text)) {
-                            Share.share(outputController.text);
-                          } else {
-                            Dialogs.showNothingToShare(context);
-                          }
+                        onPressed: () {
+                          Share.share(outputController.text);
                         },
                       ),
                     ),

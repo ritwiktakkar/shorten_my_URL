@@ -334,8 +334,54 @@ class Dialogs {
                 'Got it, thanks!',
               ),
               onPressed: () {
-                inputController.clear();
-                currentLongURLController.clear();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future<void> showDuplicateClipboard(BuildContext context,
+      TextEditingController inputController, String clipboardData) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        if (Platform.isAndroid) {
+          return AlertDialog(
+            title: Text(
+              'Duplicate URL in Clipboard',
+            ),
+            content: Text(
+              "The URL clipboard stored in the clipboard matches the long URL you entered already.",
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'Got it, thanks!',
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
+        return CupertinoAlertDialog(
+          title: Text(
+            'Duplicate URL in Clipboard',
+          ),
+          content: Text(
+            "The URL clipboard stored in the clipboard matches the long URL you entered already.",
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Got it, thanks!',
+              ),
+              onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
@@ -362,6 +408,7 @@ class Dialogs {
     Widget continueButton = TextButton(
       child: Text("Continue"),
       onPressed: () {
+        debugPrint("Clearing all fields from dialog");
         HapticFeedback.mediumImpact();
         inputController.clear();
         currentLongURLController.clear();
@@ -382,7 +429,9 @@ class Dialogs {
       ],
     );
     CupertinoAlertDialog iOSAlert = CupertinoAlertDialog(
-      title: Text("Clear all?"),
+      title: (outputController.text.isNotEmpty)
+          ? Text("Clear all?")
+          : Text("Clear input?"),
       content: (outputController.text.isNotEmpty)
           ? Text("Continuing will clear both the input and output fields.")
           : Text("Continuing will clear the input field."),
