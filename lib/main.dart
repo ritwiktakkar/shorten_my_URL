@@ -64,12 +64,6 @@ class _HomePageState extends State<HomePage> {
     return '';
   }
 
-  Future<void> _launchUrl(url) async {
-    if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
-    }
-  }
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -83,9 +77,9 @@ class _HomePageState extends State<HomePage> {
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
-    final buttonHeightP = screenHeight * 0.08;
-    final buttonHeightLS = screenHeight * 0.1;
-    final buttonWidthLS = screenWidth * 0.15;
+    // final buttonHeightP = screenHeight * 0.08;
+    // final buttonHeightLS = screenHeight * 0.1;
+    // final buttonWidthLS = screenWidth * 0.15;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -107,24 +101,28 @@ class _HomePageState extends State<HomePage> {
                         color: Colors.white,
                         fontSize: 30,
                         fontWeight: FontWeight.w700)),
-                SizedBox(
-                  height: (MediaQuery.of(context).orientation ==
-                          Orientation.portrait)
-                      ? 8
-                      : 0,
-                ),
-                Text(
-                  "Enter the URL to shorten below",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Enter the URL to shorten below ",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 15,
+                      ),
+                    ),
+                    Tooltip(
+                        message:
+                            'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement and the policies set forth at cleanuri.com.',
+                        child: Icon(
+                          Icons.info_outline,
+                          color: Colors.grey,
+                          size: 14,
+                        )),
+                  ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(8),
                   child: TextField(
                     autocorrect: false, // URL so no need
                     onTap: () {
@@ -148,9 +146,8 @@ class _HomePageState extends State<HomePage> {
                       fillColor: Colors.white12,
                     ),
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w300,
+                      color: Colors.lightGreen[100],
+                      fontSize: 15,
                     ),
                   ),
                 ),
@@ -337,7 +334,7 @@ class _HomePageState extends State<HomePage> {
                                         outputController.text =
                                             shortURL.shortenedURL;
                                         disclaimerController.text =
-                                            "Refresh the page if the shortened URL shows an ad";
+                                            "If this URL redirects to an ad, open it in a new browser window";
                                       });
                                     }
                                   }
@@ -373,42 +370,19 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.white,
                       fontSize: 30,
                       fontWeight: FontWeight.w700)),
-              SizedBox(
-                height:
-                    (MediaQuery.of(context).orientation == Orientation.portrait)
-                        ? 8
-                        : 0,
+              Text(
+                "The long and short URLs will appear below ",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 15,
+                ),
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "The short and long URLs will appear below ",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 15,
-                    ),
-                  ),
-                  Tooltip(
-                      message:
-                          'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement and the policies set forth at cleanuri.com.',
-                      child: Icon(
-                        Icons.info_outline,
-                        color: Colors.grey,
-                        size: 14,
-                      )),
-                ],
-              ),
-              SizedBox(
-                height: 5,
-              ),
+              SizedBox(height: 6),
               TextField(
-                // scrollController: ScrollController(),
                 controller: currentLongURLController,
                 readOnly: true,
                 decoration: new InputDecoration.collapsed(
-                  hintText:
-                      "The long URL will appear here after shortening it above",
+                  hintText: "",
                 ),
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -416,9 +390,7 @@ class _HomePageState extends State<HomePage> {
                   fontSize: 12,
                 ),
               ),
-              SizedBox(
-                height: 10,
-              ),
+              SizedBox(height: 6),
               Container(
                 width: screenWidth * 0.75,
                 child: Column(
@@ -449,24 +421,23 @@ class _HomePageState extends State<HomePage> {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    SizedBox(
-                      height: 5,
-                    ),
-                    TextField(
-                      // scrollController: ScrollController(),
-                      controller: disclaimerController,
-                      readOnly: true,
-                      decoration: new InputDecoration.collapsed(
-                        hintText: null,
-                      ),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.blueGrey[400],
-                        fontSize: 12,
-                        fontStyle: FontStyle.italic,
-                      ),
-                    )
                   ],
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              TextField(
+                controller: disclaimerController,
+                readOnly: true,
+                decoration: new InputDecoration.collapsed(
+                  hintText: null,
+                ),
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Colors.blueGrey[400],
+                  fontSize: 12,
+                  fontStyle: FontStyle.italic,
                 ),
               ),
               Visibility(
