@@ -209,7 +209,7 @@ class Dialogs {
               'Invalid Entry',
             ),
             content: Text(
-              "The input field does not seem to contain a valid long URL (e.g., this URL might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
+              "The input field might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
             ),
             actions: <Widget>[
               TextButton(
@@ -228,7 +228,7 @@ class Dialogs {
             'Invalid Entry',
           ),
           content: Text(
-            "The input field does not seem to contain a valid long URL (e.g., this URL might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
+            "The input field might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
           ),
           actions: <Widget>[
             TextButton(
