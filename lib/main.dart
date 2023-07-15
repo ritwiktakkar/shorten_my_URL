@@ -96,24 +96,12 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               // first half widgets columns
               children: <Widget>[
-                Text("Long URL",
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w700)),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Text(
-                      "Enter the URL to shorten below ",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 15,
-                      ),
-                    ),
                     Tooltip(
                         message:
-                            'The shortened URLs are received from the cleanuri.com API, thus rendering this app exempt from responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement and the policies set forth at cleanuri.com.',
+                            'The shortened URLs are received from the cleanuri.com API thus rendering this app exempt from any and all responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement, this app\'s privacy policy, and the policies set forth at cleanuri.com.',
                         child: Icon(
                           Icons.info_outline,
                           color: Colors.grey,
@@ -121,6 +109,11 @@ class _HomePageState extends State<HomePage> {
                         )),
                   ],
                 ),
+                Text("Long URL ",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 26,
+                        fontWeight: FontWeight.w500)),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextField(
@@ -136,7 +129,7 @@ class _HomePageState extends State<HomePage> {
                           const Radius.circular(40.0),
                         ),
                       ),
-                      contentPadding: EdgeInsets.fromLTRB(25, 8, 20, 8),
+                      contentPadding: EdgeInsets.fromLTRB(15, 5, 10, 5),
                       filled: true,
                       hintStyle: TextStyle(
                           color: Colors.grey[600],
@@ -149,6 +142,18 @@ class _HomePageState extends State<HomePage> {
                       color: Colors.lightGreen[100],
                       fontSize: 15,
                     ),
+                  ),
+                ),
+                TextField(
+                  controller: currentLongURLController,
+                  readOnly: true,
+                  decoration: new InputDecoration.collapsed(
+                    hintText: "",
+                  ),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.blueGrey[200],
+                    fontSize: 12,
                   ),
                 ),
                 Row(
@@ -166,7 +171,6 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.grey[100],
                           ),
                           onPressed: () {
-                            FocusScope.of(context).unfocus();
                             setState(() {
                               inputController.clear();
                               currentLongURLController.clear();
@@ -190,7 +194,9 @@ class _HomePageState extends State<HomePage> {
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
                             String clipboardData = await _getFromClipboard();
-                            if (isURL(clipboardData)) {
+                            if (clipboardData.isEmpty) {
+                              Dialogs.showNothingToPaste(context);
+                            } else if (isURL(clipboardData)) {
                               if (inputController.text.isNotEmpty) {
                                 if (clipboardData == inputController.text) {
                                   Dialogs.showDuplicateClipboard(
@@ -261,93 +267,108 @@ class _HomePageState extends State<HomePage> {
                       child: Visibility(
                         visible: (inputController.text.isNotEmpty),
                         child: Builder(
-                          builder: (context) => IconButton(
-                            icon: Icon(
-                              Icons.cut_outlined,
-                              size: 35,
-                              color: Colors.blue[500],
-                            ),
-                            onPressed: () async {
-                              FocusScope.of(context).unfocus();
-                              if (isURL(inputController.text)) {
-                                // CHECK 1: check if device has internet connection
-                                var result =
-                                    await Connectivity().checkConnectivity();
-                                if (result == ConnectivityResult.none) {
-                                  // Show no internet connection error dialog
-                                  Dialogs.showNoInternetConnection(context);
-                                } else {
-                                  // device has network connectivity (android passes this even if only connected to hotel WiFi)
-                                  if (inputController.text
-                                      .contains("cleanuri.com/")) {
-                                    // CHECK 2: check if longURL is already a shortened URL
-                                    Dialogs.showInvalidInput(context);
-                                  } else if (longURL == inputController.text) {
-                                    // CHECK 3: check if longURL is the same as the previous longURL
-                                    Dialogs.showRepeatLongURL(
-                                        context,
-                                        inputController,
-                                        currentLongURLController);
+                          builder: (context) => Container(
+                            width: 90,
+                            child: GestureDetector(
+                              onTap: () async {
+                                FocusScope.of(context).unfocus();
+                                if (isURL(inputController.text)) {
+                                  // CHECK 1: check if device has internet connection
+                                  var result =
+                                      await Connectivity().checkConnectivity();
+                                  if (result == ConnectivityResult.none) {
+                                    // Show no internet connection error dialog
+                                    Dialogs.showNoInternetConnection(context);
                                   } else {
-                                    longURL = inputController.text;
-                                    shortURL =
-                                        (await API.getShortenedURL(longURL))!;
-                                    // CHECK 4: check if API returned null
-                                    if (shortURL.shortenedURL.isEmpty) {
-                                      Dialogs.showShorteningURLError(context);
-                                    } else if (shortURL
-                                        .shortenedURL.isNotEmpty) {
-                                      HapticFeedback.lightImpact();
-                                      final snackBar = SnackBar(
-                                        behavior: SnackBarBehavior.floating,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                              25), // <-- Radius
-                                        ),
-                                        backgroundColor: Colors.orange[300],
-                                        content: Row(
-                                          children: <Widget>[
-                                            Icon(
-                                              Icons.check,
-                                              color: Colors.black54,
-                                            ),
-                                            SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              'URL successfully shortened',
-                                              textAlign: TextAlign.center,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black54),
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                      ScaffoldMessenger.of(context)
-                                          .hideCurrentSnackBar();
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(snackBar);
-                                      setState(() {
-                                        currentLongURLController.text =
-                                            "Long URL: $longURL";
-                                        outputController.text =
-                                            shortURL.shortenedURL;
-                                        disclaimerController.text =
-                                            "If this URL redirects to an ad, open it in a new browser window";
-                                      });
+                                    // device has network connectivity (android passes this even if only connected to hotel WiFi)
+                                    if (inputController.text
+                                            .contains("cleanuri.com/") ||
+                                        inputController.text
+                                            .contains("shorturl.at/") ||
+                                        inputController.text
+                                            .contains("bit.ly/")) {
+                                      // CHECK 2: check if longURL is already a shortened URL
+                                      Dialogs.showInvalidInput(context);
+                                    } else if (longURL ==
+                                        inputController.text) {
+                                      // CHECK 3: check if longURL is the same as the previous longURL
+                                      Dialogs.showRepeatLongURL(
+                                          context,
+                                          inputController,
+                                          currentLongURLController);
+                                    } else {
+                                      longURL = inputController.text;
+                                      shortURL =
+                                          (await API.getShortenedURL(longURL))!;
+                                      // CHECK 4: check if API returned null
+                                      if (shortURL.shortenedURL.isEmpty) {
+                                        Dialogs.showShorteningURLError(context);
+                                      } else if (shortURL
+                                          .shortenedURL.isNotEmpty) {
+                                        HapticFeedback.lightImpact();
+                                        final snackBar = SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                                25), // <-- Radius
+                                          ),
+                                          backgroundColor: Colors.orange[300],
+                                          content: Row(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.check,
+                                                color: Colors.black54,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                'URL successfully shortened',
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: Colors.black54),
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .hideCurrentSnackBar();
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackBar);
+                                        setState(() {
+                                          currentLongURLController.text =
+                                              "Submitted: $longURL";
+                                          outputController.text =
+                                              shortURL.shortenedURL;
+                                          disclaimerController.text =
+                                              "If this URL redirects to an ad, open it in a new browser window";
+                                        });
+                                      }
                                     }
                                   }
+                                } else {
+                                  Dialogs.showInvalidInput(context);
+                                  setState(() {
+                                    currentLongURLController.clear();
+                                    outputController.clear();
+                                    disclaimerController.clear();
+                                  });
                                 }
-                              } else {
-                                Dialogs.showInvalidInput(context);
-                                setState(() {
-                                  currentLongURLController.clear();
-                                  outputController.clear();
-                                  disclaimerController.clear();
-                                });
-                              }
-                            },
+                              },
+                              child: Row(
+                                children: [
+                                  Icon(Icons.link_outlined,
+                                      size: 45, color: Colors.blue[200]),
+                                  Icon(
+                                    Icons.arrow_forward_outlined,
+                                    size: 15,
+                                  ),
+                                  Icon(Icons.link_outlined,
+                                      size: 30, color: Colors.blue[200]),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -368,31 +389,13 @@ class _HomePageState extends State<HomePage> {
               Text("Short URL",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.w700)),
-              Text(
-                "The long and short URLs will appear below ",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 15,
-                ),
-              ),
-              SizedBox(height: 6),
-              TextField(
-                controller: currentLongURLController,
-                readOnly: true,
-                decoration: new InputDecoration.collapsed(
-                  hintText: "",
-                ),
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.blueGrey[200],
-                  fontSize: 12,
-                ),
-              ),
+                      fontSize: 26,
+                      fontWeight: FontWeight.w500)),
               SizedBox(height: 6),
               Container(
-                width: screenWidth * 0.75,
+                width: (screenWidth < 1000)
+                    ? screenWidth * 0.7
+                    : screenWidth * 0.3,
                 child: Column(
                   children: [
                     TextField(
@@ -405,7 +408,7 @@ class _HomePageState extends State<HomePage> {
                             const Radius.circular(40.0),
                           ),
                         ),
-                        contentPadding: EdgeInsets.only(top: 10, bottom: 10),
+                        contentPadding: EdgeInsets.all(5),
                         filled: true,
                         hintStyle: TextStyle(
                           color: Colors.grey[600],
@@ -418,7 +421,7 @@ class _HomePageState extends State<HomePage> {
                       style: TextStyle(
                         color: Colors.greenAccent,
                         fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
@@ -458,6 +461,8 @@ class _HomePageState extends State<HomePage> {
                           // API.openURL(outputController.text);
                           debugPrint(
                               "Opening URL in browser: ${shortURL.shortenedURL}");
+                          debugPrint(
+                              "screenWidth: $screenWidth , screenHeight: $screenHeight");
                           launchUrl(
                             Uri.parse(shortURL.shortenedURL),
                           );
@@ -522,17 +527,20 @@ class _HomePageState extends State<HomePage> {
                     ),
                     Tooltip(
                       message: "Share the shortened URL",
-                      child: IconButton(
-                        icon: Icon(
-                          Platform.isIOS
-                              ? Icons.ios_share_outlined
-                              : Icons.share_outlined,
-                          size: 35,
-                          color: Colors.grey[200],
+                      child: Container(
+                        width: 70,
+                        child: IconButton(
+                          icon: Icon(
+                            Platform.isIOS
+                                ? Icons.ios_share_outlined
+                                : Icons.share_outlined,
+                            size: 35,
+                            color: Colors.grey[200],
+                          ),
+                          onPressed: () {
+                            Share.share(outputController.text);
+                          },
                         ),
-                        onPressed: () {
-                          Share.share(outputController.text);
-                        },
                       ),
                     ),
                   ],
