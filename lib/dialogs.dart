@@ -17,7 +17,7 @@ class Dialogs {
               'No URL Found in Clipboard',
             ),
             content: Text(
-              "This app can only paste valid URLs stored in the clipboard. Please ensure your clipboard only contains a valid URL before pressing the 'Paste' button.",
+              "While your clipboard is not empty, this app can only parse valid URLs stored there. Please ensure your clipboard only contains a valid URL and try again.",
             ),
             actions: <Widget>[
               TextButton(
@@ -36,7 +36,7 @@ class Dialogs {
             'No URL Found in Clipboard',
           ),
           content: Text(
-            "This app can only paste valid URLs stored in the clipboard. Please ensure your clipboard only contains a valid URL before tapping the 'Paste' icon.",
+            "While your clipboard is not empty, this app can only parse valid URLs stored there. Please ensure your clipboard only contains a valid URL and try again.",
           ),
           actions: <Widget>[
             TextButton(
@@ -209,7 +209,7 @@ class Dialogs {
               'Invalid Entry',
             ),
             content: Text(
-              "The input field does not seem to contain a valid URL (e.g., this URL might not exist or it may already be a shortened URL). Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
+              "The input field does not seem to contain a valid long URL (e.g., this URL might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
             ),
             actions: <Widget>[
               TextButton(
@@ -228,7 +228,54 @@ class Dialogs {
             'Invalid Entry',
           ),
           content: Text(
-            "The input field does not seem to contain a valid URL (e.g., this URL might not exist or it may already be a shortened URL). Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
+            "The input field does not seem to contain a valid long URL (e.g., this URL might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text(
+                'Got it, thanks!',
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  static Future<void> showEmptyClipboard(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        if (Platform.isAndroid) {
+          return AlertDialog(
+            title: Text(
+              'Clipboard is Empty',
+            ),
+            content: Text(
+              "There is nothing in the clipboard to paste. Please copy a valid URL to the clipboard and try again.",
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: Text(
+                  'Got it, thanks!',
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
+        return CupertinoAlertDialog(
+          title: Text(
+            'Clipboard is Empty',
+          ),
+          content: Text(
+            "There is nothing in the clipboard to paste. Please copy a valid URL to the clipboard and try again.",
           ),
           actions: <Widget>[
             TextButton(
@@ -355,7 +402,7 @@ class Dialogs {
               'Duplicate URL in Clipboard',
             ),
             content: Text(
-              "The URL clipboard stored in the clipboard matches the long URL you entered already.",
+              "The URL stored in the clipboard matches the current long URL you entered.",
             ),
             actions: <Widget>[
               TextButton(
@@ -374,7 +421,7 @@ class Dialogs {
             'Duplicate URL in Clipboard',
           ),
           content: Text(
-            "The URL clipboard stored in the clipboard matches the long URL you entered already.",
+            "The URL stored in the clipboard matches the current long URL you entered.",
           ),
           actions: <Widget>[
             TextButton(
