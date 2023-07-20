@@ -1,6 +1,6 @@
 # ShortenMyURL
 <div align="center">
-    <img alt="app_icon" src="android\app\src\main\res\mipmap-xhdpi\ic_launcher_round.png">
+    <img alt="app_icon" src="GitHubListingMaterials/ic_launcher_round.png">
 </div>
 
 ## Description
