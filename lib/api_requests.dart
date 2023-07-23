@@ -30,26 +30,26 @@ Future<ShortenedURL?> getShortenedURL(String longURL) async {
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    debugPrint(response.body.toString());
+    // debugPrint(response.body.toString());
     // update shortURL for analytics
     ShortenedURL shortenedURL =
         ShortenedURL.fromJson(convert.json.decode(response.body));
     // update urlForm and analyticsForm with successful shortURL
     urlForm = UrlForm(longURLAnalytics, shortenedURL.shortenedURL);
     analyticsForm = AnalyticsForm(urlForm, deviceForm);
-    debugPrint(
-        "analyticsForm (got shortURL): ${analyticsForm.toJson().toString()}");
+    // debugPrint(
+    //     "analyticsForm (got shortURL): ${analyticsForm.toJson().toString()}");
     submitAnalytics(analyticsForm, (String response) {
-      debugPrint(response);
+      // debugPrint(response);
     });
     return shortenedURL;
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    debugPrint(
-        "analyticsForm (failed shortURL): ${analyticsForm.toJson().toString()}");
+    // debugPrint(
+    //     "analyticsForm (failed shortURL): ${analyticsForm.toJson().toString()}");
     submitAnalytics(analyticsForm, (String response) {
-      debugPrint(response);
+      // debugPrint(response);
     });
     return null;
   }
@@ -72,7 +72,7 @@ void submitAnalytics(
       }
     });
   } catch (e) {
-    debugPrint(e as String?);
+    // debugPrint(e as String?);
   }
 }
 
@@ -104,11 +104,11 @@ Future<DeviceForm> deviceDetails() async {
       identifier = data.identifierForVendor;
     }
   } on PlatformException {
-    debugPrint('Failed to get platform version');
+    // debugPrint('Failed to get platform version');
   }
-  debugPrint('Device Name: $deviceName\n'
-      'Device Version: $deviceVersion\n'
-      'Device Identifier: $identifier\n'
-      'App Version: $appVersion');
+  // debugPrint('Device Name: $deviceName\n'
+  //     'Device Version: $deviceVersion\n'
+  //     'Device Identifier: $identifier\n'
+  //     'App Version: $appVersion');
   return DeviceForm(deviceName, deviceVersion, identifier, appVersion);
 }

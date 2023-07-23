@@ -5,6 +5,58 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class Dialogs {
+  static Text noURLFoundInClipboardTitle = Text(
+    'No URL Found in Clipboard',
+  );
+
+  static Text noURLFoundinClipboardContent = Text(
+    "While your clipboard is not empty, this app can only parse valid URLs stored there. Please ensure your clipboard only contains a valid URL and try again.",
+  );
+
+  static Text shorteningURLTitle = Text(
+    'Couldn\'t Shorten URL',
+  );
+
+  static Text shorteningURLContent = Text(
+    "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
+  );
+
+  static Text invalidInputTitle = Text(
+    'Invalid Entry',
+  );
+
+  static Text invalidInputContent = Text(
+    "The input field might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
+  );
+
+  static Text emptyClipboardTitle = Text(
+    'Empty Clipboard',
+  );
+
+  static Text emptyClipboardContent = Text(
+    "There is nothing in the clipboard to paste. Please copy a valid URL to the clipboard and try again.",
+  );
+
+  static Text duplicateClipboardTitle = Text(
+    'Duplicate URL in Clipboard',
+  );
+
+  static Text duplicateClipboardContent = Text(
+    "The URL stored in the clipboard matches the current long URL you entered.",
+  );
+
+  static Text networkErrorTitle = Text(
+    'Network Error',
+  );
+
+  static Text networkErrorContent = Text(
+    "There was an error connecting to the internet. Please check your network settings and try again. If the problem persists, there may be an issue in the server.",
+  );
+
+  static Text gotItThanks = Text(
+    'Got it, thanks!',
+  );
+
   // this dialog pops up when the user presses the 'paste' button and there's no URL to paste in the clipboard
   static Future<void> showNothingToPaste(BuildContext context) async {
     return showDialog<void>(
@@ -13,17 +65,11 @@ class Dialogs {
       builder: (BuildContext context) {
         if (Platform.isAndroid) {
           return AlertDialog(
-            title: Text(
-              'No URL Found in Clipboard',
-            ),
-            content: Text(
-              "While your clipboard is not empty, this app can only parse valid URLs stored there. Please ensure your clipboard only contains a valid URL and try again.",
-            ),
+            title: noURLFoundInClipboardTitle,
+            content: noURLFoundinClipboardContent,
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
+                child: gotItThanks,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -32,65 +78,11 @@ class Dialogs {
           );
         }
         return CupertinoAlertDialog(
-          title: Text(
-            'No URL Found in Clipboard',
-          ),
-          content: Text(
-            "While your clipboard is not empty, this app can only parse valid URLs stored there. Please ensure your clipboard only contains a valid URL and try again.",
-          ),
+          title: noURLFoundInClipboardTitle,
+          content: noURLFoundinClipboardContent,
           actions: <Widget>[
             TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // this dialog pops up when the user presses the 'copy' button and there's nothing to copy to the clipboard
-  static Future<void> showNothingToCopy(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        if (Platform.isAndroid) {
-          return AlertDialog(
-            title: Text(
-              'No URL To Copy',
-            ),
-            content: Text(
-              "Your output field contains no shortened URL to copy to the clipboard. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        }
-        return CupertinoAlertDialog(
-          title: Text(
-            'No URL To Copy',
-          ),
-          content: Text(
-            "Your output field contains no shortened URL to copy to the clipboard. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
+              child: gotItThanks,
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -109,17 +101,11 @@ class Dialogs {
       builder: (BuildContext context) {
         if (Platform.isAndroid) {
           return AlertDialog(
-            title: Text(
-              'Couldn\'t Shorten URL',
-            ),
-            content: Text(
-              "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
-            ),
+            title: shorteningURLTitle,
+            content: shorteningURLContent,
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
+                child: gotItThanks,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -128,65 +114,11 @@ class Dialogs {
           );
         }
         return CupertinoAlertDialog(
-          title: Text(
-            'Couldn\'t Shorten URL',
-          ),
-          content: Text(
-            "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
-          ),
+          title: shorteningURLTitle,
+          content: shorteningURLContent,
           actions: <Widget>[
             TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  // this dialog pops up when the user presses the 'share url' button and there's nothing to share
-  static Future<void> showNothingToShare(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: false, // user must tap button!
-      builder: (BuildContext context) {
-        if (Platform.isAndroid) {
-          return AlertDialog(
-            title: Text(
-              'No URL To Share',
-            ),
-            content: Text(
-              "Your output field contains no shortened URL to share. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
-            ),
-            actions: <Widget>[
-              TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        }
-        return CupertinoAlertDialog(
-          title: Text(
-            'No URL To Share',
-          ),
-          content: Text(
-            "Your output field contains no shortened URL to share. Please try pasting a valid URL in the input field and pressing the 'Shorten URL' button to get a shortened URL in the output field.",
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
+              child: gotItThanks,
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -205,17 +137,11 @@ class Dialogs {
       builder: (BuildContext context) {
         if (Platform.isAndroid) {
           return AlertDialog(
-            title: Text(
-              'Invalid Entry',
-            ),
-            content: Text(
-              "The input field might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
-            ),
+            title: invalidInputTitle,
+            content: invalidInputContent,
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
+                child: gotItThanks,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -224,17 +150,11 @@ class Dialogs {
           );
         }
         return CupertinoAlertDialog(
-          title: Text(
-            'Invalid Entry',
-          ),
-          content: Text(
-            "The input field might not exist or it may already be a shortened URL. Please ensure your entry contains a valid URL and try again.",
-          ),
+          title: invalidInputTitle,
+          content: invalidInputContent,
           actions: <Widget>[
             TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
+              child: gotItThanks,
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -252,17 +172,11 @@ class Dialogs {
       builder: (BuildContext context) {
         if (Platform.isAndroid) {
           return AlertDialog(
-            title: Text(
-              'Clipboard is Empty',
-            ),
-            content: Text(
-              "There is nothing in the clipboard to paste. Please copy a valid URL to the clipboard and try again.",
-            ),
+            title: emptyClipboardTitle,
+            content: emptyClipboardContent,
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
+                child: gotItThanks,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -271,17 +185,11 @@ class Dialogs {
           );
         }
         return CupertinoAlertDialog(
-          title: Text(
-            'Clipboard is Empty',
-          ),
-          content: Text(
-            "There is nothing in the clipboard to paste. Please copy a valid URL to the clipboard and try again.",
-          ),
+          title: emptyClipboardTitle,
+          content: emptyClipboardContent,
           actions: <Widget>[
             TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
+              child: gotItThanks,
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -293,24 +201,18 @@ class Dialogs {
   }
 
   // this dialog pops up when the user presses the 'shorten url' button and there is no internet
-  static Future<void> showNoInternetConnection(BuildContext context) async {
+  static Future<void> showNetworkError(BuildContext context) async {
     return showDialog<void>(
       context: context,
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         if (Platform.isAndroid) {
           return AlertDialog(
-            title: Text(
-              'No Internet Connection',
-            ),
-            content: Text(
-              "Your device doesn't seem to have an internet connection. Please check your network settings and try again.",
-            ),
+            title: networkErrorTitle,
+            content: networkErrorContent,
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
+                child: gotItThanks,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -319,17 +221,11 @@ class Dialogs {
           );
         }
         return CupertinoAlertDialog(
-          title: Text(
-            'No Internet Connection',
-          ),
-          content: Text(
-            "Your device doesn't seem to have an internet connection. Please check your network settings and try again.",
-          ),
+          title: networkErrorTitle,
+          content: networkErrorContent,
           actions: <Widget>[
             TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
+              child: gotItThanks,
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -398,17 +294,11 @@ class Dialogs {
       builder: (BuildContext context) {
         if (Platform.isAndroid) {
           return AlertDialog(
-            title: Text(
-              'Duplicate URL in Clipboard',
-            ),
-            content: Text(
-              "The URL stored in the clipboard matches the current long URL you entered.",
-            ),
+            title: duplicateClipboardTitle,
+            content: duplicateClipboardContent,
             actions: <Widget>[
               TextButton(
-                child: Text(
-                  'Got it, thanks!',
-                ),
+                child: gotItThanks,
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -417,17 +307,11 @@ class Dialogs {
           );
         }
         return CupertinoAlertDialog(
-          title: Text(
-            'Duplicate URL in Clipboard',
-          ),
-          content: Text(
-            "The URL stored in the clipboard matches the current long URL you entered.",
-          ),
+          title: duplicateClipboardTitle,
+          content: duplicateClipboardContent,
           actions: <Widget>[
             TextButton(
-              child: Text(
-                'Got it, thanks!',
-              ),
+              child: gotItThanks,
               onPressed: () {
                 Navigator.of(context).pop();
               },
