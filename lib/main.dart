@@ -57,11 +57,10 @@ class _HomePageState extends State<HomePage> {
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
         await SystemChannels.platform.invokeMethod('Clipboard.getData');
-    debugPrint('Clipboard content: \'${result['text'].toString()}\'');
-    if (isURL(result['text'].toString())) {
-      return result['text'].toString();
+    if (result['text'].toString().characters.length < 0) {
+      return "";
     }
-    return '';
+    return result['text'].toString();
   }
 
   @override
@@ -101,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                   children: [
                     Tooltip(
                         message:
-                            'The shortened URLs are received from the cleanuri.com API thus rendering this app exempt from any and all responsibility regarding the given content and accuracy of the shortened URL. By using this app, you agree to the previous statement, this app\'s privacy policy, and the policies set forth at cleanuri.com.',
+                            'Using this app confirms that you agree with the privacy policy of ShortenMyURL, and exempt ShortenMyURL from any and all liability regarding the content(s) shown and functionality provided herein.\nShort URLs provided by cleanuri.com\nShortenMyURL, Version 2.6\n© 2020-2023 Nocturnal Dev Lab (RT)',
                         child: Icon(
                           Icons.info_outline,
                           color: Colors.grey,
@@ -112,8 +111,8 @@ class _HomePageState extends State<HomePage> {
                 Text("Long URL ",
                     style: TextStyle(
                         color: Colors.white,
-                        fontSize: 26,
-                        fontWeight: FontWeight.w500)),
+                        fontSize: 24,
+                        fontWeight: FontWeight.w400)),
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextField(
@@ -195,8 +194,11 @@ class _HomePageState extends State<HomePage> {
                             FocusScope.of(context).unfocus();
                             String clipboardData = await _getFromClipboard();
                             if (clipboardData.isEmpty) {
-                              Dialogs.showNothingToPaste(context);
+                              debugPrint("Clipboard is empty: $clipboardData.");
+                              Dialogs.showEmptyClipboard(context);
                             } else if (isURL(clipboardData)) {
+                              debugPrint(
+                                  "Clipboard contains valid URL: $clipboardData");
                               if (inputController.text.isNotEmpty) {
                                 if (clipboardData == inputController.text) {
                                   Dialogs.showDuplicateClipboard(
@@ -249,7 +251,7 @@ class _HomePageState extends State<HomePage> {
                             } else {
                               // print below if paste button returns empty string
                               debugPrint(
-                                  "Clipboard doesn't contain valid URL.");
+                                  "Clipboard doesn't contain valid URL: $clipboardData");
                               // show dialog
                               Dialogs.showNothingToPaste(context);
                               setState(() {
@@ -268,7 +270,7 @@ class _HomePageState extends State<HomePage> {
                         visible: (inputController.text.isNotEmpty),
                         child: Builder(
                           builder: (context) => Container(
-                            width: 90,
+                            // width: 90,
                             child: GestureDetector(
                               onTap: () async {
                                 FocusScope.of(context).unfocus();
@@ -278,7 +280,7 @@ class _HomePageState extends State<HomePage> {
                                       await Connectivity().checkConnectivity();
                                   if (result == ConnectivityResult.none) {
                                     // Show no internet connection error dialog
-                                    Dialogs.showNoInternetConnection(context);
+                                    Dialogs.showNetworkError(context);
                                   } else {
                                     // device has network connectivity (android passes this even if only connected to hotel WiFi)
                                     if (inputController.text
@@ -356,17 +358,10 @@ class _HomePageState extends State<HomePage> {
                                   });
                                 }
                               },
-                              child: Row(
-                                children: [
-                                  Icon(Icons.link_outlined,
-                                      size: 45, color: Colors.blue[200]),
-                                  Icon(
-                                    Icons.arrow_forward_outlined,
-                                    size: 15,
-                                  ),
-                                  Icon(Icons.link_outlined,
-                                      size: 30, color: Colors.blue[200]),
-                                ],
+                              child: Image.asset(
+                                "assets/shorten.png",
+                                width: 65,
+                                height: 65,
                               ),
                             ),
                           ),
@@ -389,8 +384,8 @@ class _HomePageState extends State<HomePage> {
               Text("Short URL",
                   style: TextStyle(
                       color: Colors.white,
-                      fontSize: 26,
-                      fontWeight: FontWeight.w500)),
+                      fontSize: 24,
+                      fontWeight: FontWeight.w400)),
               SizedBox(height: 6),
               Container(
                 width: (screenWidth < 1000)
@@ -479,48 +474,43 @@ class _HomePageState extends State<HomePage> {
                             color: Colors.grey[200],
                           ),
                           onPressed: () async {
-                            if (isURL(outputController.text)) {
-                              Clipboard.setData(new ClipboardData(
-                                      text: outputController.text))
-                                  .then(
-                                (result) {
-                                  HapticFeedback.mediumImpact();
-                                  final snackBar = SnackBar(
-                                    behavior: SnackBarBehavior.floating,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          25), // <-- Radius
-                                    ),
-                                    backgroundColor: Colors.orange[300],
-                                    content: Row(
-                                      children: <Widget>[
-                                        Icon(
-                                          Icons.check,
-                                          color: Colors.black54,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          'Copied short URL to clipboard',
-                                          textAlign: TextAlign.center,
-                                          style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.black54),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                  ScaffoldMessenger.of(context)
-                                      .hideCurrentSnackBar();
-                                  ScaffoldMessenger.of(context)
-                                      .showSnackBar(snackBar);
-                                },
-                              );
-                            } else {
-                              // show dialog
-                              Dialogs.showNothingToCopy(context);
-                            }
+                            Clipboard.setData(new ClipboardData(
+                                    text: outputController.text))
+                                .then(
+                              (result) {
+                                HapticFeedback.mediumImpact();
+                                final snackBar = SnackBar(
+                                  behavior: SnackBarBehavior.floating,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.circular(25), // <-- Radius
+                                  ),
+                                  backgroundColor: Colors.orange[300],
+                                  content: Row(
+                                    children: <Widget>[
+                                      Icon(
+                                        Icons.check,
+                                        color: Colors.black54,
+                                      ),
+                                      SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                        'Copied short URL to clipboard',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.black54),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                                ScaffoldMessenger.of(context)
+                                    .hideCurrentSnackBar();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(snackBar);
+                              },
+                            );
                           },
                         ),
                       ),
@@ -528,7 +518,6 @@ class _HomePageState extends State<HomePage> {
                     Tooltip(
                       message: "Share the shortened URL",
                       child: Container(
-                        width: 70,
                         child: IconButton(
                           icon: Icon(
                             Platform.isIOS
