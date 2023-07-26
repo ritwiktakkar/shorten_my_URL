@@ -18,7 +18,7 @@ class Dialogs {
   );
 
   static Text shorteningURLContent = Text(
-    "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please ensure your entry contains a valid URL and try again.",
+    "The input field does not seem to contain a valid URL. Therefore, it can't be shortened. Please ensure your entry contains a valid and complete URL and try again.",
   );
 
   static Text invalidInputTitle = Text(

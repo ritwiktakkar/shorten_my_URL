@@ -1,5 +1,5 @@
 class ShortenedURL {
-  final String shortenedURL;
+  final String? shortenedURL;
 
   ShortenedURL({required this.shortenedURL});
 

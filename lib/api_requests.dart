@@ -32,22 +32,32 @@ Future<ShortenedURL?> getShortenedURL(String longURL) async {
     // then parse the JSON.
     // debugPrint(response.body.toString());
     // update shortURL for analytics
-    ShortenedURL shortenedURL =
-        ShortenedURL.fromJson(convert.json.decode(response.body));
-    // update urlForm and analyticsForm with successful shortURL
-    urlForm = UrlForm(longURLAnalytics, shortenedURL.shortenedURL);
-    analyticsForm = AnalyticsForm(urlForm, deviceForm);
-    // debugPrint(
-    //     "analyticsForm (got shortURL): ${analyticsForm.toJson().toString()}");
-    submitAnalytics(analyticsForm, (String response) {
-      // debugPrint(response);
-    });
-    return shortenedURL;
+    debugPrint('200 response.body.toString(): ${response.body.toString()}');
+    try {
+      ShortenedURL shortenedURL =
+          ShortenedURL.fromJson(convert.json.decode(response.body));
+      debugPrint('shortenedURL: ${shortenedURL.shortenedURL}');
+
+      shortURLAnalytics = shortenedURL.shortenedURL!;
+
+      urlForm = UrlForm(longURLAnalytics, shortURLAnalytics);
+      analyticsForm = AnalyticsForm(urlForm, deviceForm);
+      // debugPrint(
+      //     "analyticsForm (got shortURL): ${analyticsForm.toJson().toString()}");
+      submitAnalytics(analyticsForm, (String response) {
+        // debugPrint(response);
+      });
+      return shortenedURL;
+    } on Exception {
+      debugPrint('Exception');
+      return null;
+    }
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
     // debugPrint(
     //     "analyticsForm (failed shortURL): ${analyticsForm.toJson().toString()}");
+    debugPrint('not 200 response.body.toString(): ${response.body.toString()}');
     submitAnalytics(analyticsForm, (String response) {
       // debugPrint(response);
     });
