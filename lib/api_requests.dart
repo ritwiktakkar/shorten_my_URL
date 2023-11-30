@@ -7,18 +7,20 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shorten_my_url/Analytics/analytics_form.dart';
 import 'package:shorten_my_url/Analytics/device_form.dart';
 import 'package:shorten_my_url/Analytics/url_form.dart';
-import 'package:shorten_my_url/url_model.dart';
+// import 'package:shorten_my_url/url_model.dart';
 import 'package:shorten_my_url/Analytics/constants.dart';
 import 'dart:convert' as convert;
 
-var postURL = 'https://cleanuri.com/api/v1/shorten';
+// var postURL = 'https://cleanuri.com/api/v1/shorten'; Service no longer works
 String gsURL = Constants.gs_url;
 
 // Async funtion which gets shortened URL
-Future<ShortenedURL?> getShortenedURL(String longURL) async {
-  final response = await http.post(Uri.parse(postURL), body: {
-    'url': longURL,
-  });
+Future<String?> getShortenedURL(String longURL) async {
+  // final response = await http.post(Uri.parse(postURL), body: {
+  //   'url': longURL,
+  // });
+  final response = await http
+      .post(Uri.parse("https://is.gd/create.php?format=simple&url=$longURL"));
 
   // set initial values for analytics
   String longURLAnalytics = longURL;
@@ -34,11 +36,12 @@ Future<ShortenedURL?> getShortenedURL(String longURL) async {
     // update shortURL for analytics
     debugPrint('200 response.body.toString(): ${response.body.toString()}');
     try {
-      ShortenedURL shortenedURL =
-          ShortenedURL.fromJson(convert.json.decode(response.body));
-      debugPrint('shortenedURL: ${shortenedURL.shortenedURL}');
+      // ShortenedURL shortenedURL =
+      //     ShortenedURL.fromJson(convert.json.decode(response.body));
+      String shortURL = response.body.toString();
+      debugPrint('shortenedURL: $shortURL');
 
-      shortURLAnalytics = shortenedURL.shortenedURL!;
+      shortURLAnalytics = shortURL;
 
       urlForm = UrlForm(longURLAnalytics, shortURLAnalytics);
       analyticsForm = AnalyticsForm(urlForm, deviceForm);
@@ -47,7 +50,7 @@ Future<ShortenedURL?> getShortenedURL(String longURL) async {
       submitAnalytics(analyticsForm, (String response) {
         // debugPrint(response);
       });
-      return shortenedURL;
+      return shortURL;
     } on Exception {
       debugPrint('Exception');
       return null;

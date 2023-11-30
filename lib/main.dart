@@ -59,13 +59,14 @@ class _HomePageState extends State<HomePage> {
   bool finding = false;
 
   late String longURL = "";
-  late url_model.ShortenedURL shortURL;
+  // late url_model.ShortenedURL shortURL;
+  late String shortURL;
 
-  static const String appVersion = "3.0.0";
+  static const String appVersion = "3.1.0";
   static const String disclaimer =
       "Using this app confirms that you agree with the privacy policy of ShortenMyURL, and agree to withhold ShortenMyURL from all liability regarding the content(s) shown and functionality provided herein.";
   static const String appInfo =
-      "Short URLs powered by cleanuri.com.\nShortenMyURL (Version $appVersion) by Nocturnal Dev Lab (RT). © 2020-2023. All rights reserved.";
+      "Short URLs powered by is.gd\nShortenMyURL (Version $appVersion) by Nocturnal Dev Lab (RT). © 2020-2023. All rights reserved.";
 
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
@@ -334,8 +335,8 @@ class _HomePageState extends State<HomePage> {
                                           setState(() {
                                             currentLongURLController.text =
                                                 "This URL was previously shortened during your current session";
-                                            disclaimerController.text =
-                                                "If this URL redirects to an ad, open it in a new browser window";
+                                            // disclaimerController.text =
+                                            //     "A preview of the long URL will be shown to the user before redirecting to the short URL";
                                           });
                                         }
                                         // CHECK 1: check if device has internet connection
@@ -418,11 +419,8 @@ class _HomePageState extends State<HomePage> {
                                                       urlPairsCapacity) {
                                                     removeFirstURLPair();
                                                   }
-                                                  currentShortURL = shortURL
-                                                      .shortenedURL!
-                                                      .toString();
-                                                  addURLPair(longURL,
-                                                      shortURL.shortenedURL);
+                                                  currentShortURL = shortURL;
+                                                  addURLPair(longURL, shortURL);
 
                                                   debugPrint(
                                                       "longURLs: $longURLs\nshortURLs: $shortURLs");
@@ -430,9 +428,9 @@ class _HomePageState extends State<HomePage> {
                                                           .text =
                                                       "Submitted: $longURL";
                                                   outputController.text =
-                                                      shortURL.shortenedURL!;
-                                                  disclaimerController.text =
-                                                      "If this URL redirects to an ad, open it in a new browser window";
+                                                      shortURL;
+                                                  // disclaimerController.text =
+                                                  //     "A preview of the long URL will be shown to the user before redirecting to the short URL";
                                                 });
                                               }
                                               // CHECK 4: check if API returned null
@@ -525,9 +523,9 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
+                      // SizedBox(
+                      //   height: 3,
+                      // ),
                       TextField(
                         controller: disclaimerController,
                         readOnly: true,
@@ -557,7 +555,7 @@ class _HomePageState extends State<HomePage> {
                                   // open shortened URL in browser
                                   // API.openURL(outputController.text);
                                   debugPrint(
-                                      "Opening URL in browser: ${shortURL.shortenedURL}");
+                                      "Opening URL in browser: $shortURL");
                                   debugPrint(
                                       "screenWidth: $screenWidth , screenHeight: $screenHeight");
                                   launchUrl(
@@ -653,7 +651,7 @@ class _HomePageState extends State<HomePage> {
                 // color: Colors.pink[100],
                 height: (screenHeight < 750)
                     ? screenHeight * .14
-                    : screenHeight * 0.11,
+                    : screenHeight * 0.12,
                 child: Column(
                   children: [
                     Row(
@@ -755,7 +753,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Tooltip(
-                    message: '$disclaimer\n$appInfo',
+                    message: '$disclaimer $appInfo',
                     child: Icon(
                       Icons.info_outline,
                       color: Colors.grey,
