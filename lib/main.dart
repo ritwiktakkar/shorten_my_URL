@@ -62,11 +62,11 @@ class _HomePageState extends State<HomePage> {
   // late url_model.ShortenedURL shortURL;
   late String shortURL;
 
-  static const String appVersion = "3.1.0";
+  static const String appVersion = "3.2.0";
   static const String disclaimer =
-      "Using this app confirms that you agree with the privacy policy of ShortenMyURL, and agree to withhold ShortenMyURL from all liability regarding the content(s) shown and functionality provided herein.";
-  static const String appInfo =
-      "Short URLs powered by is.gd\nShortenMyURL (Version $appVersion) by Nocturnal Dev Lab (RT). © 2020-2023. All rights reserved.";
+      "By utilizing this application, you acknowledge your agreement with the privacy policies of ShortenMyURL and hereby waive all claims against ShortenMyURL pertaining to the content(s) displayed, and the functionality provided herein.";
+  String appInfo =
+      "Short URLs powered by is.gd\nShortenMyURL (Version $appVersion) by Nocturnal Dev Lab (RT). © 2020-${DateTime.now().year}. All rights reserved.";
 
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage> {
                               fontSize: 24,
                               fontWeight: FontWeight.w400)),
                       Padding(
-                        padding: const EdgeInsets.all(8),
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
                         child: TextField(
                           autocorrect: false, // URL so no need
                           onTap: () {
@@ -512,7 +512,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                                 hintText: (isURL(inputController.text))
                                     ? "Press the ShortenMyURL button"
-                                    : "Awaiting long URL entry above",
+                                    : "Enter a long URL above",
                                 fillColor: Colors.white12,
                               ),
                               style: TextStyle(
@@ -681,7 +681,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     Text(
-                      "Up to $urlPairsCapacity most recent URL pairs are shown below. These are not saved to disk and will be cleared automatically by your device's operating system.",
+                      "$urlPairsCapacity recent URL pairs are shown below. These will be cleared automatically by your device unless deleted manually.",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,
@@ -753,7 +753,7 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Tooltip(
-                    message: '$disclaimer $appInfo',
+                    message: '$disclaimer\n$appInfo',
                     child: Icon(
                       Icons.info_outline,
                       color: Colors.grey,
