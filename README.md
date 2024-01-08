@@ -19,7 +19,7 @@ Shortening URLs helps to manage them for both large-scale projects and everyday 
 ## Screenshots
 
 <div align="center">
-    <img alt="Screenshot1" width="300" height="649" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/94/9b/c8/949bc8bc-f8fb-af21-8bcb-1f596fdce4f7/aca0b7be-ac6b-40f2-8ac4-19ead656befd_screenshots-6.5.001.jpeg/600x0w.webp"> <img alt="Screenshot2" width="300" height="649" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/94/9b/c8/949bc8bc-f8fb-af21-8bcb-1f596fdce4f7/aca0b7be-ac6b-40f2-8ac4-19ead656befd_screenshots-6.5.001.jpeg/600x0w.jpg"> <img alt="Screenshot3" width="300" height="649" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource116/v4/77/dc/08/77dc0870-43db-a506-9369-6b6aed6215f4/ed03f3ef-6d89-46f4-bd83-c2721bc42567_screenshots-6.5.003.jpeg/600x0w.webp"> 
+    <img alt="Screenshot1" width="300" height="649" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/01/95/b4/0195b4a5-6015-c8f7-8b15-dceeea1cfeae/f60492a9-0b48-4fc6-b70d-7472e1eb4568__U200escreenshots-6.5._U200e001.jpeg/600x0w.webp"> <img alt="Screenshot2" width="300" height="649" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/8f/7d/f0/8f7df00a-c923-b018-27a5-3f586126a6a2/aadc7583-df33-4753-a9ad-ad7fb8016a1c__U200escreenshots-6.5._U200e003.jpeg/600x0w.webp"> <img alt="Screenshot3" width="300" height="649" src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource126/v4/49/92/8a/49928a9d-1c87-6788-4d81-4dd584a5240b/0967e118-9eee-44cf-b599-a63eda9dd559__U200escreenshots-6.5._U200e004.jpeg/600x0w.webp"> 
 </div>
 
 ### Credits:
