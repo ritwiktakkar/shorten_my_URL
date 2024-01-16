@@ -11,45 +11,38 @@ import 'package:shorten_my_url/Analytics/url_form.dart';
 import 'package:shorten_my_url/Analytics/constants.dart';
 import 'dart:convert' as convert;
 
-// var postURL = 'https://cleanuri.com/api/v1/shorten'; Service no longer works
+final isgdAPI = 'https://is.gd/create.php?format=simple&url='; // option 1
+final cleanuriURL = 'https://cleanuri.com/api/v1/shorten'; // option 2
 String gsURL = Constants.gs_url;
 
 // Async funtion which gets shortened URL
 Future<String?> getShortenedURL(String longURL) async {
-  // final response = await http.post(Uri.parse(postURL), body: {
-  //   'url': longURL,
-  // });
-  final response = await http
-      .post(Uri.parse("https://is.gd/create.php?format=simple&url=$longURL"));
+  var response = await http.post(Uri.parse("$isgdAPI$longURL"));
 
   // set initial values for analytics
-  String longURLAnalytics = longURL;
-  String shortURLAnalytics = '';
-  UrlForm urlForm = UrlForm(longURLAnalytics, shortURLAnalytics);
   DeviceForm deviceForm = await deviceDetails();
-  AnalyticsForm analyticsForm = AnalyticsForm(urlForm, deviceForm);
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
     // then parse the JSON.
-    // debugPrint(response.body.toString());
-    // update shortURL for analytics
     debugPrint('200 response.body.toString(): ${response.body.toString()}');
+    if (response.body.toString().contains('Error')) {
+      response = await http.post(Uri.parse(cleanuriURL), body: {
+        'url': longURL,
+      });
+    }
     try {
-      // ShortenedURL shortenedURL =
-      //     ShortenedURL.fromJson(convert.json.decode(response.body));
-      String shortURL = response.body.toString();
+      String shortURL = '';
+      if (response.body.toString().contains('cleanuri.com')) {
+        shortURL = convert.jsonDecode(response.body)['result_url'];
+      } else {
+        shortURL = response.body.toString();
+      }
       debugPrint('shortenedURL: $shortURL');
 
-      shortURLAnalytics = shortURL;
-
-      urlForm = UrlForm(longURLAnalytics, shortURLAnalytics);
-      analyticsForm = AnalyticsForm(urlForm, deviceForm);
-      // debugPrint(
-      //     "analyticsForm (got shortURL): ${analyticsForm.toJson().toString()}");
-      submitAnalytics(analyticsForm, (String response) {
-        // debugPrint(response);
-      });
+      UrlForm urlForm = UrlForm(longURL, shortURL);
+      AnalyticsForm analyticsForm = AnalyticsForm(urlForm, deviceForm);
+      submitAnalytics(analyticsForm, (String response) {});
       return shortURL;
     } on Exception {
       debugPrint('Exception');
@@ -58,12 +51,9 @@ Future<String?> getShortenedURL(String longURL) async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    // debugPrint(
-    //     "analyticsForm (failed shortURL): ${analyticsForm.toJson().toString()}");
     debugPrint('not 200 response.body.toString(): ${response.body.toString()}');
-    submitAnalytics(analyticsForm, (String response) {
-      // debugPrint(response);
-    });
+    submitAnalytics(
+        AnalyticsForm(UrlForm(longURL, ""), deviceForm), (String response) {});
     return null;
   }
 }

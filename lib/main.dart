@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
   // late url_model.ShortenedURL shortURL;
   late String shortURL;
 
-  static const String appVersion = "3.2.0";
+  static const String appVersion = "3.3.0";
   static const String disclaimer =
       "By utilizing this application, you acknowledge your agreement with the privacy policies of ShortenMyURL and hereby waive all claims against ShortenMyURL pertaining to the content(s) displayed, and the functionality provided herein.";
   String appInfo =
@@ -120,9 +120,146 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.black, // make background color black
       body: Column(
         children: [
-          SizedBox(
-            height: screenHeight * 0.07,
-            // child: Container(color: Colors.lime),
+          Column(
+            children: [
+              Container(
+                padding: (screenHeight < 750)
+                    ? EdgeInsets.only(top: 35, left: 10, right: 10)
+                    : EdgeInsets.only(top: 55, left: 10, right: 10),
+                // color: Colors.pink[100],
+                height: (screenHeight < 750)
+                    ? screenHeight * .38
+                    : screenHeight * 0.46,
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "Session History ",
+                          style: TextStyle(
+                              color: Colors.teal[100],
+                              fontSize: 24,
+                              fontWeight: FontWeight.w400),
+                        ),
+                        Visibility(
+                          visible: longURLs.isNotEmpty,
+                          child: InkWell(
+                            child: Tooltip(
+                              message: "Clear session history",
+                              child: Icon(
+                                Icons.delete_sweep,
+                                size: 30,
+                                color: Colors.teal[100],
+                              ),
+                            ),
+                            onTap: () => clearURLPairs(),
+                          ),
+                        )
+                      ],
+                    ),
+                    Text(
+                      "$urlPairsCapacity recent URL pairs are shown below. These will be cleared automatically by your device unless deleted manually.",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Flexible(
+                      child: Visibility(
+                        visible: (longURLs.isNotEmpty && shortURLs.isNotEmpty),
+                        child: Scrollbar(
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(0),
+                              itemCount: longURLs.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: EdgeInsets.all(4),
+                                  child: Row(
+                                    children: [
+                                      Text(
+                                        '${(index - longURLs.length).abs()}.    ',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.teal[100]),
+                                      ),
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            SelectableText(
+                                              '${longURLs[index]}',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color:
+                                                      Colors.lightGreen[200]),
+                                            ),
+                                            SelectableText(
+                                              '${shortURLs[index]}',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: (shortURLs[index]
+                                                          .contains("is.gd"))
+                                                      ? Colors.lightBlue[200]
+                                                      : Colors.red[200]),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                height: screenHeight * 0.05,
+                // color: Colors.amber,
+                child: (Visibility(
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            "cleanuri.com",
+                            style: TextStyle(
+                                color: Colors.red[200],
+                                fontStyle: FontStyle.italic),
+                          ),
+                          Text(
+                            " links may show ads. ",
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                          Tooltip(
+                            message:
+                                "If is.gd was unable to shorten a URL, cleanuri.com was used to do so, which may show an ad before redirecting.",
+                            child: Icon(
+                              Icons.ads_click,
+                              color: Colors.grey,
+                              size: 16,
+                            ),
+                          ),
+                          Text(
+                            " to learn more.",
+                            style: TextStyle(
+                              fontStyle: FontStyle.italic,
+                            ),
+                          ),
+                        ]),
+                    visible: shortURLs
+                        .any((element) => element.contains("cleanuri.com")))),
+              ),
+            ],
           ),
           Container(
             height: (screenHeight < 750)
@@ -516,7 +653,9 @@ class _HomePageState extends State<HomePage> {
                                 fillColor: Colors.white12,
                               ),
                               style: TextStyle(
-                                color: Colors.lightBlue[200],
+                                color: (outputController.text.contains("is.gd"))
+                                    ? Colors.lightBlue[200]
+                                    : Colors.red[200],
                                 fontSize: 16,
                               ),
                             ),
@@ -644,109 +783,8 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Column(
-            children: [
-              Container(
-                padding: EdgeInsets.only(left: 10, right: 10),
-                // color: Colors.pink[100],
-                height: (screenHeight < 750)
-                    ? screenHeight * .14
-                    : screenHeight * 0.12,
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          "Session History ",
-                          style: TextStyle(
-                              color: Colors.teal[100],
-                              fontSize: 24,
-                              fontWeight: FontWeight.w400),
-                        ),
-                        Visibility(
-                          visible: longURLs.isNotEmpty,
-                          child: InkWell(
-                            child: Tooltip(
-                              message: "Clear session history",
-                              child: Icon(
-                                Icons.delete_sweep,
-                                size: 30,
-                                color: Colors.teal[100],
-                              ),
-                            ),
-                            onTap: () => clearURLPairs(),
-                          ),
-                        )
-                      ],
-                    ),
-                    Text(
-                      "$urlPairsCapacity recent URL pairs are shown below. These will be cleared automatically by your device unless deleted manually.",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                height: (screenHeight > 750)
-                    ? screenHeight * .3
-                    : screenHeight * 0.22,
-                // color: Colors.purple[100],
-                child: Visibility(
-                  visible: (longURLs.isNotEmpty && shortURLs.isNotEmpty),
-                  child: Scrollbar(
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        padding: const EdgeInsets.all(0),
-                        itemCount: longURLs.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return Padding(
-                            padding: EdgeInsets.all(4),
-                            child: Row(
-                              children: [
-                                Text(
-                                  '${(index - longURLs.length).abs()}.    ',
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.teal[100]),
-                                ),
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SelectableText(
-                                        '${longURLs[index]}',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.lightGreen[200]),
-                                      ),
-                                      SelectableText(
-                                        '${shortURLs[index]}',
-                                        style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.lightBlue[200]),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }),
-                  ),
-                ),
-              ),
-            ],
-          ),
           Container(
             height: 20,
-            // color: Colors.grey[100],
             child: Padding(
               padding: const EdgeInsets.only(left: 35.0),
               child: Row(
