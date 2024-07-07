@@ -8,7 +8,7 @@ import 'package:shorten_my_url/Analytics/analytics_form.dart';
 import 'package:shorten_my_url/Analytics/device_form.dart';
 import 'package:shorten_my_url/Analytics/url_form.dart';
 // import 'package:shorten_my_url/url_model.dart';
-import 'package:shorten_my_url/Analytics/constants.dart';
+import 'package:shorten_my_url/Analytics/constants.dart' as Constants;
 import 'dart:convert' as convert;
 
 final isgdAPI = 'https://is.gd/create.php?format=simple&url='; // option 1
