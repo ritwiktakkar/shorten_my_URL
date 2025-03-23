@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:shorten_my_url/Analytics/constants.dart' as Constants;
 
 class Dialogs {
   static Text noURLFoundInClipboardTitle = Text(
@@ -462,6 +464,66 @@ class Dialogs {
       context: context,
       builder: (BuildContext context) {
         return (Platform.isAndroid) ? androidAlert : iOSAlert;
+      },
+    );
+  }
+
+  Future<void> _launchURL(String url) async {
+    final Uri uri = Uri.parse(url);
+    if (!await launchUrl(uri, mode: LaunchMode.externalApplication)) {
+      throw 'Could not launch $url';
+    }
+  }
+
+  static Future<void> showContactDialog(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        if (Platform.isAndroid) {
+          return AlertDialog(
+            title: duplicateClipboardTitle,
+            content: duplicateClipboardContent,
+            actions: <Widget>[
+              TextButton(
+                child: gotItThanks,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
+        return CupertinoAlertDialog(
+          title: const Text("Get in Touch"),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: () => launchUrl(Uri.parse(Constants.twitterUrl),
+                    mode: LaunchMode.externalApplication),
+                child: const Text('Twitter / X'),
+              ),
+              ElevatedButton(
+                onPressed: () => launchUrl(Uri.parse(Constants.emailUrl)),
+                child: const Text('Email'),
+              ),
+              ElevatedButton(
+                onPressed: () => launchUrl(Uri.parse(Constants.appStoreUrl)),
+                child: const Text('Check out my other apps'),
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text("Close"),
+            ),
+          ],
+        );
       },
     );
   }
