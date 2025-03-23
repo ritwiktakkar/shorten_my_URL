@@ -28,7 +28,8 @@ dependencies:
   share: ^2.0.4
   connectivity: ^3.0.6
   device_info: ^2.0.2
-  url_launcher: ^6.1.12
+  url_launcher: ^6.3.1
+  url_launcher_ios: ^6.3.2
   package_info_plus: ^8.0.0
 
   # The following adds the Cupertino Icons font to your application.

@@ -66,18 +66,18 @@ class _HomePageState extends State<HomePage> {
 
   static const String appVersion = "4.0.1";
 
-  static const String appInfo = "Results powered by is.gd";
+  // static const String appInfo = "Results powered by is.gd";
 
   static const String copyRight =
-      "ShortenMyURL (Version $appVersion) by Nocturnal Dev Lab (RT).";
+      "ShortenMyURL v$appVersion\n© 2020 Nocturnal Dev Lab (RT)";
 
-  static const String appDisclaimer =
-      "By using this application, you accept the privacy policies of ShortenMyURL linked on the App/Play Store and hereby waive all claims against ShortenMyURL, including those related to the content(s) displayed, and the functionality provided herein.\n$copyRight";
+  static String get appDisclaimer =>
+      "The developer disclaims all liability for any direct, indirect, incidental, consequential, or special damages arising from or related to your use of the app, including but not limited to, any errors or omissions in the content provided, any interruptions or malfunctions of the app's functionality, or any reliance on information displayed within the app.\n$copyRight";
 
   Future<String> _getFromClipboard() async {
     Map<String, dynamic> result =
         await SystemChannels.platform.invokeMethod('Clipboard.getData');
-    if (result['text'].toString().characters.length < 0) {
+    if (result['text'].toString().isEmpty) {
       return "";
     }
     return result['text'].toString();
@@ -127,7 +127,7 @@ class _HomePageState extends State<HomePage> {
           resizeToAvoidBottomInset: false,
           backgroundColor: Color.fromARGB(255, 27, 27, 29),
           body: Padding(
-            padding: const EdgeInsets.fromLTRB(20, 60, 20, 15),
+            padding: const EdgeInsets.fromLTRB(20, 60, 20, 30),
             child: Container(
               // color: Colors.white,
               child: Column(
@@ -501,9 +501,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: screenHeight * 0.005,
-                  ),
+                  // SizedBox(
+                  //   height: screenHeight * 0.002,
+                  // ),
                   // Short URL container
                   Container(
                     // height: screenHeight * 0.25,
@@ -671,7 +671,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                    height: screenHeight * 0.006,
+                    height: screenHeight * 0.015,
                   ),
                   // Session history container
                   Expanded(
@@ -713,7 +713,7 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         Text(
-                          "$urlPairsCapacity recent URL pairs are shown below. These will be cleared automatically by your device unless deleted manually.",
+                          "Up to $urlPairsCapacity recent URL pairs are shown. They will clear automatically unless manually deleted.",
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 13,
@@ -785,25 +785,32 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   SizedBox(
-                    height: screenHeight * 0.006,
+                    height: screenHeight * 0.003,
                   ),
                   // App info row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        "Nocturnal Dev Lab (RT) © 2020-${DateTime.now().year}",
+                        "Nocturnal Dev Lab (RT)",
                         style: TextStyle(
-                            color: Colors.grey[800],
-                            fontSize: 10,
+                            color: Colors.grey[600],
+                            fontSize: 16,
                             fontWeight: FontWeight.w300),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Dialogs.showContactDialog(context);
+                        },
+                        icon: const Icon(Icons.contact_page_outlined),
+                        color: Colors.grey[500],
                       ),
                       Tooltip(
                         message: '$appDisclaimer',
                         child: Icon(
                           Icons.info_outline_rounded,
                           color: Colors.grey[800],
-                          size: 14,
+                          size: 20,
                         ),
                       ),
                     ],
