@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   // late url_model.ShortenedURL shortURL;
   late String shortURL;
 
-  static const String appVersion = "4.1.0";
+  static const String appVersion = "4.1.1";
 
   // static const String appInfo = "Results powered by is.gd";
 
@@ -808,7 +808,6 @@ class _HomePageState extends State<HomePage> {
                           color: Colors.grey[500],
                           size: 30,
                         ),
-                        // color: Colors.grey[500],
                       ),
                       IconButton(
                         onPressed: () {
@@ -818,6 +817,18 @@ class _HomePageState extends State<HomePage> {
                         },
                         icon: Image.asset(
                           "assets/popops_gs.png",
+                          width: 30,
+                          height: 30,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Future.delayed(const Duration(milliseconds: 300), () {
+                            launchUrl(Uri.parse(Constants.wwydURL));
+                          });
+                        },
+                        icon: Image.asset(
+                          "assets/wwyd_gs.png",
                           width: 30,
                           height: 30,
                         ),
