@@ -9,6 +9,7 @@ import 'package:string_validator/string_validator.dart';
 import 'package:shorten_my_url/dialogs.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shorten_my_url/Analytics/constants.dart' as Constants;
 
 void main() {
   runApp(MyApp());
@@ -64,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   // late url_model.ShortenedURL shortURL;
   late String shortURL;
 
-  static const String appVersion = "4.0.3";
+  static const String appVersion = "4.1.0";
 
   // static const String appInfo = "Results powered by is.gd";
 
@@ -795,15 +796,31 @@ class _HomePageState extends State<HomePage> {
                         "Nocturnal Dev Lab (RT)",
                         style: TextStyle(
                             color: Colors.grey[600],
-                            fontSize: 16,
+                            fontSize: 14,
                             fontWeight: FontWeight.w300),
                       ),
                       IconButton(
                         onPressed: () {
                           Dialogs.showContactDialog(context);
                         },
-                        icon: const Icon(Icons.contact_page_outlined),
-                        color: Colors.grey[500],
+                        icon: Icon(
+                          Icons.contact_page_outlined,
+                          color: Colors.grey[500],
+                          size: 30,
+                        ),
+                        // color: Colors.grey[500],
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          Future.delayed(const Duration(milliseconds: 300), () {
+                            launchUrl(Uri.parse(Constants.popopsURL));
+                          });
+                        },
+                        icon: Image.asset(
+                          "assets/popops_gs.png",
+                          width: 30,
+                          height: 30,
+                        ),
                       ),
                       Tooltip(
                         message: '$appDisclaimer',
