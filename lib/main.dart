@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
   // late url_model.ShortenedURL shortURL;
   late String shortURL;
 
-  static const String appVersion = "4.1.1";
+  static const String appVersion = "4.1.2";
 
   // static const String appInfo = "Results powered by is.gd";
 
